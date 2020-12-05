@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'pages/searchpage.dart';
+import 'repositories/beer_repository.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class AppWidget extends StatefulWidget {
@@ -13,13 +16,14 @@ class _AppWidgetState extends State<AppWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Recherche dans le catalogue',
-      style: optionStyle,
+  static List<Widget> _widgetOptions = <Widget>[
+    SearchPageStateful(
+      beersRepository: BeersRepository(
+        client: http.Client(),
+      ),
     ),
     Text(
-      'Mes livrés empruntés',
+      'Mes livres empruntés',
       style: optionStyle,
     ),
     Text(
@@ -37,9 +41,6 @@ class _AppWidgetState extends State<AppWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Biblio Nantes'),
-      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
