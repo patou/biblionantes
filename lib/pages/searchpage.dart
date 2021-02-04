@@ -46,7 +46,7 @@ class _SearchPageStatefulState extends State<SearchPageStateful> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Punk API'),
+        title: Text('Recherche de livre'),
         centerTitle: true,
       ),
       body: _displayBody(),

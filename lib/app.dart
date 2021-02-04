@@ -1,3 +1,5 @@
+import 'package:biblionantes/pages/accountpage.dart';
+import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'pages/searchpage.dart';
@@ -26,9 +28,10 @@ class _AppWidgetState extends State<AppWidget> {
       'Mes livres empruntés',
       style: optionStyle,
     ),
-    Text(
-      'Paramètres',
-      style: optionStyle,
+    AccountPageStateful(
+      accountRepository: AccountRepository(
+        client: http.Client(),
+      ),
     ),
   ];
 

@@ -26,24 +26,24 @@ class AccountRepository {
     return this.accounts;
   }
 
-  Future<AuthentInfo> addAccount(String login, String pass) async {
+  Future<AuthentInfo> addAccount(String name, String login, String pass) async {
     final response =
         await client.post('https://catalogue-bm.nantes.fr/in/rest/api/authenticate',
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
             },
-            body: '{"username":"$login","password":"$pass","birthdate":"","locale":"fr"}'
+            body: '{"username":"$login","password":"$pass","birthdate":"$pass","locale":"fr"}'
         );
 
     if (response.statusCode != 200) {
-      throw AuthenticateException(
-          'error occurred when authenticate: {$response.statusCode}');
+      return Future.error(AuthenticateException(
+          'error occurred when authenticate: ${response.statusCode}'));
     }
-
-    final parsed = jsonDecode(response.body).cast<Map<String, dynamic>>();
+    print(response.body);
+    final parsed = jsonDecode(response.body).cast<String,dynamic>();
 
     AuthentInfo authentInfo = AuthentInfo.fromJson(parsed);
-    this.accounts.add(Account(login: login, password: pass, userId: authentInfo.userId));
+    this.accounts.add(Account(login: login, password: pass, userId: authentInfo.userId, name: name));
     return authentInfo;
   }
 }
