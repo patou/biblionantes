@@ -1,9 +1,9 @@
 import 'package:biblionantes/pages/accountpage.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
+import 'package:biblionantes/repositories/search.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'pages/searchpage.dart';
-import 'repositories/beer_repository.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class AppWidget extends StatefulWidget {
@@ -20,7 +20,7 @@ class _AppWidgetState extends State<AppWidget> {
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     SearchPageStateful(
-      beersRepository: BeersRepository(
+      searchRepository: SearchRepository(
         client: http.Client(),
       ),
     ),
@@ -58,8 +58,8 @@ class _AppWidgetState extends State<AppWidget> {
             label: 'Livres empruntés',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Paramètres',
+            icon: Icon(Icons.card_membership),
+            label: 'Mes cartes',
           ),
         ],
         currentIndex: _selectedIndex,

@@ -1,24 +1,26 @@
+import 'package:biblionantes/models/book.dart';
+import 'package:biblionantes/repositories/search.dart';
 import 'package:flutter/material.dart';
-import 'package:biblionantes/models/Beer.dart';
-import 'package:biblionantes/repositories/beer_repository.dart';
 import 'package:biblionantes/widgets/book_card.dart';
 
 class SearchPageStateful extends StatefulWidget {
-  final BeersRepository beersRepository;
+  final SearchRepository searchRepository;
 
-  SearchPageStateful({@required this.beersRepository})
-      : assert(beersRepository != null);
+  SearchPageStateful({@required this.searchRepository})
+      : assert(searchRepository != null);
 
   @override
   _SearchPageStatefulState createState() => _SearchPageStatefulState();
 }
 
 class _SearchPageStatefulState extends State<SearchPageStateful> {
-  List<Beer> _beers;
+  List<Book> _books;
   bool _isError = false;
-  bool _isLoading = true;
+  bool _isLoading = false;
+  bool _isSearch = false;
 
-  Widget _displayBody() {
+
+  Widget _displayResultList() {
     if (_isError) {
       return Center(
         child: Text('An error occurred'),
@@ -31,15 +33,33 @@ class _SearchPageStatefulState extends State<SearchPageStateful> {
       );
     }
 
+    if (!_isSearch) {
+      return Center(
+        child: Text('Recherchez un livre'),
+      );
+    }
+
+    if (_books.isEmpty) {
+      return Center(
+        child: Text('Pas de résultats trouvés'),
+      );
+    }
+
     return ListView.builder(
-      itemCount: _beers.length,
+      itemCount: _books.length,
       itemBuilder: (_, index) {
         return Container(
           margin: EdgeInsets.only(bottom: 10),
-          child: BookCard(beer: _beers[index]),
+          child: BookCard(book: _books[index]),
         );
       },
     );
+  }
+
+  Widget _renderSearchField() {
+    return SearchWidget(onSearch: (search) {
+      _fetchSearch(search);
+    });
   }
 
   @override
@@ -49,23 +69,40 @@ class _SearchPageStatefulState extends State<SearchPageStateful> {
         title: Text('Recherche de livre'),
         centerTitle: true,
       ),
-      body: _displayBody(),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            _renderSearchField(),
+            SizedBox(height: 20),
+            _displayResultList(),
+          ])
+      )
     );
   }
 
-  void _fetchBeers() async {
+  void _fetchSearch(String search) async {
+    print("fetchSearch ${search}");
+    setState(() {
+      _isError = false;
+      _isLoading = true;
+      _isSearch = true;
+      _books = null;
+    });
     try {
-      final beers = await widget.beersRepository.getBeers();
+      final books = await widget.searchRepository.search(search);
       setState(() {
         _isError = false;
         _isLoading = false;
-        _beers = beers;
+        _isSearch = true;
+        _books = books;
       });
     } catch (e) {
       setState(() {
         _isError = true;
         _isLoading = false;
-        _beers = null;
+        _isSearch = false;
+        _books = null;
       });
     }
   }
@@ -73,6 +110,44 @@ class _SearchPageStatefulState extends State<SearchPageStateful> {
   @override
   void initState() {
     super.initState();
-    _fetchBeers();
+  }
+}
+
+class SearchWidget extends StatefulWidget {
+
+  void Function(String) onSearch;
+  @override
+  _SearchWidgetState createState() => _SearchWidgetState();
+
+  SearchWidget({Key key, void Function(String) this.onSearch}) : super(key: key);
+}
+
+class _SearchWidgetState extends State<SearchWidget> {
+  final _controller = TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: _controller,
+      onSubmitted: (search) {
+        widget.onSearch(search);
+      },
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.search),
+        suffixIcon: _controller.text.length > 0
+            ? GestureDetector(
+          onTap: _controller.clear, // removes the content in the field
+          child: Icon(Icons.clear_rounded),
+        )
+            : null,
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    _controller.addListener(() {
+      setState(() {});
+    });
+    super.initState();
   }
 }

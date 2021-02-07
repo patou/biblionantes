@@ -21,20 +21,24 @@ class SearchRepository {
   SearchRepository({@required this.client}) : assert(client != null);
 
   Future<List<Book>> search(String search) async {
+    print("search ${search}");
+    var searchBody = '{"query":["$search"], "queryid":"NONE","includeFacets":false,"pageSize":10,"locale":"fr"}';
+    print(searchBody);
     final response =
     await client.post('https://catalogue-bm.nantes.fr/in/rest/api/search',
       headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
+      'Accept': 'application/json',
     },
-      body: '{"query":["orgue"], "queryid":"NONE","includeFacets":false,"pageSize":10,"locale":"fr"}');
-
+      body: searchBody);
+    print(response.statusCode);
     if (response.statusCode != 200) {
-      throw FetchDataException(
-          'error occurred when fetch beers from punk API: {$response.statusCode}');
+      print("error");
+      return Future.error(FetchDataException(
+          'error occurred when search books: {$response.statusCode}'));
     }
 
-    final parsed = jsonDecode(response.body).cast<Map<String, dynamic>>();
-
-    return parsed.map<Book>((json) => Book.fromJson(json)).toList();
+    final parsed = jsonDecode(response.body).cast<String, dynamic>();
+    return parsed['resultSet'].map<Book>((json) => Book.fromJson(json)).toList();
   }
 }

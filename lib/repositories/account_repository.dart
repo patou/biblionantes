@@ -39,7 +39,6 @@ class AccountRepository {
       return Future.error(AuthenticateException(
           'error occurred when authenticate: ${response.statusCode}'));
     }
-    print(response.body);
     final parsed = jsonDecode(response.body).cast<String,dynamic>();
 
     AuthentInfo authentInfo = AuthentInfo.fromJson(parsed);

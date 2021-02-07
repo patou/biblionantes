@@ -1,11 +1,11 @@
+import 'package:biblionantes/models/book.dart';
 import 'package:flutter/material.dart';
-import 'package:biblionantes/models/Beer.dart';
 
 class BookCard extends StatelessWidget {
-  final Beer beer;
+  final Book book;
 
-  const BookCard({Key key, @required this.beer})
-      : assert(beer != null),
+  const BookCard({Key key, @required this.book})
+      : assert(book != null),
         super(key: key);
 
   @override
@@ -28,7 +28,7 @@ class BookCard extends StatelessWidget {
           Container(
             width: 100,
             child: Image.network(
-              beer.imageURL,
+              book.imageURL,
             ),
           ),
           Expanded(
@@ -37,8 +37,8 @@ class BookCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(beer.name),
-                  Text(beer.tagline),
+                  Text(book.title),
+                  Text(book.type),
                 ],
               ),
             ),
