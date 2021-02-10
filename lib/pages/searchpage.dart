@@ -45,20 +45,31 @@ class _SearchPageStatefulState extends State<SearchPageStateful> {
       );
     }
 
-    return ListView.builder(
-      itemCount: _books.length,
-      itemBuilder: (_, index) {
-        return Container(
-          margin: EdgeInsets.only(bottom: 10),
-          child: BookCard(book: _books[index]),
-        );
-      },
+    return Expanded( // wrap in Expanded
+        child: ListView.builder(
+          itemCount: _books.length,
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemBuilder: (_, index) {
+            return Container(
+              margin: EdgeInsets.only(bottom: 10),
+              child: BookCard(book: _books[index]),
+            );
+          },
+        )
     );
   }
 
   Widget _renderSearchField() {
     return SearchWidget(onSearch: (search) {
       _fetchSearch(search);
+    }, onClear: () {
+      setState(() {
+        _isError = false;
+        _isLoading = false;
+        _isSearch = false;
+        _books = null;
+      });
     });
   }
 
@@ -82,7 +93,6 @@ class _SearchPageStatefulState extends State<SearchPageStateful> {
   }
 
   void _fetchSearch(String search) async {
-    print("fetchSearch ${search}");
     setState(() {
       _isError = false;
       _isLoading = true;
@@ -116,10 +126,11 @@ class _SearchPageStatefulState extends State<SearchPageStateful> {
 class SearchWidget extends StatefulWidget {
 
   void Function(String) onSearch;
+  void Function() onClear;
   @override
   _SearchWidgetState createState() => _SearchWidgetState();
 
-  SearchWidget({Key key, void Function(String) this.onSearch}) : super(key: key);
+  SearchWidget({Key key, void Function(String) this.onSearch, void Function() this.onClear}) : super(key: key);
 }
 
 class _SearchWidgetState extends State<SearchWidget> {
@@ -135,7 +146,10 @@ class _SearchWidgetState extends State<SearchWidget> {
         prefixIcon: Icon(Icons.search),
         suffixIcon: _controller.text.length > 0
             ? GestureDetector(
-          onTap: _controller.clear, // removes the content in the field
+          onTap: () {
+            _controller.clear();
+            widget.onClear();
+          }, // removes the content in the field
           child: Icon(Icons.clear_rounded),
         )
             : null,
