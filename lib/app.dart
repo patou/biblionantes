@@ -1,9 +1,16 @@
 import 'package:biblionantes/pages/accountpage.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:biblionantes/repositories/search.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'pages/searchpage.dart';
+
+BaseOptions options = new BaseOptions(
+  baseUrl: "https://catalogue-bm.nantes.fr/in/rest/api/",
+  connectTimeout: 5000,
+  receiveTimeout: 3000,
+);
+Dio dio = new Dio(options);
 
 /// This is the stateful widget that the main application instantiates.
 class AppWidget extends StatefulWidget {
@@ -18,10 +25,11 @@ class _AppWidgetState extends State<AppWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
   static List<Widget> _widgetOptions = <Widget>[
     SearchPageStateful(
       searchRepository: SearchRepository(
-        client: http.Client(),
+        client: dio
       ),
     ),
     Text(
@@ -30,7 +38,7 @@ class _AppWidgetState extends State<AppWidget> {
     ),
     AccountPageStateful(
       accountRepository: AccountRepository(
-        client: http.Client(),
+        client: dio,
       ),
     ),
   ];
