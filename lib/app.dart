@@ -2,6 +2,7 @@ import 'package:biblionantes/pages/accountpage.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:biblionantes/repositories/search.dart';
 import 'package:dio/dio.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:flutter/material.dart';
 import 'pages/searchpage.dart';
 
@@ -14,7 +15,15 @@ Dio dio = new Dio(options);
 
 /// This is the stateful widget that the main application instantiates.
 class AppWidget extends StatefulWidget {
-  AppWidget({Key key}) : super(key: key);
+  AppWidget({Key key}) : super(key: key) {
+    dio.interceptors.add(PrettyDioLogger(requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+        maxWidth: 90));
+  }
 
   @override
   _AppWidgetState createState() => _AppWidgetState();

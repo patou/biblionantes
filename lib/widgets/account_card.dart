@@ -1,4 +1,5 @@
 import 'package:biblionantes/models/SummeryAccount.dart';
+import 'package:biblionantes/widgets/summary_account.dart';
 import 'package:flutter/material.dart';
 
 class AccountCard extends StatelessWidget {
@@ -37,6 +38,7 @@ class AccountCard extends StatelessWidget {
                 children: [
                   Text(account.name),
                   Text(account.login),
+                  SummaryAccountCard(account: account)
                 ],
               ),
             ),

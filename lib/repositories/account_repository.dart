@@ -29,18 +29,49 @@ class AccountRepository {
   }
 
   Future<AuthentInfo> addAccount(String name, String login, String pass) async {
+    AuthentInfo authentInfo = await refreshAccountToken(login, pass);
+    this.accounts.add(Account(login: login, password: pass, userId: authentInfo.userId, name: name));
+    return authentInfo;
+  }
+
+  Future<AuthentInfo> refreshAccountToken(String login, String pass) async {
     final response =
         await client.post('authenticate',
             data: {"username": login, "password": pass, "birthdate": pass,"locale":"fr"}
         );
-
+    
     if (response.statusCode != 200) {
       return Future.error(AuthenticateException(
           'error occurred when authenticate: ${response.statusCode}'));
     }
     AuthentInfo authentInfo = AuthentInfo.fromJson(response.data);
-    this.accounts.add(Account(login: login, password: pass, userId: authentInfo.userId, name: name));
-    tokens[authentInfo.userId] = authentInfo.token;
+    tokens[authentInfo.login] = authentInfo.token;
     return authentInfo;
+  }
+
+  Future<SummeryAccount> loadSummaryAccount(Account account) async {
+    print("load ${account.name} ${account.login}");
+    if (!tokens.containsKey(account.login) || !tokens[account.login].isEmpty) {
+      print("refresh token ${account.login}");
+      await refreshAccountToken(account.login, account.password);
+    }
+    final response =
+    await client.get('accountSummary',
+        queryParameters: {
+          'locale': 'fr'
+        },
+        options: Options(
+          headers:{
+            'Authorization': 'Bearer ${tokens[account.login]}'
+          })
+    );
+    if (response.statusCode != 200) {
+      tokens.remove(account.userId);
+      print(response);
+      return Future.error(AuthenticateException(
+          'error occurred when authenticate: ${response.statusCode}'));
+    }
+    print(response.data);
+    return SummeryAccount.fromJson(response.data);
   }
 }
