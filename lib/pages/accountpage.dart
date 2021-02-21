@@ -1,6 +1,5 @@
 import 'package:biblionantes/models/SummeryAccount.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
-import 'package:biblionantes/widgets/account_card.dart';
 import 'package:biblionantes/widgets/add_account_dialog.dart';
 import 'package:biblionantes/widgets/summary_account.dart';
 import 'package:flutter/material.dart';

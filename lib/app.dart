@@ -1,4 +1,5 @@
 import 'package:biblionantes/pages/accountpage.dart';
+import 'package:biblionantes/pages/loanspage.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:biblionantes/repositories/search.dart';
 import 'package:dio/dio.dart';
@@ -35,8 +36,6 @@ class AppWidget extends StatefulWidget {
 /// This is the private State class that goes with AppWidget.
 class _AppWidgetState extends State<AppWidget> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   static List<Widget> _widgetOptions = <Widget>[
     SearchPageStateful(
@@ -44,10 +43,7 @@ class _AppWidgetState extends State<AppWidget> {
         client: dio
       ),
     ),
-    Text(
-      'Mes livres empruntés',
-      style: optionStyle,
-    ),
+    LoansPageStateful(accountRepository: accountRepository),
     AccountPageStateful(
       accountRepository: accountRepository,
     ),

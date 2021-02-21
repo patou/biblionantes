@@ -1,4 +1,5 @@
 import 'package:biblionantes/models/SummeryAccount.dart';
+import 'package:biblionantes/models/loansbook.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
@@ -103,5 +104,39 @@ class AccountRepository {
   Future<void> deleteAccount(Account account) async {
     this.accounts.remove(account);
     await saveAccounts();
+  }
+
+  Future<List<LoansBook>> loadLoansList() async {
+    var results = await Future.wait(accounts.map((account) { return this.loadLoansListByAccount(account); }));
+    return results.expand((element) => element).toList();
+  }
+
+  Future<List<LoansBook>> loadLoansListByAccount(Account account) async {
+    print("load ${account.name} ${account.login}");
+    if (!tokens.containsKey(account.login) || !tokens[account.login].isEmpty) {
+      print("refresh token ${account.login}");
+      await refreshAccountToken(account.login, account.password);
+    }
+    final response =
+        await client.get('accountPage',
+        queryParameters: {
+          'locale': 'fr',
+          'type': 'loans',
+          'pageNo': '1',
+          'pageSize': '15'
+        },
+        options: Options(
+            headers:{
+              'Authorization': 'Bearer ${tokens[account.login]}'
+            })
+    );
+    if (response.statusCode != 200) {
+      tokens.remove(account.userId);
+      print(response);
+      return Future.error(AuthenticateException(
+          'error occurred when authenticate: ${response.statusCode}'));
+    }
+    var list = response.data['items'].map<LoansBook>((json) => LoansBook.fromJson(json, account.name)).toList();
+    return list;
   }
 }
