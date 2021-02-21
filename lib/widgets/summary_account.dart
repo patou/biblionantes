@@ -7,8 +7,9 @@ class SummaryAccountCard extends StatelessWidget {
   final Account account;
   final AccountRepository accountRepository;
   final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+  final void Function(Account) onDeleteAccount;
 
-  SummaryAccountCard({Key key, @required this.account, this.accountRepository})
+  SummaryAccountCard({Key key, @required this.account, this.accountRepository, void Function(Account) this.onDeleteAccount,})
       : assert(account != null),
         super(key: key);
 
@@ -19,7 +20,7 @@ class SummaryAccountCard extends StatelessWidget {
       margin: const EdgeInsets.only(top: 5),
       child: Column(
         children: [
-          Text(account.login, textAlign: TextAlign.center, textScaleFactor: 1.5),
+          Text(account.name, textAlign: TextAlign.center, textScaleFactor: 1.5),
         FutureBuilder(
         future: accountRepository.loadSummaryAccount(account),
         builder: (_, snapshot) {
@@ -85,12 +86,21 @@ class SummaryAccountCard extends StatelessWidget {
             ],
           );
         }
-        )
+        ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              TextButton(
+                child: const Text('Supprimer'),
+                onPressed: () {
+                  onDeleteAccount(account);
+                },
+              ),
+              const SizedBox(width: 8),
+            ],
+          ),
         ],
-      )
-
-
+      ),
     );
   }
-
 }

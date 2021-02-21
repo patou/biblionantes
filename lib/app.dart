@@ -12,6 +12,9 @@ BaseOptions options = new BaseOptions(
   receiveTimeout: 3000,
 );
 Dio dio = new Dio(options);
+AccountRepository accountRepository = AccountRepository(
+  client: dio,
+);
 
 /// This is the stateful widget that the main application instantiates.
 class AppWidget extends StatefulWidget {
@@ -29,7 +32,7 @@ class AppWidget extends StatefulWidget {
   _AppWidgetState createState() => _AppWidgetState();
 }
 
-/// This is the private State class that goes with MyStatefulWidget.
+/// This is the private State class that goes with AppWidget.
 class _AppWidgetState extends State<AppWidget> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
@@ -46,9 +49,7 @@ class _AppWidgetState extends State<AppWidget> {
       style: optionStyle,
     ),
     AccountPageStateful(
-      accountRepository: AccountRepository(
-        client: dio,
-      ),
+      accountRepository: accountRepository,
     ),
   ];
 
@@ -56,6 +57,12 @@ class _AppWidgetState extends State<AppWidget> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    accountRepository.loadAccounts();
+    super.initState();
   }
 
   @override

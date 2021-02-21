@@ -44,7 +44,9 @@ class _AccountPageStatefulState extends State<AccountPageStateful> {
       itemBuilder: (_, index) {
         return Container(
           margin: EdgeInsets.only(bottom: 10),
-          child: SummaryAccountCard(account: _accounts[index], accountRepository: widget.accountRepository),
+          child: SummaryAccountCard(account: _accounts[index], accountRepository: widget.accountRepository, onDeleteAccount: (account) {
+            _showConfirmDelete(account);
+          }),
         );
       },
     );
@@ -85,6 +87,41 @@ class _AccountPageStatefulState extends State<AccountPageStateful> {
         _accounts = null;
       });
     }
+  }
+
+
+  Future<void> _showConfirmDelete(Account account) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Suppression du compte ${account.name}'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Voulez-vous supprimer le compte ${account.name} ?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Oui'),
+              onPressed: () async {
+                await widget.accountRepository.deleteAccount(account);
+                _loadAccount();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Non'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _showDialog() {

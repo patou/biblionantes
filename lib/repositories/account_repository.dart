@@ -3,6 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class AuthenticateException implements Exception {
   final _message;
   final _prefix = 'Error during HTTP call: ';
@@ -16,21 +18,44 @@ class AuthenticateException implements Exception {
 
 @immutable
 class AccountRepository {
+  static String ACCOUNTS_LIST_SHARED_PREF = "bionantes.accounts";
   final Dio client;
 
   AccountRepository({@required this.client}) : assert(client != null);
+  
+  Future<void> loadAccounts() async {
+    if (accounts == null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (prefs.containsKey(ACCOUNTS_LIST_SHARED_PREF)) {
+        accounts = prefs.getStringList(ACCOUNTS_LIST_SHARED_PREF).map((str) =>
+            Account.fromSharedPref(str)).toList();
+      }
+      else {
+        accounts = List();
+      }
+    }
+  }
 
-  List<Account> accounts = List();
+  Future<void> saveAccounts() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> saved = accounts.map<String>((e) => e.toSharedPref()).toList(growable: false);
+    print(saved.join(","));
+    prefs.setStringList(ACCOUNTS_LIST_SHARED_PREF, saved);
+  }
+
+  List<Account> accounts = null;
 
   Map<String, String> tokens = Map();
 
-  List<Account> getAccounts() {
+  Future<List<Account>> getAccounts() async {
+    await loadAccounts();
     return this.accounts;
   }
 
   Future<AuthentInfo> addAccount(String name, String login, String pass) async {
     AuthentInfo authentInfo = await refreshAccountToken(login, pass);
     this.accounts.add(Account(login: login, password: pass, userId: authentInfo.userId, name: name));
+    await saveAccounts();
     return authentInfo;
   }
 
@@ -73,5 +98,10 @@ class AccountRepository {
     }
     print(response.data);
     return SummeryAccount.fromJson(response.data);
+  }
+
+  Future<void> deleteAccount(Account account) async {
+    this.accounts.remove(account);
+    await saveAccounts();
   }
 }

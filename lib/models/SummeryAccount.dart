@@ -79,10 +79,25 @@ class AuthentInfo {
 
 @immutable
 class Account {
+  static String SEPARATOR = "\x29";
   String login;
   String password;
   String userId;
   String name;
 
   Account({this.login, this.password, this.userId, this.name});
+
+  factory Account.fromSharedPref(String str) {
+    var parts = str.split(SEPARATOR);
+    return Account(
+      login: parts[0],
+      password: parts[1],
+      userId: parts[2],
+      name: parts[3],
+    );
+  }
+
+  String toSharedPref() {
+    return [login, password, userId, name].join(SEPARATOR);
+  }
 }
