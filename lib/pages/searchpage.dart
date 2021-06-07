@@ -1,75 +1,81 @@
 import 'package:biblionantes/models/book.dart';
 import 'package:biblionantes/repositories/search.dart';
+import 'package:biblionantes/search_book/search_book_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:biblionantes/widgets/book_card.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchPageStateful extends StatefulWidget {
   final SearchRepository searchRepository;
 
-  SearchPageStateful({@required this.searchRepository})
-      : assert(searchRepository != null);
+  SearchPageStateful({required this.searchRepository});
 
   @override
   _SearchPageStatefulState createState() => _SearchPageStatefulState();
 }
 
 class _SearchPageStatefulState extends State<SearchPageStateful> {
-  List<Book> _books;
-  bool _isError = false;
-  bool _isLoading = false;
-  bool _isSearch = false;
-
+  final _scrollController = ScrollController();
+  final _scrollThreshold = 200.0;
+  late SearchBookBloc searchBookBloc;
 
   Widget _displayResultList() {
-    if (_isError) {
-      return Center(
-        child: Text('An error occurred'),
-      );
-    }
+    return BlocBuilder(
+      bloc: searchBookBloc,
+      builder: (context, state) {
+        if (state is SearchBookErrorState) {
+          return Center(
+            child: Text('An error occurred'),
+          );
+        }
 
-    if (_isLoading) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
+        if (state is SearchBookLoadingState) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
 
-    if (!_isSearch) {
-      return Center(
-        child: Text('Recherchez un livre'),
-      );
-    }
+        if (state is SearchBookWelcomeState) {
+          return Center(
+            child: Text('Recherchez un livre'),
+          );
+        }
 
-    if (_books.isEmpty) {
-      return Center(
-        child: Text('Pas de résultats trouvés'),
-      );
-    }
-
-    return Expanded( // wrap in Expanded
-        child: ListView.builder(
-          itemCount: _books.length,
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemBuilder: (_, index) {
-            return Container(
-              margin: EdgeInsets.only(bottom: 10),
-              child: BookCard(book: _books[index]),
+        if (state is SearchBookSucessState) {
+          if (state.books.isEmpty) {
+            return Center(
+              child: Text('Pas de résultats trouvés'),
             );
-          },
-        )
+          }
+          return Expanded( // wrap in Expanded
+              child: ListView.builder(
+                itemCount: state.hasReachedMax ? state.books.length : state.books.length + 1,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (_, index) {
+                  return  index >= state.books.length
+                      ? BottomLoader()
+                      : Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: BookCard(book: state.books[index]),
+                  );
+                },
+              )
+          );
+        }
+        return Center(
+          child: Text('Erreur state not exist'),
+        );
+      },
     );
+
   }
 
   Widget _renderSearchField() {
     return SearchWidget(onSearch: (search) {
-      _fetchSearch(search);
+      searchBookBloc.add(SearchBookTextSearched(search: search));
     }, onClear: () {
-      setState(() {
-        _isError = false;
-        _isLoading = false;
-        _isSearch = false;
-        _books = null;
-      });
+      searchBookBloc.add(SearchBookTextCleared());
     });
   }
 
@@ -92,34 +98,29 @@ class _SearchPageStatefulState extends State<SearchPageStateful> {
     );
   }
 
-  void _fetchSearch(String search) async {
-    setState(() {
-      _isError = false;
-      _isLoading = true;
-      _isSearch = true;
-      _books = null;
-    });
-    try {
-      final books = await widget.searchRepository.search(search);
-      setState(() {
-        _isError = false;
-        _isLoading = false;
-        _isSearch = true;
-        _books = books;
-      });
-    } catch (e) {
-      setState(() {
-        _isError = true;
-        _isLoading = false;
-        _isSearch = false;
-        _books = null;
-      });
-    }
-  }
-
   @override
   void initState() {
     super.initState();
+    searchBookBloc = SearchBookBloc(searchRepository: widget.searchRepository);
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.position.pixels;
+    if (maxScroll - currentScroll <= _scrollThreshold) {
+      var state = searchBookBloc.state;
+      if (state is SearchBookSucessState) {
+        searchBookBloc.add(
+            SearchBookTextSearched(search: state.search));
+      }
+    }
   }
 }
 
@@ -130,7 +131,7 @@ class SearchWidget extends StatefulWidget {
   @override
   _SearchWidgetState createState() => _SearchWidgetState();
 
-  SearchWidget({Key key, void Function(String) this.onSearch, void Function() this.onClear}) : super(key: key);
+  SearchWidget({Key? key, required this.onSearch, required this.onClear}) : super(key: key);
 }
 
 class _SearchWidgetState extends State<SearchWidget> {
@@ -163,5 +164,29 @@ class _SearchWidgetState extends State<SearchWidget> {
       setState(() {});
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+}
+
+class BottomLoader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: Center(
+        child: SizedBox(
+          width: 33,
+          height: 33,
+          child: CircularProgressIndicator(
+            strokeWidth: 1.5,
+          ),
+        ),
+      ),
+    );
   }
 }

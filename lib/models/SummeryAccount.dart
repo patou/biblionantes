@@ -9,33 +9,33 @@ class SummeryAccount {
   int resvCount;
   int maxLoans;
   int overdueLoans;
-  DateTime subscriptionDate;
+  DateTime? subscriptionDate;
   String sex;
   String telephone;
   String emailAddress;
   String street;
   String city;
   String postalCode;
-  DateTime expiryDate;
+  DateTime? expiryDate;
   bool hasTrapLevel;
 
   SummeryAccount({
-    this.id,
-    this.firstName,
-    this.lastName,
-    this.loanCount,
-    this.maxLoans,
-    this.resvCount,
-    this.overdueLoans,
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+    required this.loanCount,
+    required this.maxLoans,
+    required this.resvCount,
+    required this.overdueLoans,
     this.subscriptionDate,
-    this.sex,
-    this.telephone,
-    this.emailAddress,
-    this.street,
-    this.city,
-    this.postalCode,
+    required this.sex,
+    required this.telephone,
+    required this.emailAddress,
+    required this.street,
+    required this.city,
+    required this.postalCode,
     this.expiryDate,
-    this.hasTrapLevel,
+    required this.hasTrapLevel,
   });
 
   factory SummeryAccount.fromJson(Map<String, dynamic> json) {
@@ -43,10 +43,10 @@ class SummeryAccount {
       id: json['subscriberId'] as String,
       firstName: json['firstName'] as String,
       lastName: json['lastName'] as String,
-      loanCount: int.tryParse(json['loanCount']),
-      resvCount: int.tryParse(json['resvCount']),
-      maxLoans: int.tryParse(json['maxLoans']),
-      overdueLoans: int.tryParse(json['overdueLoans']),
+      loanCount: int.tryParse(json['loanCount']) ?? 0,
+      resvCount: int.tryParse(json['resvCount']) ?? 0,
+      maxLoans: int.tryParse(json['maxLoans']) ?? 0,
+      overdueLoans: int.tryParse(json['overdueLoans']) ?? 0,
       subscriptionDate: DateTime.tryParse(json['subscriptionDate']),
       sex: json['sex'] as String,
       telephone: json['telephone'] as String,
@@ -66,7 +66,7 @@ class AuthentInfo {
   String login;
   String userId;
 
-  AuthentInfo({this.token, this.login, this.userId});
+  AuthentInfo({required this.token, required this.login, required this.userId});
 
   factory AuthentInfo.fromJson(Map<String, dynamic> json) {
     return AuthentInfo(
@@ -85,7 +85,7 @@ class Account {
   String userId;
   String name;
 
-  Account({this.login, this.password, this.userId, this.name});
+  Account({required this.login, required this.password, required this.userId, required this.name});
 
   factory Account.fromSharedPref(String str) {
     var parts = str.split(SEPARATOR);

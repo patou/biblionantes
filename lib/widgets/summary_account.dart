@@ -10,10 +10,10 @@ class SummaryAccountCard extends StatelessWidget {
   final void Function(Account) onDeleteAccount;
 
   SummaryAccountCard({
-    Key key,
-    @required this.account,
-    this.accountRepository,
-    void Function(Account) this.onDeleteAccount,
+    Key? key,
+    required this.account,
+    required this.accountRepository,
+    required void Function(Account) this.onDeleteAccount,
   })  : assert(account != null),
         super(key: key);
 
@@ -25,7 +25,7 @@ class SummaryAccountCard extends StatelessWidget {
       child: Column(
         children: [
           Text(account.name, textAlign: TextAlign.center, textScaleFactor: 1.5),
-          FutureBuilder(
+          FutureBuilder<SummeryAccount>(
               future: accountRepository.loadSummaryAccount(account),
               builder: (_, snapshot) {
                 if (snapshot.hasError) {
@@ -35,12 +35,12 @@ class SummaryAccountCard extends StatelessWidget {
                   );
                 }
 
-                if (!snapshot.hasData) {
+                if (!snapshot.hasData || snapshot.data == null) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
                 }
-                SummeryAccount summary = snapshot.data;
+                SummeryAccount summary = snapshot.requireData;
                 return Column(
                   children: [
                     ListTile(
@@ -55,13 +55,14 @@ class SummaryAccountCard extends StatelessWidget {
                                 "Votre carte est bloqué, rapprochez vous de votre bibliothèque"),
                           )
                         : SizedBox.shrink(),
-                    ListTile(
-                      leading: Icon(Icons.date_range),
-                      title: Text(
-                          "Expire le ${dateFormat.format(summary.expiryDate)}"),
-                      subtitle: Text(
-                          "Depuis le ${dateFormat.format(summary.subscriptionDate)}"),
-                    ),
+                    if (summary.expiryDate != null && summary.subscriptionDate != null)
+                        ListTile(
+                          leading: Icon(Icons.date_range),
+                          title: Text(
+                                "Expire le ${dateFormat.format(summary.expiryDate!)}"),
+                          subtitle: Text(
+                              "Depuis le ${dateFormat.format(summary.subscriptionDate!)}"),
+                        ),
                     ListTile(
                       leading: Icon(Icons.import_contacts),
                       title: Text(

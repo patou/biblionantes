@@ -7,15 +7,14 @@ import 'package:flutter/material.dart';
 class AccountPageStateful extends StatefulWidget {
   final AccountRepository accountRepository;
 
-  AccountPageStateful({@required this.accountRepository})
-      : assert(accountRepository != null);
+  AccountPageStateful({required this.accountRepository});
 
   @override
   _AccountPageStatefulState createState() => _AccountPageStatefulState();
 }
 
 class _AccountPageStatefulState extends State<AccountPageStateful> {
-  List<Account> _accounts;
+  List<Account> _accounts = [];
   bool _isError = false;
   bool _isLoading = true;
 
@@ -83,7 +82,7 @@ class _AccountPageStatefulState extends State<AccountPageStateful> {
       setState(() {
         _isError = true;
         _isLoading = false;
-        _accounts = null;
+        _accounts = [];
       });
     }
   }
@@ -133,7 +132,7 @@ class _AccountPageStatefulState extends State<AccountPageStateful> {
           try {
             await widget.accountRepository.addAccount(name, login, password);
             _loadAccount();
-            _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("La carte $name a bien été ajouté"),));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("La carte $name a bien été ajouté"),));
             print("Carte ajouté " + name);
             return true;
           }

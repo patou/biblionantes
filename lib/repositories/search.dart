@@ -1,7 +1,6 @@
 import 'package:biblionantes/models/book.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-import 'dart:convert';
 
 class FetchDataException implements Exception {
   final _message;
@@ -18,12 +17,12 @@ class FetchDataException implements Exception {
 class SearchRepository {
   final Dio client;
 
-  SearchRepository({@required this.client}) : assert(client != null);
+  SearchRepository({required this.client});
 
-  Future<List<Book>> search(String search) async {
+  Future<List<Book>> search(String search, {int page = 1, int pageSize = 20}) async {
     final response =
     await client.post('search',
-      data: {"query":[search], "queryid":"NONE","includeFacets":false,"pageSize":10,"locale":"fr"});
+      data: {"query":[search], "queryid":"NONE","includeFacets":false,"pageSize":pageSize, "pageNo": page,"locale":"fr"});
     if (response.statusCode != 200) {
       print("error");
       return Future.error(FetchDataException(

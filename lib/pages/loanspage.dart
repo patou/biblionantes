@@ -8,8 +8,7 @@ class LoansPageStateful extends StatelessWidget {
   final AccountRepository accountRepository;
   final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
-  LoansPageStateful({@required this.accountRepository})
-      : assert(accountRepository != null);
+  LoansPageStateful({required this.accountRepository});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +17,7 @@ class LoansPageStateful extends StatelessWidget {
         title: Text('Mes livres empruntés'),
         centerTitle: true,
       ),
-      body: FutureBuilder(
+      body: FutureBuilder<List<LoansBook>>(
         future: accountRepository.loadLoansList(),
         builder: (_, snapshot) {
           if (snapshot.hasError) {
@@ -33,7 +32,7 @@ class LoansPageStateful extends StatelessWidget {
             );
           }
 
-          List<LoansBook> list = snapshot.data;
+          List<LoansBook> list = snapshot.requireData;
           if (list.length == 0) {
             return Center(
               child: Text("Aucun emprunt en cours"),

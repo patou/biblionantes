@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 class BookCard extends StatelessWidget {
   final Book book;
 
-  const BookCard({Key key, @required this.book})
-      : assert(book != null),
-        super(key: key);
+  const BookCard({Key? key, required this.book})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

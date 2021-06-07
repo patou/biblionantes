@@ -1,17 +1,18 @@
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-class LoansBook {
+class LoansBook extends Equatable {
   String id;
   String title;
   String account;
   DateTime returnDate;
 
   LoansBook({
-    @required this.id,
-    @required this.title,
-    this.returnDate,
-    this.account,
+    required this.id,
+    required this.title,
+    required this.returnDate,
+    required this.account,
   }): assert(id != null);
 
   factory LoansBook.fromJson(Map<String, dynamic> json, String account) {
@@ -28,4 +29,7 @@ class LoansBook {
   String toString() {
     return 'LoansBook{id: $id, title: $title}';
   }
+
+  @override
+  List<Object> get props => [id, title, account, returnDate];
 }

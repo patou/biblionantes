@@ -22,17 +22,17 @@ class AccountRepository {
   static String ACCOUNTS_LIST_SHARED_PREF = "bionantes.accounts";
   final Dio client;
 
-  AccountRepository({@required this.client}) : assert(client != null);
+  AccountRepository({required this.client});
   
   Future<void> loadAccounts() async {
     if (accounts == null) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if (prefs.containsKey(ACCOUNTS_LIST_SHARED_PREF)) {
-        accounts = prefs.getStringList(ACCOUNTS_LIST_SHARED_PREF).map((str) =>
+        accounts = prefs.getStringList(ACCOUNTS_LIST_SHARED_PREF)!.map((str) =>
             Account.fromSharedPref(str)).toList();
       }
       else {
-        accounts = List();
+        accounts = [];
       }
     }
   }
@@ -44,7 +44,7 @@ class AccountRepository {
     prefs.setStringList(ACCOUNTS_LIST_SHARED_PREF, saved);
   }
 
-  List<Account> accounts = null;
+  List<Account> accounts = [];
 
   Map<String, String> tokens = Map();
 
@@ -77,7 +77,7 @@ class AccountRepository {
 
   Future<SummeryAccount> loadSummaryAccount(Account account) async {
     print("load ${account.name} ${account.login}");
-    if (!tokens.containsKey(account.login) || !tokens[account.login].isEmpty) {
+    if (!tokens.containsKey(account.login) || tokens[account.login]!.isNotEmpty) {
       print("refresh token ${account.login}");
       await refreshAccountToken(account.login, account.password);
     }
@@ -113,7 +113,7 @@ class AccountRepository {
 
   Future<List<LoansBook>> loadLoansListByAccount(Account account) async {
     print("load ${account.name} ${account.login}");
-    if (!tokens.containsKey(account.login) || !tokens[account.login].isEmpty) {
+    if (!tokens.containsKey(account.login) || tokens[account.login]!.isNotEmpty) {
       print("refresh token ${account.login}");
       await refreshAccountToken(account.login, account.password);
     }

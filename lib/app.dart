@@ -19,7 +19,7 @@ AccountRepository accountRepository = AccountRepository(
 
 /// This is the stateful widget that the main application instantiates.
 class AppWidget extends StatefulWidget {
-  AppWidget({Key key}) : super(key: key) {
+  AppWidget({Key? key}) : super(key: key) {
     dio.interceptors.add(PrettyDioLogger(requestHeader: true,
         requestBody: true,
         responseBody: true,
