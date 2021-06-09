@@ -31,5 +31,5 @@ class LoansBook extends Equatable {
   }
 
   @override
-  List<Object> get props => [id, title, account, returnDate];
+  List<Object?> get props => [id, title, account, returnDate];
 }

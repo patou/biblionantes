@@ -10,7 +10,7 @@ class BookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: 150,
       padding: const EdgeInsets.all(10),
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -25,25 +25,37 @@ class BookCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 100,
+            width: 150,
             child: Image.network(
               book.imageURL,
             ),
           ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(book.title),
-                  Text(book.type),
-                ],
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text.rich(
+                  TextSpan(
+                    text: book.title
+                  ),
+                  overflow: TextOverflow.fade,
+                  maxLines: 5,
+                ),
+                if (book.creators != null)
+                  Text(book.creators!, softWrap: false, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.grey, fontSize: 12),),
+                Spacer(),
+                Text(book.type),
+                if (book.available != null)
+                  available(book.available!)
+              ],
             ),
           )
         ],
       ),
     );
+  }
+
+  Widget available(bool available) {
+    return Text(available ? 'Disponible' : 'Non disponible', style: TextStyle(color: available ? Colors.green : Colors.red),);
   }
 }

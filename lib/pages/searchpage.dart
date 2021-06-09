@@ -1,4 +1,3 @@
-import 'package:biblionantes/models/book.dart';
 import 'package:biblionantes/repositories/search.dart';
 import 'package:biblionantes/search_book/search_book_bloc.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +40,12 @@ class _SearchPageStatefulState extends State<SearchPageStateful> {
           );
         }
 
+        if (state is SearchBookNotFoundState) {
+          return Center(
+            child: Text('Pas de résultats trouvés'),
+          );
+        }
+
         if (state is SearchBookSucessState) {
           if (state.books.isEmpty) {
             return Center(
@@ -51,6 +56,7 @@ class _SearchPageStatefulState extends State<SearchPageStateful> {
               child: ListView.builder(
                 itemCount: state.hasReachedMax ? state.books.length : state.books.length + 1,
                 scrollDirection: Axis.vertical,
+                controller: _scrollController,
                 shrinkWrap: true,
                 itemBuilder: (_, index) {
                   return  index >= state.books.length
@@ -118,7 +124,7 @@ class _SearchPageStatefulState extends State<SearchPageStateful> {
       var state = searchBookBloc.state;
       if (state is SearchBookSucessState) {
         searchBookBloc.add(
-            SearchBookTextSearched(search: state.search));
+            SearchBookLoadNext());
       }
     }
   }
