@@ -34,10 +34,8 @@ class BookCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text.rich(
-                  TextSpan(
-                    text: book.title
-                  ),
+                Text(
+                  book.title,
                   overflow: TextOverflow.fade,
                   maxLines: 5,
                 ),
