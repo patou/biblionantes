@@ -4,23 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:biblionantes/widgets/book_card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SearchPageStateful extends StatefulWidget {
-  final SearchRepository searchRepository;
-
-  SearchPageStateful({required this.searchRepository});
+class SearchList extends StatefulWidget {
+  SearchList();
 
   @override
-  _SearchPageStatefulState createState() => _SearchPageStatefulState();
+  _SearchListState createState() => _SearchListState();
 }
 
-class _SearchPageStatefulState extends State<SearchPageStateful> {
+class _SearchListState extends State<SearchList> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   late SearchBookBloc searchBookBloc;
 
   Widget _displayResultList() {
-    return BlocBuilder(
-      bloc: searchBookBloc,
+    return BlocBuilder<SearchBookBloc, SearchBookState>(
       builder: (context, state) {
         if (state is SearchBookErrorState) {
           return Center(
@@ -77,38 +74,16 @@ class _SearchPageStatefulState extends State<SearchPageStateful> {
 
   }
 
-  Widget _renderSearchField() {
-    return SearchWidget(onSearch: (search) {
-      searchBookBloc.add(SearchBookTextSearched(search: search));
-    }, onClear: () {
-      searchBookBloc.add(SearchBookTextCleared());
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Recherche de livre'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            _renderSearchField(),
-            SizedBox(height: 20),
-            _displayResultList(),
-          ])
-      )
-    );
+    return _displayResultList();
   }
 
   @override
   void initState() {
     super.initState();
-    searchBookBloc = SearchBookBloc(searchRepository: widget.searchRepository);
     _scrollController.addListener(_onScroll);
+    searchBookBloc = context.read<SearchBookBloc>();
   }
 
   @override
@@ -127,55 +102,6 @@ class _SearchPageStatefulState extends State<SearchPageStateful> {
             SearchBookLoadNext());
       }
     }
-  }
-}
-
-class SearchWidget extends StatefulWidget {
-
-  void Function(String) onSearch;
-  void Function() onClear;
-  @override
-  _SearchWidgetState createState() => _SearchWidgetState();
-
-  SearchWidget({Key? key, required this.onSearch, required this.onClear}) : super(key: key);
-}
-
-class _SearchWidgetState extends State<SearchWidget> {
-  final _controller = TextEditingController();
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: _controller,
-      onSubmitted: (search) {
-        widget.onSearch(search);
-      },
-      decoration: InputDecoration(
-        prefixIcon: Icon(Icons.search),
-        suffixIcon: _controller.text.length > 0
-            ? GestureDetector(
-          onTap: () {
-            _controller.clear();
-            widget.onClear();
-          }, // removes the content in the field
-          child: Icon(Icons.clear_rounded),
-        )
-            : null,
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-    _controller.addListener(() {
-      setState(() {});
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
   }
 }
 

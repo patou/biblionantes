@@ -1,53 +1,43 @@
+import 'package:biblionantes/library_card/library_card_bloc.dart';
 import 'package:biblionantes/models/SummeryAccount.dart';
-import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:biblionantes/widgets/add_account_dialog.dart';
 import 'package:biblionantes/widgets/summary_account.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AccountPageStateful extends StatefulWidget {
-  final AccountRepository accountRepository;
-
-  AccountPageStateful({required this.accountRepository});
-
-  @override
-  _AccountPageStatefulState createState() => _AccountPageStatefulState();
-}
-
-class _AccountPageStatefulState extends State<AccountPageStateful> {
-  List<Account> _accounts = [];
-  bool _isError = false;
-  bool _isLoading = true;
-
-  Widget _displayBody() {
-    if (_isError) {
-      return Center(
-        child: Text('An error occurred'),
-      );
-    }
-
-    if (_isLoading) {
+class AccountPageStateful extends StatelessWidget {
+  Widget _displayBody(BuildContext context, AbstractLibraryCardState state) {
+    if (state is InitialLibraryCardState) {
       return Center(
         child: CircularProgressIndicator(),
       );
     }
 
-    if (_accounts.isEmpty) {
-      return Center(
-        child: Text('Ajouter une nouvelle carte avec le bouton ci-dessous'),
+    if (state is LibraryCardStateChange) {
+      if (state.libraryCards.isEmpty) {
+        return Center(
+          child: Text('Ajouter une nouvelle carte avec le bouton ci-dessous'),
+        );
+      }
+
+      return ListView.builder(
+        itemCount: state.libraryCards.length,
+        itemBuilder: (_, index) {
+          return Container(
+            margin: EdgeInsets.only(bottom: 10),
+            child: SummaryAccountCard(account: state.libraryCards[index], onDeleteAccount: (account) {
+              _showConfirmDelete(account, context, context.read());
+            }),
+          );
+        },
       );
     }
-
-    return ListView.builder(
-      itemCount: _accounts.length,
-      itemBuilder: (_, index) {
-        return Container(
-          margin: EdgeInsets.only(bottom: 10),
-          child: SummaryAccountCard(account: _accounts[index], accountRepository: widget.accountRepository, onDeleteAccount: (account) {
-            _showConfirmDelete(account);
-          }),
+    else {
+      return Center(
+          child: Text('An error occurred'),
         );
-      },
-    );
+
+    }
   }
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
@@ -62,33 +52,17 @@ class _AccountPageStatefulState extends State<AccountPageStateful> {
         icon: Icon(Icons.add),
         backgroundColor: Colors.blueAccent,
         label: Text("Ajouter une carte"),
-        onPressed: () {
-          _showDialog();
-        },
+        onPressed: () => _showDialog(context, context.read()),
       ),
-      body: _displayBody(),
+      body: BlocBuilder<LibraryCardBloc, AbstractLibraryCardState>(
+        buildWhen: (prev, next) => next is LibraryCardState,
+        builder: _displayBody,
+      )
     );
   }
 
-  void _loadAccount() async {
-    try {
-      final accounts = await widget.accountRepository.getAccounts();
-      setState(() {
-        _isError = false;
-        _isLoading = false;
-        _accounts = accounts;
-      });
-    } catch (e) {
-      setState(() {
-        _isError = true;
-        _isLoading = false;
-        _accounts = [];
-      });
-    }
-  }
 
-
-  Future<void> _showConfirmDelete(Account account) async {
+  Future<void> _showConfirmDelete(LibraryCard account, BuildContext context, LibraryCardBloc libraryCardBloc) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -104,9 +78,8 @@ class _AccountPageStatefulState extends State<AccountPageStateful> {
           actions: <Widget>[
             TextButton(
               child: Text('Oui'),
-              onPressed: () async {
-                await widget.accountRepository.deleteAccount(account);
-                _loadAccount();
+              onPressed: () {
+                libraryCardBloc.add(RemoveLibraryCardEvent(account));
                 Navigator.of(context).pop();
               },
             ),
@@ -122,32 +95,17 @@ class _AccountPageStatefulState extends State<AccountPageStateful> {
     );
   }
 
-  void _showDialog() {
+  void _showDialog(BuildContext context, LibraryCardBloc libraryCardBloc) {
     // flutter defined function
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // return object of type Dialog
-        return AddAccountDialog(onAddAccount: (name, login, password) async {
-          try {
-            await widget.accountRepository.addAccount(name, login, password);
-            _loadAccount();
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("La carte $name a bien été ajouté"),));
-            print("Carte ajouté " + name);
-            return true;
-          }
-          catch (e) {
-            print(e.toString());
-            return Future.error(e);
-          }
-        });
+        return BlocProvider.value(
+          value: libraryCardBloc,
+          child: AddAccountDialog(),
+        );
       },
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadAccount();
   }
 }

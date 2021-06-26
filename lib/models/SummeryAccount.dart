@@ -78,18 +78,18 @@ class AuthentInfo {
 }
 
 @immutable
-class Account {
+class LibraryCard {
   static String SEPARATOR = "\x29";
   String login;
   String password;
   String userId;
   String name;
 
-  Account({required this.login, required this.password, required this.userId, required this.name});
+  LibraryCard({required this.login, required this.password, required this.userId, required this.name});
 
-  factory Account.fromSharedPref(String str) {
+  factory LibraryCard.fromSharedPref(String str) {
     var parts = str.split(SEPARATOR);
-    return Account(
+    return LibraryCard(
       login: parts[0],
       password: parts[1],
       userId: parts[2],

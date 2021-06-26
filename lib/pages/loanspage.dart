@@ -3,12 +3,12 @@ import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoansPageStateful extends StatelessWidget {
-  final AccountRepository accountRepository;
   final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
-  LoansPageStateful({required this.accountRepository});
+  LoansPageStateful();
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class LoansPageStateful extends StatelessWidget {
         centerTitle: true,
       ),
       body: FutureBuilder<List<LoansBook>>(
-        future: accountRepository.loadLoansList(),
+        future: context.read<LibraryCardRepository>().loadLoansList(),
         builder: (_, snapshot) {
           if (snapshot.hasError) {
             return Center(

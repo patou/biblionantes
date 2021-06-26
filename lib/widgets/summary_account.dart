@@ -2,18 +2,17 @@ import 'package:biblionantes/models/SummeryAccount.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SummaryAccountCard extends StatelessWidget {
-  final Account account;
-  final AccountRepository accountRepository;
+  final LibraryCard account;
   final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
-  final void Function(Account) onDeleteAccount;
+  final void Function(LibraryCard) onDeleteAccount;
 
   SummaryAccountCard({
     Key? key,
     required this.account,
-    required this.accountRepository,
-    required void Function(Account) this.onDeleteAccount,
+    required void Function(LibraryCard) this.onDeleteAccount,
   })  : assert(account != null),
         super(key: key);
 
@@ -26,7 +25,7 @@ class SummaryAccountCard extends StatelessWidget {
         children: [
           Text(account.name, textAlign: TextAlign.center, textScaleFactor: 1.5),
           FutureBuilder<SummeryAccount>(
-              future: accountRepository.loadSummaryAccount(account),
+              future: context.read<LibraryCardRepository>().loadSummaryAccount(account),
               builder: (_, snapshot) {
                 if (snapshot.hasError) {
                   print(snapshot.error);

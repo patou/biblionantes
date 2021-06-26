@@ -2,7 +2,7 @@ import 'package:biblionantes/models/SummeryAccount.dart';
 import 'package:biblionantes/models/loansbook.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
-import 'dart:convert';
+import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,45 +18,46 @@ class AuthenticateException implements Exception {
 }
 
 @immutable
-class AccountRepository {
+class LibraryCardRepository {
   static String ACCOUNTS_LIST_SHARED_PREF = "bionantes.accounts";
   final Dio client;
+  final _controller = StreamController<List<LibraryCard>>();
 
-  AccountRepository({required this.client});
+  LibraryCardRepository({required this.client});
   
-  Future<void> loadAccounts() async {
-    if (accounts == null) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      if (prefs.containsKey(ACCOUNTS_LIST_SHARED_PREF)) {
-        accounts = prefs.getStringList(ACCOUNTS_LIST_SHARED_PREF)!.map((str) =>
-            Account.fromSharedPref(str)).toList();
-      }
-      else {
-        accounts = [];
-      }
+  Future<void>  loadLibraryCards() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey(ACCOUNTS_LIST_SHARED_PREF)) {
+      accounts = prefs.getStringList(ACCOUNTS_LIST_SHARED_PREF)!.map((str) =>
+          LibraryCard.fromSharedPref(str)).toList();
     }
+    else {
+      accounts = [];
+    }
+    _controller.add(accounts);
   }
 
-  Future<void> saveAccounts() async {
+  Future<void> saveLibraryCards() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> saved = accounts.map<String>((e) => e.toSharedPref()).toList(growable: false);
     print(saved.join(","));
     prefs.setStringList(ACCOUNTS_LIST_SHARED_PREF, saved);
   }
 
-  List<Account> accounts = [];
+  List<LibraryCard> accounts = [];
 
   Map<String, String> tokens = Map();
 
-  Future<List<Account>> getAccounts() async {
-    await loadAccounts();
-    return this.accounts;
+  Stream<List<LibraryCard>> getLibraryCards() async* {
+    await loadLibraryCards();
+    yield* this._controller.stream;
   }
 
-  Future<AuthentInfo> addAccount(String name, String login, String pass) async {
+  Future<AuthentInfo> addLibraryCards(String name, String login, String pass) async {
     AuthentInfo authentInfo = await refreshAccountToken(login, pass);
-    this.accounts.add(Account(login: login, password: pass, userId: authentInfo.userId, name: name));
-    await saveAccounts();
+    this.accounts.add(LibraryCard(login: login, password: pass, userId: authentInfo.userId, name: name));
+    await saveLibraryCards();
+    _controller.add(accounts);
     return authentInfo;
   }
 
@@ -75,11 +76,9 @@ class AccountRepository {
     return authentInfo;
   }
 
-  Future<SummeryAccount> loadSummaryAccount(Account account) async {
-    print("load ${account.name} ${account.login}");
-    if (!tokens.containsKey(account.login) || tokens[account.login]!.isNotEmpty) {
-      print("refresh token ${account.login}");
-      await refreshAccountToken(account.login, account.password);
+  Future<SummeryAccount> loadSummaryAccount(LibraryCard libraryCard) async {
+    if (!tokens.containsKey(libraryCard.login) || tokens[libraryCard.login]!.isNotEmpty) {
+      await refreshAccountToken(libraryCard.login, libraryCard.password);
     }
     final response =
     await client.get('accountSummary',
@@ -88,22 +87,21 @@ class AccountRepository {
         },
         options: Options(
           headers:{
-            'Authorization': 'Bearer ${tokens[account.login]}'
+            'Authorization': 'Bearer ${tokens[libraryCard.login]}'
           })
     );
     if (response.statusCode != 200) {
-      tokens.remove(account.userId);
-      print(response);
+      tokens.remove(libraryCard.userId);
       return Future.error(AuthenticateException(
           'error occurred when authenticate: ${response.statusCode}'));
     }
-    print(response.data);
     return SummeryAccount.fromJson(response.data);
   }
 
-  Future<void> deleteAccount(Account account) async {
-    this.accounts.remove(account);
-    await saveAccounts();
+  Future<void> removeLibraryCard(LibraryCard libraryCard) async {
+    this.accounts.remove(libraryCard);
+    await saveLibraryCards();
+    _controller.add(accounts);
   }
 
   Future<List<LoansBook>> loadLoansList() async {
@@ -111,7 +109,7 @@ class AccountRepository {
     return results.expand((element) => element).toList();
   }
 
-  Future<List<LoansBook>> loadLoansListByAccount(Account account) async {
+  Future<List<LoansBook>> loadLoansListByAccount(LibraryCard account) async {
     print("load ${account.name} ${account.login}");
     if (!tokens.containsKey(account.login) || tokens[account.login]!.isNotEmpty) {
       print("refresh token ${account.login}");
@@ -139,4 +137,6 @@ class AccountRepository {
     var list = response.data['items'].map<LoansBook>((json) => LoansBook.fromJson(json, account.name)).toList();
     return list;
   }
+
+  void dispose() => _controller.close();
 }
