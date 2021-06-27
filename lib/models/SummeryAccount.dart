@@ -72,7 +72,7 @@ class AuthentInfo {
     return AuthentInfo(
       login: json['login'] as String,
       token: json['token'] as String,
-      userId: json['userId'] as String,
+      userId: json['userid'] as String,
     );
   }
 }

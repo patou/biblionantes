@@ -50,7 +50,9 @@ class LibraryCardBloc extends Bloc<LibraryCardEvent, AbstractLibraryCardState> {
       await accountRepository.addLibraryCards(event.name, event.login, event.pass);
       yield AddLibraryCardStateSuccess();
     }
-    catch (e) {
+    catch (e, stack) {
+      print(e);
+      print(stack);
       yield AddLibraryCardStateError(e.toString());
     }
   }

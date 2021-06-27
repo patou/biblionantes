@@ -1,14 +1,8 @@
-import 'package:biblionantes/library_card/library_card_bloc.dart';
+import 'package:biblionantes/bloc/library_card/library_card_bloc.dart';
 import 'package:biblionantes/pages/accountpage.dart';
 import 'package:biblionantes/pages/loanspage.dart';
 import 'package:biblionantes/pages/search_page.dart';
-import 'package:biblionantes/repositories/account_repository.dart';
-import 'package:biblionantes/repositories/search.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:flutter/material.dart';
-import 'pages/search_list.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class AppWidget extends StatefulWidget {

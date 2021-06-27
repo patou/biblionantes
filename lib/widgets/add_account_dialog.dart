@@ -1,4 +1,4 @@
-import 'package:biblionantes/library_card/library_card_bloc.dart';
+import 'package:biblionantes/bloc/library_card/library_card_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 

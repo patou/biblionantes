@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'app.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:biblionantes/library_card/library_card_bloc.dart';
+import 'package:biblionantes/bloc/library_card/library_card_bloc.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:biblionantes/repositories/search.dart';
 import 'package:dio/dio.dart';

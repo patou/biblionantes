@@ -1,5 +1,5 @@
 import 'package:biblionantes/pages/search_list.dart';
-import 'package:biblionantes/search_book/search_book_bloc.dart';
+import 'package:biblionantes/bloc/search_book/search_book_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

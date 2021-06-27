@@ -1,4 +1,4 @@
-import 'package:biblionantes/library_card/library_card_bloc.dart';
+import 'package:biblionantes/bloc/library_card/library_card_bloc.dart';
 import 'package:biblionantes/models/SummeryAccount.dart';
 import 'package:biblionantes/widgets/add_account_dialog.dart';
 import 'package:biblionantes/widgets/summary_account.dart';
