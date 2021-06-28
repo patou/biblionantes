@@ -8,8 +8,9 @@ import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
 import 'app.dart' as _i3;
-import 'pages/accountpage.dart' as _i6;
-import 'pages/loanspage.dart' as _i5;
+import 'pages/accountpage.dart' as _i7;
+import 'pages/detail_page.dart' as _i5;
+import 'pages/loanspage.dart' as _i6;
 import 'pages/search_page.dart' as _i4;
 
 class AppRouter extends _i1.RootStackRouter {
@@ -45,15 +46,23 @@ class AppRouter extends _i1.RootStackRouter {
         builder: (_) {
           return _i4.SearchPage();
         }),
+    DetailRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final pathParams = data.pathParams;
+          final args = data.argsAs<DetailRouteArgs>(
+              orElse: () => DetailRouteArgs(id: pathParams.getString('id')));
+          return _i5.DetailPage(id: args.id);
+        }),
     LoansRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i5.LoansPage();
+          return _i6.LoansPage();
         }),
     AccountRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return _i6.AccountPage();
+          return _i7.AccountPage();
         })
   };
 
@@ -62,11 +71,13 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(AppWidget.name, path: '/', children: [
           _i1.RouteConfig(SearchRouter.name, path: 'search', children: [
             _i1.RouteConfig(SearchRoute.name, path: ''),
+            _i1.RouteConfig(DetailRoute.name, path: ':id'),
             _i1.RouteConfig('*#redirect',
                 path: '*', redirectTo: '', fullMatch: true)
           ]),
           _i1.RouteConfig(LoansRouter.name, path: 'loans', children: [
             _i1.RouteConfig(LoansRoute.name, path: ''),
+            _i1.RouteConfig(DetailRoute.name, path: ':id'),
             _i1.RouteConfig('*#redirect',
                 path: '*', redirectTo: '', fullMatch: true)
           ]),
@@ -120,6 +131,22 @@ class SearchRoute extends _i1.PageRouteInfo {
   const SearchRoute() : super(name, path: '');
 
   static const String name = 'SearchRoute';
+}
+
+class DetailRoute extends _i1.PageRouteInfo<DetailRouteArgs> {
+  DetailRoute({required String id})
+      : super(name,
+            path: ':id',
+            args: DetailRouteArgs(id: id),
+            rawPathParams: {'id': id});
+
+  static const String name = 'DetailRoute';
+}
+
+class DetailRouteArgs {
+  const DetailRouteArgs({required this.id});
+
+  final String id;
 }
 
 class LoansRoute extends _i1.PageRouteInfo {

@@ -1,7 +1,9 @@
 import 'package:biblionantes/bloc/search_book/search_book_bloc.dart';
+import 'package:biblionantes/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:biblionantes/widgets/book_card.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:auto_route/auto_route.dart';
 
 class SearchList extends StatefulWidget {
   SearchList();
@@ -59,7 +61,11 @@ class _SearchListState extends State<SearchList> {
                       ? BottomLoader()
                       : Container(
                     margin: EdgeInsets.only(bottom: 10),
-                    child: BookCard(book: state.books[index], widget: available(state.books[index].available),),
+                    child: GestureDetector(
+                        onTap: () => context.pushRoute(DetailRoute(
+                          id: state.books[index].id,
+                        )),
+                        child: BookCard(book: state.books[index], widget: available(state.books[index].available),)),
                   );
                 },
               )

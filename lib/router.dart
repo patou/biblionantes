@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:biblionantes/pages/accountpage.dart';
+import 'package:biblionantes/pages/detail_page.dart';
 import 'package:biblionantes/pages/loanspage.dart';
 import 'package:biblionantes/pages/search_page.dart';
 
@@ -18,6 +19,7 @@ import 'app.dart';
           page: EmptyRouterPage,
           children: [
             AutoRoute(path: '', page: SearchPage),
+            AutoRoute(path: ':id', page: DetailPage),
             RedirectRoute(path: '*', redirectTo: ''),
           ],
         ),
@@ -27,6 +29,7 @@ import 'app.dart';
           page: EmptyRouterPage,
           children: [
             AutoRoute(path: '', page: LoansPage),
+            AutoRoute(path: ':id', page: DetailPage),
             RedirectRoute(path: '*', redirectTo: ''),
           ],
         ),

@@ -1,24 +1,21 @@
 import 'package:biblionantes/bloc/library_card/library_card_bloc.dart';
 import 'package:biblionantes/bloc/loans/loans_bloc.dart';
-import 'package:biblionantes/models/SummeryAccount.dart';
-import 'package:biblionantes/models/SummeryAccount.dart';
 import 'package:biblionantes/models/loansbook.dart';
-import 'package:biblionantes/repositories/account_repository.dart';
+import 'package:biblionantes/router.gr.dart';
 import 'package:biblionantes/widgets/book_card.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:auto_route/auto_route.dart';
 
 class LoansPage extends StatelessWidget {
-
   LoansPage();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-      LoansBloc(accountRepository: context.read()),
+      create: (context) => LoansBloc(accountRepository: context.read()),
       child: BlocListener<LibraryCardBloc, AbstractLibraryCardState>(
         listener: (context, state) {
           if (state is LibraryCardChangedEvent) {
@@ -47,8 +44,7 @@ class LoansPage extends StatelessWidget {
                     elements: list,
                     groupBy: (element) => element.account,
                     useStickyGroupSeparators: true,
-                    groupSeparatorBuilder: (String value) =>
-                        Padding(
+                    groupSeparatorBuilder: (String value) => Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             value,
@@ -57,7 +53,14 @@ class LoansPage extends StatelessWidget {
                           ),
                         ),
                     itemBuilder: (c, element) {
-                      return BookCard(book: element, widget: LoansReturn(loansBook: element),);
+                      return GestureDetector(
+                          onTap: () => context.pushRoute(DetailRoute(
+                                id: element.id,
+                              )),
+                          child: BookCard(
+                            book: element,
+                            widget: LoansReturn(loansBook: element),
+                          ));
                     });
               } else {
                 return Center(

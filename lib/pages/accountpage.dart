@@ -21,6 +21,7 @@ class AccountPage extends StatelessWidget {
       }
 
       return ListView.builder(
+        padding: EdgeInsets.only(top: 20, bottom: 50),
         itemCount: state.libraryCards.length,
         itemBuilder: (_, index) {
           return Container(
