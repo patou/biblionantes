@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoansPageStateful extends StatelessWidget {
+class LoansPage extends StatelessWidget {
 
-  LoansPageStateful();
+  LoansPage();
 
   @override
   Widget build(BuildContext context) {

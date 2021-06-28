@@ -5,7 +5,7 @@ import 'package:biblionantes/widgets/summary_account.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AccountPageStateful extends StatelessWidget {
+class AccountPage extends StatelessWidget {
   Widget _displayBody(BuildContext context, AbstractLibraryCardState state) {
     if (state is InitialLibraryCardState) {
       return Center(
