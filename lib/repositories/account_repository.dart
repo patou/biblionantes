@@ -114,7 +114,6 @@ class LibraryCardRepository {
   }
 
   Future<List<LoansBook>> loadLoansList() async {
-    await loadLibraryCards();
     var results = await Future.wait(accounts.map((account) { return this.loadLoansListByAccount(account); }));
     return results.expand((element) => element).toList();
   }
