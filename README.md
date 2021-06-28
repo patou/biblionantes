@@ -2,15 +2,13 @@
 
 Bibliothèque de Nantes
 
+Application permettant de gérer sur son mobile son compte de bibliothèque à la bibliothèque municipale de Nantes.
+
+- Recherche de livre dans le catalogue de la bibliothèque
+- Ajouter l'enssemble des cartes de bibliothèques de la famille
+- Voir la liste des documents qui ont été emprunté et savoir quand on doit les rendre.
+
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Utiliser Android Studio, et lancer l'application en mode Android ou IOS.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
