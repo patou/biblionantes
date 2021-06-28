@@ -59,7 +59,7 @@ class _SearchListState extends State<SearchList> {
                       ? BottomLoader()
                       : Container(
                     margin: EdgeInsets.only(bottom: 10),
-                    child: BookCard(book: state.books[index]),
+                    child: BookCard(book: state.books[index], widget: available(state.books[index].available),),
                   );
                 },
               )
@@ -71,6 +71,12 @@ class _SearchListState extends State<SearchList> {
       },
     );
 
+  }
+
+  Widget? available(bool? available) {
+    if (available != null) {
+      return Text(available ? 'Disponible' : 'Non disponible', style: TextStyle(color: available ? Colors.green : Colors.red),);
+    }
   }
 
   @override

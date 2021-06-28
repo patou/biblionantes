@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class BookCard extends StatelessWidget {
   final Book book;
+  final Widget? widget;
 
-  const BookCard({Key? key, required this.book})
+  const BookCard({Key? key, required this.book, this.widget})
       : super(key: key);
 
   @override
@@ -26,9 +27,9 @@ class BookCard extends StatelessWidget {
         children: [
           Container(
             width: 150,
-            child: Image.network(
-              book.imageURL,
-            ),
+            child: book.imageURL != null ? Image.network(
+              book.imageURL!,
+            ) : Icon(Icons.book),
           ),
           Expanded(
             child: Column(
@@ -36,24 +37,21 @@ class BookCard extends StatelessWidget {
               children: [
                 Text(
                   book.title,
-                  overflow: TextOverflow.fade,
-                  maxLines: 5,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
                 ),
                 if (book.creators != null)
-                  Text(book.creators!, softWrap: false, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.grey, fontSize: 12),),
+                  Text(book.creators!, softWrap: false, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.grey, fontSize: 12, ),),
                 Spacer(),
-                Text(book.type),
-                if (book.available != null)
-                  available(book.available!)
+                if (book.type != null)
+                  Text(book.type!, textAlign: TextAlign.right,),
+                if (widget != null)
+                  widget!,
               ],
             ),
           )
         ],
       ),
     );
-  }
-
-  Widget available(bool available) {
-    return Text(available ? 'Disponible' : 'Non disponible', style: TextStyle(color: available ? Colors.green : Colors.red),);
   }
 }

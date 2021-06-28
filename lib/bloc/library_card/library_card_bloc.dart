@@ -22,7 +22,7 @@ class LibraryCardBloc extends Bloc<LibraryCardEvent, AbstractLibraryCardState> {
   Stream<AbstractLibraryCardState> mapEventToState(LibraryCardEvent event) async* {
     if (event is LoadLibraryCardEvent) {
       print("load library card");
-      accountRepository.loadLibraryCards();
+      await accountRepository.loadLibraryCards();
     }
     else if (event is LibraryCardChangedEvent) {
       yield LibraryCardStateChange(event.libraryCards);

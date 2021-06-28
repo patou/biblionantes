@@ -1,4 +1,5 @@
 import 'package:biblionantes/models/SummeryAccount.dart';
+import 'package:biblionantes/models/book.dart';
 import 'package:biblionantes/models/loansbook.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
@@ -47,6 +48,7 @@ class LibraryCardRepository {
   List<LibraryCard> accounts = [];
 
   Map<String, String> tokens = Map();
+  String? lastToken = null;
 
   Stream<List<LibraryCard>> getLibraryCards() async* {
     await loadLibraryCards();
@@ -72,8 +74,15 @@ class LibraryCardRepository {
           'error occurred when authenticate: ${response.statusCode}'));
     }
     AuthentInfo authentInfo = AuthentInfo.fromJson(response.data);
+    lastToken = authentInfo.token;
     tokens[authentInfo.login] = authentInfo.token;
     return authentInfo;
+  }
+
+  Future<void> refreshTokens() async {
+    if (lastToken == null) {
+      await Future.any(accounts.map((accounts) => refreshAccountToken(accounts.login, accounts.password)));
+    }
   }
 
   Future<SummeryAccount> loadSummaryAccount(LibraryCard libraryCard) async {
@@ -136,6 +145,31 @@ class LibraryCardRepository {
     }
     var list = response.data['items'].map<LoansBook>((json) => LoansBook.fromJson(json, account.name)).toList();
     return list;
+  }
+
+
+  Future<List<LoansBook>> resolveBook(List<LoansBook> books) async {
+    await refreshTokens();
+    final ids = books.map((e) => e.seqNo).join(",");
+    final response =
+    await client.post('resolveBySeqNo',
+        data: {
+          "locale": "fr",
+          "ids": ids,
+        },
+        options: Options(contentType: Headers.formUrlEncodedContentType, headers:{
+          // Le tocken attend le token d'authentification plus un autre ID, qui ne semble pas utilisé.
+          'X-InMedia-Authorization': 'Bearer ${lastToken} 3'
+        }));
+    if (response.statusCode != 200) {
+      print("error");
+      return books;
+    }
+    Map<String, Book> data = Map.fromIterable(response.data['resultSet'].map<Book>((json) => Book.fromJson(json)).toList(), key: (book) => book.id);
+    return books.map((loadBook) {
+      Book? book = data[loadBook.id];
+      return book != null ? loadBook.copyFromBook(book) : loadBook;
+    }).toList();
   }
 
   void dispose() => _controller.close();

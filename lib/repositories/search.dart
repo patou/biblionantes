@@ -1,4 +1,5 @@
 import 'package:biblionantes/models/book.dart';
+import 'package:biblionantes/models/loansbook.dart';
 import 'package:dio/dio.dart';
 import 'package:meta/meta.dart';
 
