@@ -50,4 +50,31 @@ class SearchRepository {
       return book.copyWith(available: available);
     }).toList();
   }
+
+  Future<Book> detail(String id) async {
+    final response =
+    await client.get('notice',
+        queryParameters: {
+          'id': id
+        });
+    if (response.statusCode != 200) {
+      print("error");
+      return Future.error(FetchDataException(
+          'error occurred when search books: {$response.statusCode}'));
+    }
+    Map<String, Map<String, dynamic>> summary = Map.fromIterable(response.data['summary'], key: (json) => json['name']);
+    var book = Book(
+        id: id,
+        title: summary['title']?['value'],
+        type: summary['zmatIndex']?['value'],
+        localNumber: summary['LocalNumber']?['value'],
+        creators: summary['meta.creator']?['value'],
+        imageURL: 'https://catalogue-bm.nantes.fr${summary['imageSource_128']?['value']}'
+    );
+    return book;
+  }
+
+  Map<String, dynamic> find(List<Map<String, dynamic>> list, String name) {
+    return list.firstWhere((element) => element['name'] == name);
+  }
 }

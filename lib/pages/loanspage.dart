@@ -14,61 +14,57 @@ class LoansPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LoansBloc(accountRepository: context.read()),
-      child: BlocListener<LibraryCardBloc, AbstractLibraryCardState>(
-        listener: (context, state) {
-          if (state is LibraryCardChangedEvent) {
-            context.read<LoansBloc>().add(LoadLoansEvent());
-          }
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('Mes livres empruntés'),
-            centerTitle: true,
-          ),
-          body: BlocBuilder<LoansBloc, LoansState>(
-            builder: (_, state) {
-              if (state is LoansInProgress) {
+    print("build loanspage");
+    final event = LoansBloc(accountRepository: context.read())
+      ..add(LoadLoansEvent());
+    return BlocProvider.value(
+      value: event,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Mes livres empruntés'),
+          centerTitle: true,
+        ),
+        body: BlocBuilder<LoansBloc, LoansState>(
+          builder: (_, state) {
+            if (state is LoansInProgress) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is LoansList) {
+              List<LoansBook> list = state.list;
+              if (list.length == 0) {
                 return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (state is LoansList) {
-                List<LoansBook> list = state.list;
-                if (list.length == 0) {
-                  return Center(
-                    child: Text("Aucun emprunt en cours"),
-                  );
-                }
-                return GroupedListView<LoansBook, String>(
-                    elements: list,
-                    groupBy: (element) => element.account,
-                    useStickyGroupSeparators: true,
-                    groupSeparatorBuilder: (String value) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            value,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                    itemBuilder: (c, element) {
-                      return GestureDetector(
-                          onTap: () => context.pushRoute(DetailRoute(
-                                id: element.id,
-                              )),
-                          child: BookCard(
-                            book: element,
-                            widget: LoansReturn(loansBook: element),
-                          ));
-                    });
-              } else {
-                return Center(
-                  child: Text('An error occurred'),
+                  child: Text("Aucun emprunt en cours"),
                 );
               }
-            },
-          ),
+              return GroupedListView<LoansBook, String>(
+                  elements: list,
+                  groupBy: (element) => element.account,
+                  useStickyGroupSeparators: true,
+                  groupSeparatorBuilder: (String value) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          value,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                  itemBuilder: (c, element) {
+                    return GestureDetector(
+                        onTap: () => context.pushRoute(DetailRoute(
+                              id: element.id,
+                            )),
+                        child: BookCard(
+                          book: element,
+                          widget: LoansReturn(loansBook: element),
+                        ));
+                  });
+            } else {
+              return Center(
+                child: Text('An error occurred'),
+              );
+            }
+          },
         ),
       ),
     );
