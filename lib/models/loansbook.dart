@@ -18,11 +18,13 @@ class LoansBook extends Book {
     String? creators,
     String? type,
     String? imageURL,
+    String? ark,
   })  : super(
           id: id ?? toId(seqNo),
           title: title,
           creators: creators,
           localNumber: localNumber,
+          ark: ark,
           type: type,
           imageURL: imageURL,
         );
@@ -46,6 +48,7 @@ class LoansBook extends Book {
     String? type,
     String? imageURL,
     String? creators,
+    String? ark,
     bool? available,
   }) {
     return LoansBook(
@@ -58,6 +61,7 @@ class LoansBook extends Book {
       type: type ?? this.type,
       imageURL: imageURL ?? this.imageURL,
       creators: creators ?? this.creators,
+      ark: ark ?? this.ark,
     );
   }
 

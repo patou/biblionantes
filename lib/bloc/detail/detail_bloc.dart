@@ -19,8 +19,13 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
   ) async* {
     if (event is  LoadDetailEvent) {
       yield DetailInProgress();
-      Book book = await this.searchRepository.detail(event.id);
-      yield DetailSuccess(book: book);
+      BookDetail detail = await this.searchRepository.detail(event.id);
+      yield DetailSuccess(detail: detail);
+      print('before stock');
+      var stock = await this.searchRepository.stock(event.id);
+      print('after stock');
+      print(stock);
+      yield DetailSuccess(detail: detail.copyWith(stock: stock));
     }
   }
 }

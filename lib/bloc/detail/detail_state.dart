@@ -14,11 +14,14 @@ class DetailInProgress extends DetailState {
 }
 
 class DetailSuccess extends DetailState {
-  Book book;
+  BookDetail detail;
 
-  DetailSuccess({required this.book});
+  DetailSuccess({required this.detail});
 
-  DetailSuccess copyWith({Book? book}) => DetailSuccess(book: book ?? this.book);
+  DetailSuccess copyWith({BookDetail? detail}) => DetailSuccess(detail: detail ?? this.detail);
+
+  @override
+  List<Object?> get props => [detail];
 }
 
 class DetailError extends DetailState {

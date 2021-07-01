@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -9,6 +10,7 @@ class Book extends Equatable {
   String? type;
   String? creators;
   String? imageURL;
+  String? ark;
   bool? available;
 
   Book({
@@ -19,6 +21,7 @@ class Book extends Equatable {
     this.imageURL,
     this.creators,
     this.available,
+    this.ark,
   }): assert(id != null);
 
   factory Book.fromJson(Map<String, dynamic> json) {
@@ -40,6 +43,7 @@ class Book extends Equatable {
     String? type,
     String? imageURL,
     String? creators,
+    String? ark,
     bool? available,
   }) {
     return Book(id: id ?? this.id,
@@ -48,6 +52,7 @@ class Book extends Equatable {
         type: type ?? this.type,
         imageURL: imageURL ?? this.imageURL,
         creators: creators ?? this.creators,
+        ark: ark ?? this.ark,
         available: available ?? this.available,
     );
 
@@ -65,4 +70,66 @@ class Book extends Equatable {
 
   @override
   List<Object?> get props => [id, localNumber, title, type, creators, imageURL, available];
+}
+
+@immutable
+class Detail extends Equatable {
+  final String display;
+  final String value;
+  final IconData? icon;
+
+
+  Detail({required this.display, required this.value, this.icon});
+
+  @override
+  List<Object?> get props => [display, value, icon];
+}
+
+@immutable
+class Stock extends Equatable {
+  String branch;
+  String subloca;
+  String category;
+  String collection;
+  String callnumber;
+  String status;
+  DateTime? duedate;
+
+
+  Stock({
+    required  this.branch,
+    required  this.subloca,
+    required  this.category,
+    required  this.collection,
+    required  this.callnumber,
+    required  this.status,
+    this.duedate,
+  });
+
+  @override
+  List<Object?> get props => [branch, subloca, category, collection, callnumber, status, duedate];
+}
+
+@immutable
+class BookDetail extends Equatable {
+  Book book;
+  List<Detail> details;
+  List<Stock> stock;
+
+  BookDetail({required this.book, this.details = const [], this.stock = const []});
+
+  BookDetail copyWith({
+    Book? book,
+    List<Detail>? details,
+    List<Stock>? stock,
+  }) {
+    return BookDetail(
+        book: book ?? this.book,
+        details: [...this.details, ...(details ??[])],
+        stock: stock ?? this.stock,
+    );
+  }
+
+  @override
+  List<Object?> get props => [book, details, stock];
 }

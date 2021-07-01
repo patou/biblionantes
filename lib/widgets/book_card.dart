@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class BookCard extends StatelessWidget {
   final Book book;
   final Widget? widget;
+  final bool useBoxShadow;
 
-  const BookCard({Key? key, required this.book, this.widget})
+  const BookCard({Key? key, required this.book, this.widget, this.useBoxShadow = true})
       : super(key: key);
 
   @override
@@ -13,14 +14,11 @@ class BookCard extends StatelessWidget {
     return Container(
       height: 150,
       padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            offset: const Offset(0.0, 1.0),
-            blurRadius: 6.0,
-          ),
+          if (useBoxShadow == true)
+            BoxShadow(color: Colors.grey, offset: const Offset(0.0, 1.0), blurRadius: 6.0),
         ],
       ),
       child: Row(

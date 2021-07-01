@@ -149,6 +149,8 @@ class LibraryCardRepository {
 
 
   Future<List<LoansBook>> resolveBook(List<LoansBook> books) async {
+    if (books == null || books.isEmpty)
+      return [];
     await refreshTokens();
     final ids = books.map((e) => e.seqNo).join(",");
     final response =
@@ -161,7 +163,7 @@ class LibraryCardRepository {
           // Le tocken attend le token d'authentification plus un autre ID, qui ne semble pas utilisé.
           'X-InMedia-Authorization': 'Bearer ${lastToken} 3'
         }));
-    if (response.statusCode != 200) {
+    if (response.statusCode != 200 || response.data['resultSet'] == null) {
       print("error");
       return books;
     }
