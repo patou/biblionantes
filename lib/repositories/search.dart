@@ -121,8 +121,10 @@ class SearchRepository {
                   category: item['data']['category_desc'] ?? "",
                   collection: item['data']['collection_desc'] ?? "",
                   status: item['data']['stat_desc'] ?? "",
+                  stat: item['data']['stat'] ?? "",
+                  isReserved: item['data']?['isReserved'] == "true",
                   callnumber: item['data']['callnumber'] ?? "",
-                  duedate: DateTime.tryParse(item['data']['callnumber']),
+                  duedate: DateTime.tryParse(item['data']['dueDate'] ?? ""),
                 ));
             })
         );

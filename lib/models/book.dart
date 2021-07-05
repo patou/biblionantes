@@ -93,21 +93,25 @@ class Stock extends Equatable {
   String collection;
   String callnumber;
   String status;
+  String stat;
+  bool isReserved;
   DateTime? duedate;
 
 
   Stock({
-    required  this.branch,
-    required  this.subloca,
-    required  this.category,
-    required  this.collection,
-    required  this.callnumber,
-    required  this.status,
+    required this.branch,
+    required this.subloca,
+    required this.category,
+    required this.collection,
+    required this.callnumber,
+    required this.status,
+    required this.stat,
+    required this.isReserved,
     this.duedate,
   });
 
   @override
-  List<Object?> get props => [branch, subloca, category, collection, callnumber, status, duedate];
+  List<Object?> get props => [branch, subloca, category, collection, callnumber, status, stat, isReserved, duedate];
 }
 
 @immutable
