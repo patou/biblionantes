@@ -1,6 +1,8 @@
 import 'package:biblionantes/models/book.dart';
 import 'package:biblionantes/models/loansbook.dart';
+import 'package:biblionantes/router.gr.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 class FetchDataException implements Exception {
@@ -71,7 +73,12 @@ class SearchRepository {
         localNumber: summary['LocalNumber']?['value'],
         creators: summary['meta.creator']?['value'],
         imageURL: 'https://catalogue-bm.nantes.fr${summary['imageSource_128']?['value']}');
-    return BookDetail(book: book);
+    var details = <Detail>[];
+    if (summary['meta.creator'] != null)
+      details.add(Detail(display: summary['meta.creator']?['display'], value: summary['meta.creator']?['value'], icon: Icons.person));
+    if (summary['meta.publicationStatement'] != null)
+      details.add(Detail(display: summary['meta.publicationStatement']?['display'], value: summary['meta.publicationStatement']?['value'], icon: Icons.publish));
+    return BookDetail(book: book, details: details);
   }
 
   /**

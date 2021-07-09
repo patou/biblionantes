@@ -56,7 +56,7 @@ class DetailPage extends StatelessWidget {
                           child: TabBarView(
                             children: [
                               StockList(),
-                              Icon(Icons.directions_transit),
+                              DetailMoreList(),
                             ],
                           ),
                         ),
@@ -89,7 +89,10 @@ class StockList extends StatelessWidget {
             child: const Text('Réserver'),
           ),
         ),
-        Text('Exemplaires:', style: TextStyle(fontSize: 16),),
+        Text(
+          'Exemplaires:',
+          style: TextStyle(fontSize: 16),
+        ),
         BlocBuilder<DetailBloc, DetailState>(
             buildWhen: (last, next) => next is DetailSuccess && next.detail.stock.isNotEmpty,
             builder: (context, state) {
@@ -104,28 +107,35 @@ class StockList extends StatelessWidget {
                 return Column(children: [
                   for (var element in state.detail.stock)
                     ListTile(
-                        leading: Icon(stockIcon(element.stat, element.isReserved)),
-                        title: Text([element.collection, element.callnumber, "${element.status}${element.duedate != null ? " retour prévu le ${dateFormat.format(element.duedate!)}": ""}"].where((s) => s.isNotEmpty).join(" - ")),
-                        subtitle: Text(
-                          [element.branch, element.subloca, element.category].where((s) => s.isNotEmpty).join(" - "),
+                      leading: Icon(stockIcon(element.stat, element.isReserved)),
+                      title: Text(element.branch),
+                      subtitle: Text(
+                        formatStatut(element),
+                      ),
+                      trailing: InkWell(
+                        onTap: () => openModal(element, context),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Icon(Icons.place),
                         ),
+                      ),
                     ),
-
                 ]);
               }
               return Center(
                 child: Text("Une erreur est apparus"),
               );
-            }
-        )
+            })
       ],
     );
   }
 
+  String formatStatut(Stock element) =>
+      "${element.status}${element.duedate != null ? " retour prévu le ${dateFormat.format(element.duedate!)}" : ""}";
+
   IconData stockIcon(String stat, bool isReserved) {
-    if (isReserved)
-      return Icons.close;
-    switch(stat) {
+    if (isReserved) return Icons.close;
+    switch (stat) {
       case "ER": // En rayon
         return Icons.check;
       case "EP": // En prêt
@@ -136,5 +146,89 @@ class StockList extends StatelessWidget {
         return Icons.directions_car;
     }
     return Icons.outbox;
+  }
+
+  openModal(Stock element, BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(stockIcon(element.stat, element.isReserved)),
+              Text("Où trouver ce document ?"),
+            ],
+          ),
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text("Bibliothèque : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(element.branch),
+              Text("Section : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(element.subloca),
+              Text("Categorie : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(element.category),
+              Text("Collection : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(element.collection),
+              Text("Code du livre : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(element.callnumber),
+              SizedBox(
+                height: 15,
+              ),
+              Text(formatStatut(element), style: TextStyle(fontWeight: FontWeight.bold)),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Fermer'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class DetailMoreList extends StatelessWidget {
+  DetailMoreList({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<DetailBloc, DetailState>(
+        buildWhen: (last, next) => next is DetailSuccess && next.detail.details.isNotEmpty,
+        builder: (context, state) {
+          print("builder ou ce trouve ce document ?");
+          if (state is DetailSuccess) {
+            print("list ${state.detail.details.length}");
+            if (state.detail.details.isEmpty)
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+
+            return ListView.builder(
+                padding: const EdgeInsets.all(8),
+                itemCount: state.detail.details.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var detail = state.detail.details[index];
+                  return ListTile(
+                    title: Text(detail.value),
+                    subtitle: Text(detail.display),
+                    leading: Icon(detail.icon),
+                  );
+                }
+            );
+          }
+          return Center(
+            child: Text("Une erreur est apparus"),
+          );
+        });
   }
 }
