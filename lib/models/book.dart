@@ -60,7 +60,8 @@ class Book extends Equatable {
 
   static decodeCreators(json) {
     try {
-      return json['meta']['creator'].map((json) => json['value']).join("; ");
+      if (json['meta']['creator'] != null)
+        return json['meta']['creator'].map((json) => json['value']).join("; ");
     }
     catch (e) {
       print(e.toString());

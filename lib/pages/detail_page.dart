@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
+import 'package:auto_route/auto_route.dart';
 
 class DetailPage extends StatelessWidget {
   DetailPage({@PathParam('id') required this.id});
@@ -80,15 +81,25 @@ class StockList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var isLoans = context.routeData.parent?.path == 'loans';
     return ListView(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-            onPressed: null,
-            child: const Text('Réserver'),
+        if (!isLoans)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: null,
+              child: const Text('Réserver'),
+            ),
+          )
+        else
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: null,
+              child: const Text('Prolonger'),
+            ),
           ),
-        ),
         Text(
           'Exemplaires:',
           style: TextStyle(fontSize: 16),

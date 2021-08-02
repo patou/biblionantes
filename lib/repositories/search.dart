@@ -65,17 +65,19 @@ class SearchRepository {
       return Future.error(FetchDataException('error occurred when search books: {$response.statusCode}'));
     }
     Map<String, Map<String, dynamic>> summary = Map.fromIterable(response.data['summary'], key: (json) => json['name']);
+    var creators = List.from(response.data['summary']).where((item) => item['name'] == 'meta.creator').toList();
+    print(creators);
     var book = Book(
         id: id,
         ark: summary['ark']?['value'],
         title: summary['title']?['value'],
         type: summary['zmatIndex']?['value'],
         localNumber: summary['LocalNumber']?['value'],
-        creators: summary['meta.creator']?['value'],
+        creators: creators.map((item) => item['value']).join(', '),
         imageURL: 'https://catalogue-bm.nantes.fr${summary['imageSource_128']?['value']}');
     var details = <Detail>[];
-    if (summary['meta.creator'] != null)
-      details.add(Detail(display: summary['meta.creator']?['display'], value: summary['meta.creator']?['value'], icon: Icons.person));
+    if (creators.isNotEmpty)
+      details.addAll(creators.map((item) => Detail(display: item['display'], value: item['value'], icon: Icons.person)).toList());
     if (summary['meta.publicationStatement'] != null)
       details.add(Detail(display: summary['meta.publicationStatement']?['display'], value: summary['meta.publicationStatement']?['value'], icon: Icons.publish));
     return BookDetail(book: book, details: details);
