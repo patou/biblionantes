@@ -40,6 +40,7 @@ class SummaryAccountCard extends StatelessWidget {
                   );
                 }
                 SummeryAccount summary = snapshot.requireData;
+                var expirationDays = summary.expiryDate!.difference(DateTime.now()).inDays;
                 return Column(
                   children: [
                     ListTile(
@@ -47,18 +48,23 @@ class SummaryAccountCard extends StatelessWidget {
                       title: Text("${summary.firstName} ${summary.lastName}"),
                       subtitle: Text("Numéro : " + account.login),
                     ),
-                    (summary.hasTrapLevel)
-                        ? ListTile(
+                    if (summary.hasTrapLevel)
+                        ListTile(
                             leading: Icon(Icons.warning, color: Colors.red),
                             title: Text(
                                 "Votre carte est bloqué, rapprochez vous de votre bibliothèque"),
-                          )
-                        : SizedBox.shrink(),
+                        ),
+                    if (summary.expiryDate != null && expirationDays < 30)
+                      ListTile(
+                        leading: Icon(Icons.warning, color: Colors.amber),
+                        title: Text(
+                            "Votre abonnement sera bientôt à renouveler."),
+                      ),
                     if (summary.expiryDate != null && summary.subscriptionDate != null)
                         ListTile(
                           leading: Icon(Icons.date_range),
                           title: Text(
-                                "Expire le ${dateFormat.format(summary.expiryDate!)}"),
+                                "Expire le ${dateFormat.format(summary.expiryDate!)}${expirationDays < 30 ? ' (dans ${expirationDays} jours)':''}"),
                           subtitle: Text(
                               "Depuis le ${dateFormat.format(summary.subscriptionDate!)}"),
                         ),
