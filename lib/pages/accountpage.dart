@@ -2,8 +2,10 @@ import 'package:biblionantes/bloc/library_card/library_card_bloc.dart';
 import 'package:biblionantes/models/SummeryAccount.dart';
 import 'package:biblionantes/widgets/add_account_dialog.dart';
 import 'package:biblionantes/widgets/summary_account.dart';
+import 'package:biblionantes/router.gr.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:auto_route/auto_route.dart';
 
 class AccountPage extends StatelessWidget {
   Widget _displayBody(BuildContext context, AbstractLibraryCardState state) {
@@ -48,6 +50,25 @@ class AccountPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Mes cartes de bibliothèque'),
         centerTitle: true,
+        actions: [
+          PopupMenuButton<int>(
+            icon: Icon(Icons.more_vert),
+            onSelected: (value) {
+              print('Select menu $value');
+              switch(value) {
+                case 1:
+                  context.pushRoute(AboutRoute());
+                  break;
+              }
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem<int>(
+                value: 1,
+                child: Text("A propos"),
+              ),
+            ],
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.add),

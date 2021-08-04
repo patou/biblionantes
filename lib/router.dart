@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:biblionantes/pages/about_page.dart';
 import 'package:biblionantes/pages/accountpage.dart';
 import 'package:biblionantes/pages/detail_page.dart';
 import 'package:biblionantes/pages/loanspage.dart';
@@ -39,6 +40,7 @@ import 'app.dart';
           page: EmptyRouterPage,
           children: [
             AutoRoute(path: '', page: AccountPage),
+            AutoRoute(path: 'about', page: AboutPage),
             RedirectRoute(path: '*', redirectTo: ''),
           ],
         ),

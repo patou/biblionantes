@@ -8,6 +8,7 @@ import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
 import 'app.dart' as _i3;
+import 'pages/about_page.dart' as _i8;
 import 'pages/accountpage.dart' as _i7;
 import 'pages/detail_page.dart' as _i5;
 import 'pages/loanspage.dart' as _i6;
@@ -63,6 +64,11 @@ class AppRouter extends _i1.RootStackRouter {
         routeData: routeData,
         builder: (_) {
           return _i7.AccountPage();
+        }),
+    AboutRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i8.AboutPage();
         })
   };
 
@@ -83,6 +89,7 @@ class AppRouter extends _i1.RootStackRouter {
           ]),
           _i1.RouteConfig(AccountRouter.name, path: 'account', children: [
             _i1.RouteConfig(AccountRoute.name, path: ''),
+            _i1.RouteConfig(AboutRoute.name, path: 'about'),
             _i1.RouteConfig('*#redirect',
                 path: '*', redirectTo: '', fullMatch: true)
           ])
@@ -159,4 +166,10 @@ class AccountRoute extends _i1.PageRouteInfo {
   const AccountRoute() : super(name, path: '');
 
   static const String name = 'AccountRoute';
+}
+
+class AboutRoute extends _i1.PageRouteInfo {
+  const AboutRoute() : super(name, path: 'about');
+
+  static const String name = 'AboutRoute';
 }

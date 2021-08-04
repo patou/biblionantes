@@ -38,6 +38,7 @@ class BiblioNantesApp extends StatelessWidget {
         ],
         child: BlocProvider(
             create: (context) => LibraryCardBloc(accountRepository: context.read())..add(LoadLibraryCardEvent()),
+            lazy: false,
             child: MaterialApp.router(
               title: 'Biblio Nantes',
               theme: ThemeData(
