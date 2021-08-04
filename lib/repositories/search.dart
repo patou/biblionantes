@@ -1,6 +1,4 @@
 import 'package:biblionantes/models/book.dart';
-import 'package:biblionantes/models/loansbook.dart';
-import 'package:biblionantes/router.gr.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
@@ -62,7 +60,7 @@ class SearchRepository {
     });
     if (response.statusCode != 200) {
       print("error");
-      return Future.error(FetchDataException('error occurred when search books: {$response.statusCode}'));
+      return Future.error(FetchDataException('error occurred when get meta : {$response.statusCode}'));
     }
     Map<String, Map<String, dynamic>> summary = Map.fromIterable(response.data['summary'], key: (json) => json['name']);
     var creators = List.from(response.data['summary']).where((item) => item['name'] == 'meta.creator').toList();

@@ -15,7 +15,6 @@ class SearchBookBloc extends Bloc<SearchBookEvent, SearchBookState> {
 
   SearchBookBloc({required this.searchRepository}) : super(SearchBookWelcomeState());
 
-  @override
   SearchBookState get initialState => SearchBookWelcomeState();
 
   bool _hasReachedMax(SearchBookState state) => state is SearchBookSucessState && state.hasReachedMax;

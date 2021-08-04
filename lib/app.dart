@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class AppWidget extends StatelessWidget {
-  AppWidget({Key? key}) : super(key: key) {
-  }
+  AppWidget({Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
     return AutoTabsScaffold(

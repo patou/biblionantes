@@ -2,22 +2,22 @@ import 'package:meta/meta.dart';
 
 @immutable
 class SummeryAccount {
-  String id;
-  String firstName;
-  String lastName;
-  int loanCount;
-  int resvCount;
-  int maxLoans;
-  int overdueLoans;
-  DateTime? subscriptionDate;
-  String sex;
-  String telephone;
-  String emailAddress;
-  String street;
-  String city;
-  String postalCode;
-  DateTime? expiryDate;
-  bool hasTrapLevel;
+  final String id;
+  final String firstName;
+  final String lastName;
+  final int loanCount;
+  final int resvCount;
+  final int overdueLoans;
+  final int maxLoans;
+  final DateTime? subscriptionDate;
+  final String sex;
+  final String telephone;
+  final String emailAddress;
+  final String street;
+  final String city;
+  final String postalCode;
+  final DateTime? expiryDate;
+  final bool hasTrapLevel;
 
   SummeryAccount({
     required this.id,
@@ -62,9 +62,9 @@ class SummeryAccount {
 
 @immutable
 class AuthentInfo {
-  String token;
-  String login;
-  String userId;
+  final String token;
+  final String login;
+  final String userId;
 
   AuthentInfo({required this.token, required this.login, required this.userId});
 
@@ -79,11 +79,11 @@ class AuthentInfo {
 
 @immutable
 class LibraryCard {
-  static String SEPARATOR = "\x29";
-  String login;
-  String password;
-  String userId;
-  String name;
+  static const String SEPARATOR = "\x29";
+  final String login;
+  final String password;
+  final String userId;
+  final String name;
 
   LibraryCard({required this.login, required this.password, required this.userId, required this.name});
 

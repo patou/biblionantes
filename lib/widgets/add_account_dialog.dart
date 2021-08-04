@@ -6,7 +6,7 @@ class AddAccountDialog extends StatelessWidget {
   AddAccountDialog({
     Key? key,
   }) : super(key: key);
-  TextFormField nameField = TextFormField(
+  final TextFormField nameField = TextFormField(
       controller: TextEditingController(),
       obscureText: false,
       validator: (value) {
@@ -22,7 +22,7 @@ class AddAccountDialog extends StatelessWidget {
         OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       )
   );
-  TextFormField loginField = TextFormField(
+  final TextFormField loginField = TextFormField(
       controller: TextEditingController(),
       obscureText: false,
       validator: (value) {
@@ -42,7 +42,7 @@ class AddAccountDialog extends StatelessWidget {
         OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       )
   );
-  TextFormField passwordField = TextFormField(
+  final TextFormField passwordField = TextFormField(
       controller: TextEditingController(),
       obscureText: false,
       validator: (value) {

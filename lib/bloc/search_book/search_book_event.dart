@@ -4,7 +4,7 @@ part of 'search_book_bloc.dart';
 abstract class SearchBookEvent extends Equatable {}
 
 class SearchBookTextSearched extends SearchBookEvent {
-  String search;
+  final String search;
 
 
   SearchBookTextSearched({required this.search});

@@ -1,12 +1,11 @@
 import 'package:biblionantes/models/book.dart';
-import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 @immutable
 class LoansBook extends Book {
-  String seqNo;
-  String account;
-  DateTime returnDate;
+  final String seqNo;
+  final String account;
+  final DateTime returnDate;
 
   LoansBook({
     required this.seqNo,

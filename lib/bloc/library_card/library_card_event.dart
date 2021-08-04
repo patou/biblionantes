@@ -10,11 +10,11 @@ abstract class LibraryCardEvent extends Equatable {
 class LoadLibraryCardEvent extends LibraryCardEvent {}
 
 class AddLibraryCardEvent extends LibraryCardEvent {
-  String login;
+  final String login;
 
-  String name;
+  final String name;
 
-  String pass;
+  final String pass;
 
   AddLibraryCardEvent({required this.login, required this.name, required this.pass});
 }

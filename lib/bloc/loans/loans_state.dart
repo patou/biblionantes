@@ -15,7 +15,7 @@ class LoansInProgress extends LoansState {
 }
 
 class LoansList extends LoansState {
-  List<LoansBook> list;
+  final List<LoansBook> list;
 
   LoansList(this.list);
 
@@ -24,7 +24,7 @@ class LoansList extends LoansState {
 }
 
 class LoansError extends LoansState {
-  String error;
+  final String error;
 
   LoansError(this.error);
 

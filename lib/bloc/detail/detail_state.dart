@@ -14,7 +14,7 @@ class DetailInProgress extends DetailState {
 }
 
 class DetailSuccess extends DetailState {
-  BookDetail detail;
+  final BookDetail detail;
 
   DetailSuccess({required this.detail});
 

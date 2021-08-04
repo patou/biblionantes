@@ -4,14 +4,14 @@ import 'package:meta/meta.dart';
 
 @immutable
 class Book extends Equatable {
-  String id;
-  String? localNumber;
-  String title;
-  String? type;
-  String? creators;
-  String? imageURL;
-  String? ark;
-  bool? available;
+  final String id;
+  final String? localNumber;
+  final String title;
+  final String? type;
+  final String? creators;
+  final String? imageURL;
+  final String? ark;
+  final bool? available;
 
   Book({
     required this.id,
@@ -22,7 +22,7 @@ class Book extends Equatable {
     this.creators,
     this.available,
     this.ark,
-  }): assert(id != null);
+  });
 
   factory Book.fromJson(Map<String, dynamic> json) {
     print(json['title'][0]['value']);
@@ -88,15 +88,15 @@ class Detail extends Equatable {
 
 @immutable
 class Stock extends Equatable {
-  String branch;
-  String subloca;
-  String category;
-  String collection;
-  String callnumber;
-  String status;
-  String stat;
-  bool isReserved;
-  DateTime? duedate;
+  final String branch;
+  final String subloca;
+  final String category;
+  final String collection;
+  final String callnumber;
+  final String status;
+  final String stat;
+  final bool isReserved;
+  final DateTime? duedate;
 
 
   Stock({
@@ -117,9 +117,9 @@ class Stock extends Equatable {
 
 @immutable
 class BookDetail extends Equatable {
-  Book book;
-  List<Detail> details;
-  List<Stock> stock;
+  final Book book;
+  final List<Detail> details;
+  final List<Stock> stock;
 
   BookDetail({required this.book, this.details = const [], this.stock = const []});
 

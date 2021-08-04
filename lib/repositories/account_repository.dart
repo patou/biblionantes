@@ -2,7 +2,6 @@ import 'package:biblionantes/models/SummeryAccount.dart';
 import 'package:biblionantes/models/book.dart';
 import 'package:biblionantes/models/loansbook.dart';
 import 'package:dio/dio.dart';
-import 'package:meta/meta.dart';
 import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,9 +17,8 @@ class AuthenticateException implements Exception {
   }
 }
 
-@immutable
 class LibraryCardRepository {
-  static String ACCOUNTS_LIST_SHARED_PREF = "bionantes.accounts";
+  static const String ACCOUNTS_LIST_SHARED_PREF = "bionantes.accounts";
   final Dio client;
   final _controller = StreamController<List<LibraryCard>>();
 
@@ -48,7 +46,7 @@ class LibraryCardRepository {
   List<LibraryCard> accounts = [];
 
   Map<String, String> tokens = Map();
-  String? lastToken = null;
+  String? lastToken;
 
   Stream<List<LibraryCard>> getLibraryCards() async* {
     await loadLibraryCards();
@@ -149,7 +147,7 @@ class LibraryCardRepository {
 
 
   Future<List<LoansBook>> resolveBook(List<LoansBook> books) async {
-    if (books == null || books.isEmpty)
+    if (books.isEmpty)
       return [];
     await refreshTokens();
     final ids = books.map((e) => e.seqNo).join(",");
@@ -161,7 +159,7 @@ class LibraryCardRepository {
         },
         options: Options(contentType: Headers.formUrlEncodedContentType, headers:{
           // Le tocken attend le token d'authentification plus un autre ID, qui ne semble pas utilisé.
-          'X-InMedia-Authorization': 'Bearer ${lastToken} 3'
+          'X-InMedia-Authorization': 'Bearer $lastToken 3'
         }));
     if (response.statusCode != 200 || response.data['resultSet'] == null) {
       print("error");

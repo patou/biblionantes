@@ -12,9 +12,8 @@ class SummaryAccountCard extends StatelessWidget {
   SummaryAccountCard({
     Key? key,
     required this.account,
-    required void Function(LibraryCard) this.onDeleteAccount,
-  })  : assert(account != null),
-        super(key: key);
+    required this.onDeleteAccount,
+  })  : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +63,7 @@ class SummaryAccountCard extends StatelessWidget {
                         ListTile(
                           leading: Icon(Icons.date_range),
                           title: Text(
-                                "Expire le ${dateFormat.format(summary.expiryDate!)}${expirationDays < 30 ? ' (dans ${expirationDays} jours)':''}"),
+                                "Expire le ${dateFormat.format(summary.expiryDate!)}${expirationDays < 30 ? ' (dans $expirationDays jours)':''}"),
                           subtitle: Text(
                               "Depuis le ${dateFormat.format(summary.subscriptionDate!)}"),
                         ),
@@ -100,7 +99,7 @@ class SummaryAccountCard extends StatelessWidget {
                         summary.street,
                         summary.postalCode,
                         summary.city
-                      ].where((x) => x != null).join(" ")),
+                      ].join(" ")),
                       subtitle: Text("Adresse"),
                     ),
                   ],

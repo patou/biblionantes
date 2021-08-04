@@ -4,14 +4,12 @@ import 'package:biblionantes/models/book.dart';
 import 'package:biblionantes/widgets/book_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
-import 'package:auto_route/auto_route.dart';
 
 class DetailPage extends StatelessWidget {
   DetailPage({@PathParam('id') required this.id});
 
-  String id;
+  final String id;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
