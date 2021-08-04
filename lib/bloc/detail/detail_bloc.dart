@@ -25,7 +25,13 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
       var stock = await this.searchRepository.stock(event.id);
       print('after stock');
       print(stock);
-      yield DetailSuccess(detail: detail.copyWith(stock: stock));
+      detail = detail.copyWith(stock: stock);
+      yield DetailSuccess(detail: detail);
+      if (detail.book.ark != null) {
+        var details = await this.searchRepository.info(detail.book.ark!);
+        print('after info');
+        yield DetailSuccess(detail: detail.copyWith(details: details));
+      }
     }
   }
 }

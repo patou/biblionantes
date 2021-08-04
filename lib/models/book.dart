@@ -78,9 +78,10 @@ class Detail extends Equatable {
   final String display;
   final String value;
   final IconData? icon;
+  final int order;
 
 
-  Detail({required this.display, required this.value, this.icon});
+  Detail({required this.display, required this.value, this.icon, this.order = 2});
 
   @override
   List<Object?> get props => [display, value, icon];
@@ -128,9 +129,13 @@ class BookDetail extends Equatable {
     List<Detail>? details,
     List<Stock>? stock,
   }) {
+    final detailsList = [...this.details];
+    if (details != null)
+      detailsList.addAll(details);
+    detailsList.sort((d1, d2) => d1.order.compareTo(d2.order));
     return BookDetail(
         book: book ?? this.book,
-        details: [...this.details, ...(details ??[])],
+        details: detailsList,
         stock: stock ?? this.stock,
     );
   }

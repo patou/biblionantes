@@ -227,10 +227,13 @@ class DetailMoreList extends StatelessWidget {
                 itemCount: state.detail.details.length,
                 itemBuilder: (BuildContext context, int index) {
                   var detail = state.detail.details[index];
-                  return ListTile(
+                  return detail.icon != null ? ListTile(
                     title: Text(detail.value),
                     subtitle: Text(detail.display),
                     leading: Icon(detail.icon),
+                  ) : Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Text(detail.value, textAlign: TextAlign.justify, softWrap: true, style: TextStyle(fontSize: 16),)
                   );
                 }
             );

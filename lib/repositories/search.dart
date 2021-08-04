@@ -75,39 +75,42 @@ class SearchRepository {
         imageURL: 'https://catalogue-bm.nantes.fr${summary['imageSource_128']?['value']}');
     var details = <Detail>[];
     if (creators.isNotEmpty)
-      details.addAll(creators.map((item) => Detail(display: item['display'], value: item['value'], icon: Icons.person)).toList());
+      details.addAll(creators.map((item) => Detail(display: item['display'], value: item['value'], icon: Icons.person, order: 1)).toList());
     if (summary['meta.publicationStatement'] != null)
-      details.add(Detail(display: summary['meta.publicationStatement']?['display'], value: summary['meta.publicationStatement']?['value'], icon: Icons.publish));
+      details.add(Detail(display: summary['meta.publicationStatement']?['display'], value: summary['meta.publicationStatement']?['value'], icon: Icons.publish, order: 3));
     return BookDetail(book: book, details: details);
   }
 
-  /**
-   * branch: "CHA"
-      branch_desc: "Chantenay"
-      callnumber: "R JAY 1"
-      category: "LJ"
-      category_desc: "Livre Jeunesse"
-      collection: "RP"
-      collection_desc: "Roman policier"
-      copyCanReserve: "true"
-      copyNumber: "1667377"
-      document: "00004004085672"
-      dueDate: "20210609"
-      flagReserved: "false"
-      isReserved: "false"
-      itemType: "monographic"
-      recordCanReserve: "true"
-      recordHasMonographic: "true"
-      recordHasSerialHoldings: "false"
-      recordHasSerialIssues: "false"
-      recordNo: "810534"
-      resv_cur: "0"
-      source: "PWS"
-      stat: "EP"
-      stat_desc: "Prêté"
-      subloca: "EFI"
-      subloca_desc: "Espace littérature"
-   */
+  Future<List<Detail>> info(String ark) async {
+    final response = await client.get('resolveArk', queryParameters: {
+      'ark': ark
+    });
+    if (response.statusCode != 200) {
+      print("error");
+      return Future.error(FetchDataException('error occurred when get info on book: {$response.statusCode}'));
+    }
+    var details = <Detail>[];
+    if (response.data['collectionData'] != null) {
+      final data = response.data['collectionData'];
+      if (data['abstract'] != null) {
+        details.add(Detail(display: "Résumé", value: data['abstract'], order: 0));
+      }
+      if (data['descriptionPhysical'] != null) {
+        details.add(Detail(display: "Description", value: data['descriptionPhysical'], icon: Icons.format_size, order: 5));
+      }
+      if (data['noteTargetAudience'] != null) {
+        details.add(Detail(display: "Public concerné", value: data['noteTargetAudience'], icon: Icons.child_care, order: 4));
+      }
+      if (data['relationSet'] != null) {
+        details.add(Detail(display: "Titre de la série", value: data['relationSet']['DocumentCaption'], icon: Icons.format_list_numbered, order: 3));
+      }
+      if (data['subjectGeneral'] != null) {
+        details.add(Detail(display: "Sujet", value: data['subjectGeneral'].map((item) => item['DocumentCaption']).join(', '), icon: Icons.subject, order: 3));
+      }
+    }
+    return details;
+  }
+
   Future<List<Stock>> stock(String id) async {
     final response = await client.get('notice', queryParameters: {
       'id': id,
