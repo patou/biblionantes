@@ -56,9 +56,13 @@ class AppRouter extends _i1.RootStackRouter {
               orElse: () => DetailRouteArgs(
                   id: pathParams.getString('id'),
                   action: queryParams.optString('action'),
-                  account: queryParams.optString('account')));
+                  account: queryParams.optString('account'),
+                  documentNumber: queryParams.optString('documentNumber')));
           return _i5.DetailPage(
-              id: args.id, action: args.action, account: args.account);
+              id: args.id,
+              action: args.action,
+              account: args.account,
+              documentNumber: args.documentNumber);
         }),
     LoansRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -146,24 +150,41 @@ class SearchRoute extends _i1.PageRouteInfo {
 }
 
 class DetailRoute extends _i1.PageRouteInfo<DetailRouteArgs> {
-  DetailRoute({required String id, String? action, String? account})
+  DetailRoute(
+      {required String id,
+      String? action,
+      String? account,
+      String? documentNumber})
       : super(name,
             path: ':id',
-            args: DetailRouteArgs(id: id, action: action, account: account),
-            rawPathParams: {'id': id},
-            rawQueryParams: {'action': action, 'account': account});
+            args: DetailRouteArgs(
+                id: id,
+                action: action,
+                account: account,
+                documentNumber: documentNumber),
+            rawPathParams: {
+              'id': id
+            },
+            rawQueryParams: {
+              'action': action,
+              'account': account,
+              'documentNumber': documentNumber
+            });
 
   static const String name = 'DetailRoute';
 }
 
 class DetailRouteArgs {
-  const DetailRouteArgs({required this.id, this.action, this.account});
+  const DetailRouteArgs(
+      {required this.id, this.action, this.account, this.documentNumber});
 
   final String id;
 
   final String? action;
 
   final String? account;
+
+  final String? documentNumber;
 }
 
 class LoansRoute extends _i1.PageRouteInfo {

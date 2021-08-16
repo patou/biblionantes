@@ -8,11 +8,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class DetailPage extends StatelessWidget {
-  DetailPage({@PathParam('id') required this.id, @QueryParam('action') this.action, @QueryParam('account') this.account});
+  DetailPage({@PathParam('id') required this.id, @QueryParam('action') this.action, @QueryParam('account') this.account, @QueryParam('documentNumber') this.documentNumber});
 
   final String id;
   final String? action;
   final String? account;
+  final String? documentNumber;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -39,7 +40,7 @@ class DetailPage extends StatelessWidget {
                           book: state.detail.book,
                           useBoxShadow: false,
                         ),
-                        buidAction(context, state.detail.book.localNumber!),
+                        BookAction(action: action, account: account, documentNumber: documentNumber, context: context),
                         Container(
                           child: TabBar(
                             labelColor: Colors.blue,
@@ -73,9 +74,30 @@ class DetailPage extends StatelessWidget {
               },
             )));
   }
+}
 
-  buidAction(BuildContext context, String localNumber) {
-    switch (this.action) {
+class BookAction extends StatefulWidget {
+  BookAction({
+    Key? key,
+    required this.action,
+    required this.account,
+    required this.documentNumber,
+    required this.context,
+  }) : super(key: key);
+
+  String? action;
+  String? account;
+  final String? documentNumber;
+  final BuildContext context;
+
+  @override
+  _BookActionState createState() => _BookActionState();
+}
+
+class _BookActionState extends State<BookAction> {
+  @override
+  Widget build(BuildContext context) {
+    switch (this.widget.action) {
       case 'reserve':
         return Container(
           width: double.infinity,
@@ -89,9 +111,19 @@ class DetailPage extends StatelessWidget {
         );
       case 'renew':
         var onPressed;
-        if (this.account != null) {
+        if (this.widget.account != null && this.widget.documentNumber != null) {
           onPressed = () async {
-            await context.read<LibraryCardRepository>().renewBook(this.account!, localNumber);
+            bool renewed = await context.read<LibraryCardRepository>().renewBook(this.widget.account!, this.widget.documentNumber!);
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: renewed ? Colors.lightGreen : Colors.redAccent,
+                  content: Text(renewed ? "Emprunt renouvelé" : "Cet emprunt ne peut plus être renouvelé"),
+                )
+            );
+            setState(() {
+              this.widget.action = renewed ? "renewed" : "renew";
+              this.widget.account = null;
+            });
           };
         }
         return Container(
@@ -103,15 +135,27 @@ class DetailPage extends StatelessWidget {
           ),
         );
       case 'cancel':
-        return Padding(
+        return Container(
+          width: double.infinity,
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
             onPressed: null,
             child: const Text('Annuler la réservation'),
           ),
         );
+      case 'renewed':
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: null,
+            child: const Text('Renouvelé'),
+          ),
+        );
       default:
-        return null;
+        return SizedBox(
+          height: 10,
+        );
     }
   }
 }

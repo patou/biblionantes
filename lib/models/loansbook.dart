@@ -8,6 +8,7 @@ class LoansBook extends Book {
   final String login;
   final DateTime returnDate;
   final bool renewable;
+  final String documentNumber;
 
   LoansBook({
     required this.seqNo,
@@ -16,6 +17,7 @@ class LoansBook extends Book {
     required this.account,
     required this.login,
     required this.renewable,
+    required this.documentNumber,
     String? id,
     String? localNumber,
     String? creators,
@@ -36,7 +38,7 @@ class LoansBook extends Book {
     print(json['data']['title']);
     return LoansBook(
         seqNo: json['data']['seqNo'] as String,
-        localNumber: json['data']['documentNumber'],
+        documentNumber: json['data']['documentNumber'],
         title: json['data']['title'] as String,
         returnDate: DateTime.parse(json['data']['returnDate']),
         renewable: json['data']['isRenewable'] as bool,
@@ -49,6 +51,7 @@ class LoansBook extends Book {
     String? id,
     String? seqNo,
     String? localNumber,
+    String? documentNumber,
     String? title,
     DateTime? returnDate,
     bool? renewable,
@@ -64,6 +67,7 @@ class LoansBook extends Book {
       id: id ?? this.id,
       seqNo: seqNo ?? this.seqNo,
       localNumber: localNumber ?? this.localNumber,
+      documentNumber: documentNumber ?? this.documentNumber,
       title: title ?? this.title,
       returnDate: returnDate ?? this.returnDate,
       renewable: renewable ?? this.renewable,

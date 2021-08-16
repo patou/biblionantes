@@ -174,10 +174,10 @@ class LibraryCardRepository {
 
   void dispose() => _controller.close();
 
-  Future<bool> renewBook(String account, String localNumber) async {
+  Future<bool> renewBook(String account, String documentNumber) async {
     final response = await client.get('renewLoan',
         queryParameters: {
-          'documentId': localNumber,
+          'documentId': documentNumber,
         },
         options: Options(
           headers:{
@@ -189,6 +189,7 @@ class LibraryCardRepository {
       print("error");
       return false;
     }
+    print(response.data);
     return response.data['extended'] as bool;
   }
 }
