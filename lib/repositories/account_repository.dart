@@ -141,7 +141,7 @@ class LibraryCardRepository {
       return Future.error(AuthenticateException(
           'error occurred when authenticate: ${response.statusCode}'));
     }
-    var list = response.data['items'].map<LoansBook>((json) => LoansBook.fromJson(json, account.name)).toList();
+    var list = response.data['items'].map<LoansBook>((json) => LoansBook.fromJson(json, account.name, account.login)).toList();
     return list;
   }
 
@@ -158,7 +158,7 @@ class LibraryCardRepository {
           "ids": ids,
         },
         options: Options(contentType: Headers.formUrlEncodedContentType, headers:{
-          // Le tocken attend le token d'authentification plus un autre ID, qui ne semble pas utilisé.
+          // Le token attend le token d'authentification plus un autre ID, qui ne semble pas utilisé.
           'X-InMedia-Authorization': 'Bearer $lastToken 3'
         }));
     if (response.statusCode != 200 || response.data['resultSet'] == null) {
@@ -173,4 +173,22 @@ class LibraryCardRepository {
   }
 
   void dispose() => _controller.close();
+
+  Future<bool> renewBook(String account, String localNumber) async {
+    final response = await client.get('renewLoan',
+        queryParameters: {
+          'documentId': localNumber,
+        },
+        options: Options(
+          headers:{
+          'Authorization': 'Bearer ${tokens[account]}'
+          }
+        )
+    );
+    if (response.statusCode != 200 || response.data['extended'] == null) {
+      print("error");
+      return false;
+    }
+    return response.data['extended'] as bool;
+  }
 }

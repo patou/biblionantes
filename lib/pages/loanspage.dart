@@ -52,6 +52,8 @@ class LoansPage extends StatelessWidget {
                     return GestureDetector(
                         onTap: () => context.pushRoute(DetailRoute(
                               id: element.id,
+                              action: 'renew',
+                              account: element.renewable ? element.login : null
                             )),
                         child: BookCard(
                           book: element,

@@ -64,6 +64,7 @@ class _SearchListState extends State<SearchList> {
                     child: GestureDetector(
                         onTap: () => context.pushRoute(DetailRoute(
                           id: state.books[index].id,
+                          action: 'renew'
                         )),
                         child: BookCard(book: state.books[index], widget: available(state.books[index].available),)),
                   );

@@ -1,15 +1,18 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:biblionantes/bloc/detail/detail_bloc.dart';
 import 'package:biblionantes/models/book.dart';
+import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:biblionantes/widgets/book_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class DetailPage extends StatelessWidget {
-  DetailPage({@PathParam('id') required this.id});
+  DetailPage({@PathParam('id') required this.id, @QueryParam('action') this.action, @QueryParam('account') this.account});
 
   final String id;
+  final String? action;
+  final String? account;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -36,6 +39,7 @@ class DetailPage extends StatelessWidget {
                           book: state.detail.book,
                           useBoxShadow: false,
                         ),
+                        buidAction(context, state.detail.book.localNumber!),
                         Container(
                           child: TabBar(
                             labelColor: Colors.blue,
@@ -69,6 +73,47 @@ class DetailPage extends StatelessWidget {
               },
             )));
   }
+
+  buidAction(BuildContext context, String localNumber) {
+    switch (this.action) {
+      case 'reserve':
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: () async {
+
+            },
+            child: const Text('Réserver'),
+          ),
+        );
+      case 'renew':
+        var onPressed;
+        if (this.account != null) {
+          onPressed = () async {
+            await context.read<LibraryCardRepository>().renewBook(this.account!, localNumber);
+          };
+        }
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: onPressed,
+            child: const Text('Prolonger'),
+          ),
+        );
+      case 'cancel':
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: null,
+            child: const Text('Annuler la réservation'),
+          ),
+        );
+      default:
+        return null;
+    }
+  }
 }
 
 class StockList extends StatelessWidget {
@@ -79,25 +124,8 @@ class StockList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var isLoans = context.routeData.parent?.path == 'loans';
     return ListView(
       children: [
-        if (!isLoans)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: null,
-              child: const Text('Réserver'),
-            ),
-          )
-        else
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: null,
-              child: const Text('Prolonger'),
-            ),
-          ),
         Text(
           'Exemplaires:',
           style: TextStyle(fontSize: 16),
@@ -105,9 +133,7 @@ class StockList extends StatelessWidget {
         BlocBuilder<DetailBloc, DetailState>(
             buildWhen: (last, next) => next is DetailSuccess && next.detail.stock.isNotEmpty,
             builder: (context, state) {
-              print("builder ou ce trouve ce document ?");
               if (state is DetailSuccess) {
-                print("list ${state.detail.stock.length}");
                 if (state.detail.stock.isEmpty)
                   return Center(
                     child: CircularProgressIndicator(),
@@ -214,9 +240,7 @@ class DetailMoreList extends StatelessWidget {
     return BlocBuilder<DetailBloc, DetailState>(
         buildWhen: (last, next) => next is DetailSuccess && next.detail.details.isNotEmpty,
         builder: (context, state) {
-          print("builder ou ce trouve ce document ?");
           if (state is DetailSuccess) {
-            print("list ${state.detail.details.length}");
             if (state.detail.details.isEmpty)
               return Center(
                 child: CircularProgressIndicator(),

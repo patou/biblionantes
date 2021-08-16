@@ -5,13 +5,17 @@ import 'package:meta/meta.dart';
 class LoansBook extends Book {
   final String seqNo;
   final String account;
+  final String login;
   final DateTime returnDate;
+  final bool renewable;
 
   LoansBook({
     required this.seqNo,
     required String title,
     required this.returnDate,
     required this.account,
+    required this.login,
+    required this.renewable,
     String? id,
     String? localNumber,
     String? creators,
@@ -28,13 +32,17 @@ class LoansBook extends Book {
           imageURL: imageURL,
         );
 
-  factory LoansBook.fromJson(Map<String, dynamic> json, String account) {
+  factory LoansBook.fromJson(Map<String, dynamic> json, String account, String login) {
     print(json['data']['title']);
     return LoansBook(
         seqNo: json['data']['seqNo'] as String,
+        localNumber: json['data']['documentNumber'],
         title: json['data']['title'] as String,
         returnDate: DateTime.parse(json['data']['returnDate']),
-        account: account);
+        renewable: json['data']['isRenewable'] as bool,
+        account: account,
+        login: login,
+    );
   }
 
   LoansBook copyWith({
@@ -43,7 +51,9 @@ class LoansBook extends Book {
     String? localNumber,
     String? title,
     DateTime? returnDate,
+    bool? renewable,
     String? account,
+    String? login,
     String? type,
     String? imageURL,
     String? creators,
@@ -56,7 +66,9 @@ class LoansBook extends Book {
       localNumber: localNumber ?? this.localNumber,
       title: title ?? this.title,
       returnDate: returnDate ?? this.returnDate,
+      renewable: renewable ?? this.renewable,
       account: account ?? this.account,
+      login: login ?? this.login,
       type: type ?? this.type,
       imageURL: imageURL ?? this.imageURL,
       creators: creators ?? this.creators,
@@ -75,7 +87,7 @@ class LoansBook extends Book {
   }
 
   @override
-  List<Object?> get props => [...super.props, account, returnDate];
+  List<Object?> get props => [...super.props, account, returnDate, login, renewable];
 }
 
 /// On ne connais pas l'ID du document dans la liste des prêts et reservation seulement le seqNo.
