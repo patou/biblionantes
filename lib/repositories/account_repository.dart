@@ -1,6 +1,7 @@
 import 'package:biblionantes/models/SummeryAccount.dart';
 import 'package:biblionantes/models/book.dart';
 import 'package:biblionantes/models/loansbook.dart';
+import 'package:biblionantes/models/reservation.dart';
 import 'package:dio/dio.dart';
 import 'dart:async';
 
@@ -191,5 +192,26 @@ class LibraryCardRepository {
     }
     print(response.data);
     return response.data['extended'] as bool;
+  }
+
+  Future<List<ReservationChoices>> reservationChoices(String bookId) async {
+    await refreshTokens();
+    final response = await client.get('reservationChoices',
+        queryParameters: {
+          'id': bookId,
+          'locale': 'fr',
+        },
+        options: Options(
+            headers:{
+              'X-InMedia-Authorization': 'Bearer ${lastToken} 3'
+            }
+        )
+    );
+    if (response.statusCode != 200) {
+      print("error");
+      return Future.error(AuthenticateException(
+          'error occurred when get reservation choices: ${response.statusCode}'));
+    }
+    return response.data['branchList'].map<ReservationChoices>((json) => ReservationChoices.fromJson(json)).toList();
   }
 }

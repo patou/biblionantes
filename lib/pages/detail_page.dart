@@ -3,6 +3,7 @@ import 'package:biblionantes/bloc/detail/detail_bloc.dart';
 import 'package:biblionantes/models/book.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:biblionantes/widgets/book_card.dart';
+import 'package:biblionantes/widgets/reserve_book_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -40,7 +41,7 @@ class DetailPage extends StatelessWidget {
                           book: state.detail.book,
                           useBoxShadow: false,
                         ),
-                        BookAction(action: action, account: account, documentNumber: documentNumber, context: context),
+                        BookAction(id: id, action: action, account: account, documentNumber: documentNumber, context: context),
                         Container(
                           child: TabBar(
                             labelColor: Colors.blue,
@@ -79,12 +80,14 @@ class DetailPage extends StatelessWidget {
 class BookAction extends StatefulWidget {
   BookAction({
     Key? key,
+    required this.id,
     required this.action,
     required this.account,
     required this.documentNumber,
     required this.context,
   }) : super(key: key);
 
+  String id;
   String? action;
   String? account;
   final String? documentNumber;
@@ -104,7 +107,7 @@ class _BookActionState extends State<BookAction> {
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
             onPressed: () async {
-
+              openModal(context, this.widget.id);
             },
             child: const Text('Réserver'),
           ),
@@ -156,6 +159,20 @@ class _BookActionState extends State<BookAction> {
         return SizedBox(
           height: 10,
         );
+    }
+  }
+
+  openModal(BuildContext context, String id) async {
+    var result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return ReserveBookDialog(bookId: id);
+      },
+    );
+    if (result == true) {
+      setState(() {
+        this.widget.action = "cancel";
+      });
     }
   }
 }

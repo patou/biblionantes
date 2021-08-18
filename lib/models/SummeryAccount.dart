@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 @immutable
@@ -77,8 +78,7 @@ class AuthentInfo {
   }
 }
 
-@immutable
-class LibraryCard {
+class LibraryCard extends Equatable {
   static const String SEPARATOR = "\x29";
   final String login;
   final String password;
@@ -100,4 +100,7 @@ class LibraryCard {
   String toSharedPref() {
     return [login, password, userId, name].join(SEPARATOR);
   }
+
+  @override
+  List<Object?> get props => [login, password, userId, name];
 }
