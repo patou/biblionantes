@@ -84,6 +84,7 @@ class _SearchListState extends State<SearchList> {
     if (available != null) {
       return Text(available ? 'Disponible' : 'Non disponible', style: TextStyle(color: available ? Colors.green : Colors.red),);
     }
+    return null;
   }
 
   @override

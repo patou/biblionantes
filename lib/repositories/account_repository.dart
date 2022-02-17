@@ -203,7 +203,7 @@ class LibraryCardRepository {
         },
         options: Options(
             headers:{
-              'X-InMedia-Authorization': 'Bearer ${lastToken} 3'
+              'X-InMedia-Authorization': 'Bearer $lastToken 3'
             }
         )
     );

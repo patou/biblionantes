@@ -87,9 +87,9 @@ class BookAction extends StatefulWidget {
     required this.context,
   }) : super(key: key);
 
-  String id;
-  String? action;
-  String? account;
+  final String id;
+  final String? action;
+  final String? account;
   final String? documentNumber;
   final BuildContext context;
 
@@ -98,9 +98,19 @@ class BookAction extends StatefulWidget {
 }
 
 class _BookActionState extends State<BookAction> {
+  String? action;
+  String? account;
+
+  @override
+  void initState() {
+    this.account = this.widget.account;
+    this.action = this.widget.action;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    switch (this.widget.action) {
+    switch (this.action) {
       case 'reserve':
         return Container(
           width: double.infinity,
@@ -114,9 +124,9 @@ class _BookActionState extends State<BookAction> {
         );
       case 'renew':
         var onPressed;
-        if (this.widget.account != null && this.widget.documentNumber != null) {
+        if (this.account != null && this.widget.documentNumber != null) {
           onPressed = () async {
-            bool renewed = await context.read<LibraryCardRepository>().renewBook(this.widget.account!, this.widget.documentNumber!);
+            bool renewed = await context.read<LibraryCardRepository>().renewBook(this.account!, this.widget.documentNumber!);
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   backgroundColor: renewed ? Colors.lightGreen : Colors.redAccent,
@@ -124,8 +134,8 @@ class _BookActionState extends State<BookAction> {
                 )
             );
             setState(() {
-              this.widget.action = renewed ? "renewed" : "renew";
-              this.widget.account = null;
+              this.action = renewed ? "renewed" : "renew";
+              this.account = null;
             });
           };
         }
@@ -171,7 +181,7 @@ class _BookActionState extends State<BookAction> {
     );
     if (result == true) {
       setState(() {
-        this.widget.action = "cancel";
+        this.action = "cancel";
       });
     }
   }

@@ -1,7 +1,6 @@
 import 'package:biblionantes/models/book.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 class FetchDataException implements Exception {
   final _message;
