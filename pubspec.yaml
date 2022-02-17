@@ -36,12 +36,12 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.3
-  auto_route: ^2.2.0
+  auto_route: ^3.2.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  auto_route_generator: ^2.1.0
+  auto_route_generator: ^3.2.3
   build_runner: ^2.0.5
 
 # For information on the generic Dart part of this file, see the
