@@ -10,29 +10,26 @@ part 'loans_state.dart';
 
 class LoansBloc extends Bloc<LoansEvent, LoansState> {
 
-  LoansBloc({required this.accountRepository}) : super(LoansInitial());
+  LoansBloc({required this.accountRepository}) : super(LoansInitial()) {
+    on<LoadLoansEvent>(onLoadLoansEvent);
+  }
 
   final LibraryCardRepository accountRepository;
 
-  @override
-  Stream<LoansState> mapEventToState(
-    LoansEvent event,
-  ) async* {
-    if (event is LoadLoansEvent) {
-      try {
-        yield LoansInProgress();
-        // On récupère la liste des prêts
-        var list = await accountRepository.loadLoansList();
-        yield LoansList(list);
-        // On complète pour récupérer les infos plus précises des documents.
-        list = await accountRepository.resolveBook(list);
-        yield LoansList(list);
-      }
-      catch (e, stack) {
-        print(e);
-        print(stack);
-        yield LoansError(e.toString());
-      }
+  FutureOr<void> onLoadLoansEvent(LoadLoansEvent event, Emitter<LoansState> emit) async {
+    try {
+      emit(LoansInProgress());
+      // On récupère la liste des prêts
+      var list = await accountRepository.loadLoansList();
+      emit(LoansList(list));
+      // On complète pour récupérer les infos plus précises des documents.
+      list = await accountRepository.resolveBook(list);
+      emit(LoansList(list));
+    }
+    catch (e, stack) {
+      print(e);
+      print(stack);
+      emit(LoansError(e.toString()));
     }
   }
 }

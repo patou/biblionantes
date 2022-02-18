@@ -11,27 +11,24 @@ part 'detail_state.dart';
 class DetailBloc extends Bloc<DetailEvent, DetailState> {
   final SearchRepository searchRepository;
 
-  DetailBloc({required this.searchRepository}) : super(DetailInitial());
+  DetailBloc({required this.searchRepository}) : super(DetailInitial()) {
+    on<LoadDetailEvent>(onLoadDetailEvent);
+  }
 
-  @override
-  Stream<DetailState> mapEventToState(
-    DetailEvent event,
-  ) async* {
-    if (event is  LoadDetailEvent) {
-      yield DetailInProgress();
-      BookDetail detail = await this.searchRepository.detail(event.id);
-      yield DetailSuccess(detail: detail);
-      print('before stock');
-      var stock = await this.searchRepository.stock(event.id);
-      print('after stock');
-      print(stock);
-      detail = detail.copyWith(stock: stock);
-      yield DetailSuccess(detail: detail);
-      if (detail.book.ark != null) {
-        var details = await this.searchRepository.info(detail.book.ark!);
-        print('after info');
-        yield DetailSuccess(detail: detail.copyWith(details: details));
-      }
+  FutureOr<void> onLoadDetailEvent(LoadDetailEvent event, Emitter<DetailState> emit) async {
+    emit(DetailInProgress());
+    BookDetail detail = await this.searchRepository.detail(event.id);
+    emit(DetailSuccess(detail: detail));
+    print('before stock');
+    var stock = await this.searchRepository.stock(event.id);
+    print('after stock');
+    print(stock);
+    detail = detail.copyWith(stock: stock);
+    emit(DetailSuccess(detail: detail));
+    if (detail.book.ark != null) {
+      var details = await this.searchRepository.info(detail.book.ark!);
+      print('after info');
+      emit(DetailSuccess(detail: detail.copyWith(details: details)));
     }
   }
 }
