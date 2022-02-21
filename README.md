@@ -1,5 +1,7 @@
 # biblionantes
 
+![icon](https://user-images.githubusercontent.com/841858/154953703-c9a067aa-fb1d-4c10-92d8-a4f33d1280e9.png)
+
 Bibliothèque de Nantes
 
 Application permettant de gérer sur son mobile son compte de bibliothèque à la bibliothèque municipale de Nantes.
