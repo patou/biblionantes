@@ -214,4 +214,25 @@ class LibraryCardRepository {
     }
     return response.data['branchList'].map<ReservationChoices>((json) => ReservationChoices.fromJson(json)).toList();
   }
+
+  Future<bool> reserveBook(String account, String location, String documentId) async {
+    final response = await client.get('makeReservation',
+        queryParameters: {
+          'id': documentId,
+          'branch': location,
+          'locale': 'fr',
+        },
+        options: Options(
+            headers:{
+              'Authorization': 'Bearer ${tokens[account]}'
+            }
+        )
+    );
+    if (response.statusCode != 200 || response.data['errorReponse'] != null) {
+      print("error" + response.data['error']);
+      return Future.error(response.data['error']);
+    }
+    print(response.data);
+    return response.data['errorCode'] == "SUCESS";
+  }
 }

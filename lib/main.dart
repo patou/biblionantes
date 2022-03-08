@@ -25,7 +25,7 @@ class BiblioNantesApp extends StatelessWidget {
 
   BiblioNantesApp() {
     dio.interceptors.add(PrettyDioLogger(
-        requestHeader: true, requestBody: false, responseBody: false, responseHeader: false, error: true, compact: true, maxWidth: 90));
+        requestHeader: true, requestBody: false, responseBody: true, responseHeader: false, error: true, compact: true, maxWidth: 90));
   }
 
   // This widget is the root of your application.
