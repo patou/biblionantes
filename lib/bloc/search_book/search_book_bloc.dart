@@ -32,12 +32,8 @@ class SearchBookBloc extends Bloc<SearchBookEvent, SearchBookState> {
   }
 
   FutureOr<void> onSearchBookTextSearched(SearchBookTextSearched event, Emitter<SearchBookState> emit) async {
-    if (this._hasReachedMax(state)) {
-      return;
-    }
     print("search " + event.search);
     try {
-      if (state is SearchBookWelcomeState) {
         emit(SearchBookLoadingState());
         final books = await searchRepository.search(event.search);
         if (books.isEmpty) {
@@ -49,7 +45,6 @@ class SearchBookBloc extends Bloc<SearchBookEvent, SearchBookState> {
           emit(SearchBookSucessState(books: booksAvailable, hasReachedMax: false, search: event.search, page: 1));
         }
         return;
-      }
     } catch (e) {
       print(e.toString());
       emit(SearchBookErrorState(error: e.toString()));
