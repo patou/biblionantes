@@ -36,31 +36,37 @@ class LoansPage extends StatelessWidget {
                   child: Text("Aucun emprunt en cours"),
                 );
               }
-              return GroupedListView<LoansBook, String>(
-                  elements: list,
-                  groupBy: (element) => element.account,
-                  useStickyGroupSeparators: true,
-                  groupSeparatorBuilder: (String value) => Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          value,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              return RefreshIndicator(
+                onRefresh: () async {
+                  event.add(LoadLoansEvent());
+                },
+                child: GroupedListView<LoansBook, String>(
+                    elements: list,
+                    groupBy: (element) => element.account,
+                    useStickyGroupSeparators: true,
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    groupSeparatorBuilder: (String value) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            value,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                  itemBuilder: (c, element) {
-                    return GestureDetector(
-                        onTap: () => context.pushRoute(DetailRoute(
-                              id: element.id,
-                              action: element.renewable ? 'renew' : null,
-                              account: element.renewable ? element.login : null,
-                              documentNumber: element.documentNumber,
-                            )),
-                        child: BookCard(
-                          book: element,
-                          widget: LoansReturn(loansBook: element),
-                        ));
-                  });
+                    itemBuilder: (c, element) {
+                      return GestureDetector(
+                          onTap: () => context.pushRoute(DetailRoute(
+                                id: element.id,
+                                action: element.renewable ? 'renew' : null,
+                                account: element.renewable ? element.login : null,
+                                documentNumber: element.documentNumber,
+                              )),
+                          child: BookCard(
+                            book: element,
+                            widget: LoansReturn(loansBook: element),
+                          ));
+                    }),
+              );
             } else {
               return Center(
                 child: Text('An error occurred'),
