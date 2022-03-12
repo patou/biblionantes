@@ -19,6 +19,7 @@ class ReserveBookDialog extends StatefulWidget {
 class _ReserveBookDialogState extends State<ReserveBookDialog> {
   String? _account;
   String? _lieu;
+  bool _loading = true;
   List<ReservationChoices> reservationChoices = [];
 
   @override
@@ -37,6 +38,7 @@ class _ReserveBookDialogState extends State<ReserveBookDialog> {
     var choices = await libraryCardRepository.reservationChoices(widget.bookId);
     setState(() {
       reservationChoices = choices;
+      _loading = false;
     });
   }
 
@@ -148,35 +150,11 @@ class _ReserveBookDialogState extends State<ReserveBookDialog> {
         ),
       ),
       actions: <Widget>[
-        TextButton(
+        this._loading ? CircularProgressIndicator() : TextButton(
           child: const Text('Réserver'),
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
-              try {
-                bool reserved = await context.read<LibraryCardRepository>()
-                    .reserveBook(
-                    this._account!, this._lieu!, this.widget.bookId);
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: reserved ? Colors.lightGreen : Colors
-                          .redAccent,
-                      content: Text(reserved
-                          ? "Document reservé, vous recevrez un mail lors qu'il sera disponible."
-                          : "Il n'est pas possible de réserver ce document"),
-                    )
-                );
-                Navigator.of(context).pop(reserved);
-              }
-              catch (error) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: Colors
-                          .redAccent,
-                      content: Text("""Il n'est pas possible de réserver ce document : ${error}"""),
-                    )
-                );
-                Navigator.of(context).pop(false);
-              }
+              await doReserveBook(context);
             }
           },
         ),
@@ -188,5 +166,36 @@ class _ReserveBookDialogState extends State<ReserveBookDialog> {
         ),
       ],
     );
+  }
+
+  Future<void> doReserveBook(BuildContext context) async {
+    try {
+      setState(() {
+        _loading = true;
+      });
+      bool reserved = await context.read<LibraryCardRepository>()
+          .reserveBook(
+          this._account!, this._lieu!, this.widget.bookId);
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: reserved ? Colors.lightGreen : Colors
+                .redAccent,
+            content: Text(reserved
+                ? "Document reservé, vous recevrez un mail lors qu'il sera disponible."
+                : "Il n'est pas possible de réserver ce document"),
+          )
+      );
+      Navigator.of(context).pop(reserved);
+    }
+    catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors
+                .redAccent,
+            content: Text("""Il n'est pas possible de réserver ce document : ${error}"""),
+          )
+      );
+      Navigator.of(context).pop(false);
+    }
   }
 }

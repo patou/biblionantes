@@ -233,6 +233,6 @@ class LibraryCardRepository {
       return Future.error(response.data['error']);
     }
     print(response.data);
-    return response.data['errorCode'] == "SUCESS";
+    return response.data['errorCode'] == "SUCCESS";
   }
 }
