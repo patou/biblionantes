@@ -11,17 +11,18 @@
 // ignore_for_file: type=lint
 
 import 'package:auto_route/auto_route.dart' as _i2;
-import 'package:flutter/material.dart' as _i8;
+import 'package:flutter/material.dart' as _i9;
 
 import 'app.dart' as _i1;
-import 'pages/about_page.dart' as _i7;
-import 'pages/accountpage.dart' as _i6;
+import 'pages/about_page.dart' as _i8;
+import 'pages/accountpage.dart' as _i7;
 import 'pages/detail_page.dart' as _i4;
 import 'pages/loanspage.dart' as _i5;
+import 'pages/reservationpage.dart' as _i6;
 import 'pages/search_page.dart' as _i3;
 
 class AppRouter extends _i2.RootStackRouter {
-  AppRouter([_i8.GlobalKey<_i8.NavigatorState>? navigatorKey])
+  AppRouter([_i9.GlobalKey<_i9.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
@@ -37,6 +38,10 @@ class AppRouter extends _i2.RootStackRouter {
           routeData: routeData, child: const _i2.EmptyRouterPage());
     },
     LoansRouter.name: (routeData) {
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: const _i2.EmptyRouterPage());
+    },
+    ReservationRouter.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i2.EmptyRouterPage());
     },
@@ -69,13 +74,17 @@ class AppRouter extends _i2.RootStackRouter {
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData, child: _i5.LoansPage());
     },
+    ReservationRoute.name: (routeData) {
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i6.ReservationPage());
+    },
     AccountRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i6.AccountPage());
+          routeData: routeData, child: _i7.AccountPage());
     },
     AboutRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i7.AboutPage());
+          routeData: routeData, child: _i8.AboutPage());
     }
   };
 
@@ -110,6 +119,20 @@ class AppRouter extends _i2.RootStackRouter {
                     redirectTo: '',
                     fullMatch: true)
               ]),
+          _i2.RouteConfig(ReservationRouter.name,
+              path: 'reservation',
+              parent: AppWidget.name,
+              children: [
+                _i2.RouteConfig(ReservationRoute.name,
+                    path: '', parent: ReservationRouter.name),
+                _i2.RouteConfig(DetailRoute.name,
+                    path: ':id', parent: ReservationRouter.name),
+                _i2.RouteConfig('*#redirect',
+                    path: '*',
+                    parent: ReservationRouter.name,
+                    redirectTo: '',
+                    fullMatch: true)
+              ]),
           _i2.RouteConfig(AccountRouter.name,
               path: 'account',
               parent: AppWidget.name,
@@ -131,7 +154,7 @@ class AppRouter extends _i2.RootStackRouter {
 /// generated route for
 /// [_i1.AppWidget]
 class AppWidget extends _i2.PageRouteInfo<AppWidgetArgs> {
-  AppWidget({_i8.Key? key, List<_i2.PageRouteInfo>? children})
+  AppWidget({_i9.Key? key, List<_i2.PageRouteInfo>? children})
       : super(AppWidget.name,
             path: '/',
             args: AppWidgetArgs(key: key),
@@ -143,7 +166,7 @@ class AppWidget extends _i2.PageRouteInfo<AppWidgetArgs> {
 class AppWidgetArgs {
   const AppWidgetArgs({this.key});
 
-  final _i8.Key? key;
+  final _i9.Key? key;
 
   @override
   String toString() {
@@ -167,6 +190,16 @@ class LoansRouter extends _i2.PageRouteInfo<void> {
       : super(LoansRouter.name, path: 'loans', initialChildren: children);
 
   static const String name = 'LoansRouter';
+}
+
+/// generated route for
+/// [_i2.EmptyRouterPage]
+class ReservationRouter extends _i2.PageRouteInfo<void> {
+  const ReservationRouter({List<_i2.PageRouteInfo>? children})
+      : super(ReservationRouter.name,
+            path: 'reservation', initialChildren: children);
+
+  static const String name = 'ReservationRouter';
 }
 
 /// generated route for
@@ -240,7 +273,15 @@ class LoansRoute extends _i2.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.AccountPage]
+/// [_i6.ReservationPage]
+class ReservationRoute extends _i2.PageRouteInfo<void> {
+  const ReservationRoute() : super(ReservationRoute.name, path: '');
+
+  static const String name = 'ReservationRoute';
+}
+
+/// generated route for
+/// [_i7.AccountPage]
 class AccountRoute extends _i2.PageRouteInfo<void> {
   const AccountRoute() : super(AccountRoute.name, path: '');
 
@@ -248,7 +289,7 @@ class AccountRoute extends _i2.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i7.AboutPage]
+/// [_i8.AboutPage]
 class AboutRoute extends _i2.PageRouteInfo<void> {
   const AboutRoute() : super(AboutRoute.name, path: 'about');
 

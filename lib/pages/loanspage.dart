@@ -69,7 +69,18 @@ class LoansPage extends StatelessWidget {
               );
             } else {
               return Center(
-                child: Text('An error occurred'),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Une erreur est apparue'),
+                    ElevatedButton(
+                      onPressed: () async {
+                        event.add(LoadLoansEvent());
+                      },
+                      child: const Text('Ré-essayer'),
+                    ),
+                  ],
+                ),
               );
             }
           },

@@ -3,6 +3,7 @@ import 'package:biblionantes/pages/about_page.dart';
 import 'package:biblionantes/pages/accountpage.dart';
 import 'package:biblionantes/pages/detail_page.dart';
 import 'package:biblionantes/pages/loanspage.dart';
+import 'package:biblionantes/pages/reservationpage.dart';
 import 'package:biblionantes/pages/search_page.dart';
 
 import 'app.dart';
@@ -30,6 +31,16 @@ import 'app.dart';
           page: EmptyRouterPage,
           children: [
             AutoRoute(path: '', page: LoansPage),
+            AutoRoute(path: ':id', page: DetailPage),
+            RedirectRoute(path: '*', redirectTo: ''),
+          ],
+        ),
+        AutoRoute(
+          path: "reservation",
+          name: "ReservationRouter",
+          page: EmptyRouterPage,
+          children: [
+            AutoRoute(path: '', page: ReservationPage),
             AutoRoute(path: ':id', page: DetailPage),
             RedirectRoute(path: '*', redirectTo: ''),
           ],

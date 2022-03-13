@@ -11,6 +11,7 @@ class AppWidget extends StatelessWidget {
       routes: [
         SearchRouter(),
         LoansRouter(),
+        ReservationRouter(),
         AccountRouter()
       ],
       bottomNavigationBuilder: (_, tabsRouter) {
@@ -25,6 +26,10 @@ class AppWidget extends StatelessWidget {
               label: 'Livres empruntés',
             ),
             BottomNavigationBarItem(
+              icon: Icon(Icons.date_range),
+              label: 'Reservations',
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.card_membership),
               label: 'Mes cartes',
 
@@ -33,6 +38,7 @@ class AppWidget extends StatelessWidget {
           currentIndex: tabsRouter.activeIndex,
           onTap: tabsRouter.setActiveIndex,
           selectedItemColor: Colors.blueAccent[800],
+          unselectedItemColor: Colors.black,
         );
       }
     );

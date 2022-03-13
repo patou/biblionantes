@@ -2,6 +2,7 @@ import 'package:biblionantes/models/SummeryAccount.dart';
 import 'package:biblionantes/models/book.dart';
 import 'package:biblionantes/models/loansbook.dart';
 import 'package:biblionantes/models/reservation.dart';
+import 'package:biblionantes/models/reservationsbook.dart';
 import 'package:dio/dio.dart';
 import 'dart:async';
 
@@ -124,7 +125,7 @@ class LibraryCardRepository {
       await refreshAccountToken(account.login, account.password);
     }
     final response =
-        await client.get('accountPage',
+    await client.get('accountPage',
         queryParameters: {
           'locale': 'fr',
           'type': 'loans',
@@ -146,17 +147,73 @@ class LibraryCardRepository {
     return list;
   }
 
+  Future<List<ReservationsBook>> loadReservationsList() async {
+    var results = await Future.wait(accounts.map((account) { return this.loadReservationsListByAccount(account); }));
+    return results.expand((element) => element).toList();
+  }
+
+  Future<List<ReservationsBook>> loadReservationsListByAccount(LibraryCard account) async {
+    print("load reservations ${account.name} ${account.login}");
+    if (!tokens.containsKey(account.login) || tokens[account.login]!.isNotEmpty) {
+      print("refresh token ${account.login}");
+      await refreshAccountToken(account.login, account.password);
+    }
+    final response =
+    await client.get('accountPage',
+        queryParameters: {
+          'locale': 'fr',
+          'type': 'reservations',
+          'pageNo': '1',
+          'pageSize': '15'
+        },
+        options: Options(
+            headers:{
+              'Authorization': 'Bearer ${tokens[account.login]}'
+            })
+    );
+    if (response.statusCode != 200) {
+      tokens.remove(account.userId);
+      print(response);
+      return Future.error(AuthenticateException(
+          'error occurred when authenticate: ${response.statusCode}'));
+    }
+    var list = response.data['items'].map<ReservationsBook>((json) => ReservationsBook.fromJson(json, account.name, account.login)).toList();
+    return list;
+  }
 
   Future<List<LoansBook>> resolveBook(List<LoansBook> books) async {
     if (books.isEmpty)
       return [];
+    var data = await resolveBookBySeqNos(books.map((e) => e.seqNo));
+    if (data == null) {
+      return books;
+    }
+    return books.map((loadBook) {
+      Book? book = data[loadBook.id];
+      return book != null ? loadBook.copyFromBook(book) : loadBook;
+    }).toList();
+  }
+
+  Future<List<ReservationsBook>> resolveReservableBook(List<ReservationsBook> books) async {
+    if (books.isEmpty)
+      return [];
+    var data = await resolveBookBySeqNos(books.map((e) => e.seqNo));
+    if (data == null) {
+      return books;
+    }
+    return books.map((loadBook) {
+      Book? book = data[loadBook.id];
+      return book != null ? loadBook.copyFromBook(book) : loadBook;
+    }).toList();
+  }
+
+  Future<Map<String, Book>?> resolveBookBySeqNos(Iterable<String> ids) async {
     await refreshTokens();
-    final ids = books.map((e) => e.seqNo).join(",");
     final response =
-    await client.post('resolveBySeqNo',
+        await client.post('resolveBySeqNo',
         data: {
           "locale": "fr",
-          "ids": ids,
+          "ids": ids.join(","),
         },
         options: Options(contentType: Headers.formUrlEncodedContentType, headers:{
           // Le token attend le token d'authentification plus un autre ID, qui ne semble pas utilisé.
@@ -164,13 +221,10 @@ class LibraryCardRepository {
         }));
     if (response.statusCode != 200 || response.data['resultSet'] == null) {
       print("error");
-      return books;
+      return null;
     }
     Map<String, Book> data = Map.fromIterable(response.data['resultSet'].map<Book>((json) => Book.fromJson(json)).toList(), key: (book) => book.id);
-    return books.map((loadBook) {
-      Book? book = data[loadBook.id];
-      return book != null ? loadBook.copyFromBook(book) : loadBook;
-    }).toList();
+    return data;
   }
 
   void dispose() => _controller.close();
