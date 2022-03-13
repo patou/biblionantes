@@ -37,7 +37,7 @@ class AppWidget extends StatelessWidget {
           ],
           currentIndex: tabsRouter.activeIndex,
           onTap: tabsRouter.setActiveIndex,
-          selectedItemColor: Colors.blueAccent[800],
+          selectedItemColor: Colors.blue,
           unselectedItemColor: Colors.black,
         );
       }

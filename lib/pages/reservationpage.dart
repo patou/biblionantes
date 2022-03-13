@@ -62,6 +62,7 @@ class ReservationPage extends StatelessWidget {
                                 action: 'cancel',
                                 account: element.login,
                                 documentNumber: element.documentNumber,
+                                seqNo: element.seqNo,
                               )),
                           child: BookCard(
                             book: element,

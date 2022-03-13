@@ -9,12 +9,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class DetailPage extends StatelessWidget {
-  DetailPage({@PathParam('id') required this.id, @QueryParam('action') this.action, @QueryParam('account') this.account, @QueryParam('documentNumber') this.documentNumber});
+  DetailPage({@PathParam('id') required this.id, @QueryParam('action') this.action, @QueryParam('account') this.account, @QueryParam('documentNumber') this.documentNumber, @QueryParam('seqNo') this.seqNo, @QueryParam('branchCode') this.branchCode, @QueryParam('omnidexId') this.omnidexId});
 
   final String id;
   final String? action;
   final String? account;
   final String? documentNumber;
+  final String? seqNo;
+  final String? branchCode;
+  final String? omnidexId;
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -41,7 +44,7 @@ class DetailPage extends StatelessWidget {
                           book: state.detail.book,
                           useBoxShadow: false,
                         ),
-                        BookAction(id: id, action: action, account: account, documentNumber: documentNumber, context: context),
+                        BookAction(id: id, action: action, account: account, documentNumber: documentNumber, seqNo: seqNo, branchCode: branchCode, omnidexId: omnidexId, context: context),
                         Container(
                           child: TabBar(
                             labelColor: Colors.blue,
@@ -85,12 +88,18 @@ class BookAction extends StatefulWidget {
     required this.account,
     required this.documentNumber,
     required this.context,
+    this.seqNo,
+    this.branchCode,
+    this.omnidexId,
   }) : super(key: key);
 
   final String id;
   final String? action;
   final String? account;
   final String? documentNumber;
+  final String? seqNo;
+  final String? branchCode;
+  final String? omnidexId;
   final BuildContext context;
 
   @override
@@ -100,6 +109,7 @@ class BookAction extends StatefulWidget {
 class _BookActionState extends State<BookAction> {
   String? action;
   String? account;
+  bool loading = false;
 
   @override
   void initState() {
@@ -110,6 +120,9 @@ class _BookActionState extends State<BookAction> {
 
   @override
   Widget build(BuildContext context) {
+    if (this.loading) {
+      return CircularProgressIndicator();
+    }
     switch (this.action) {
       case 'reserve':
         return Container(
@@ -126,6 +139,9 @@ class _BookActionState extends State<BookAction> {
         var onPressed;
         if (this.account != null && this.widget.documentNumber != null) {
           onPressed = () async {
+            setState(() {
+              this.loading = true;
+            });
             bool renewed = await context.read<LibraryCardRepository>().renewBook(this.account!, this.widget.documentNumber!);
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -136,6 +152,7 @@ class _BookActionState extends State<BookAction> {
             setState(() {
               this.action = renewed ? "renewed" : "renew";
               this.account = null;
+              this.loading = false;
             });
           };
         }
@@ -148,11 +165,35 @@ class _BookActionState extends State<BookAction> {
           ),
         );
       case 'cancel':
+        var onPressed;
+        if (this.account != null && this.widget.seqNo != null) {
+          onPressed = () async {
+            setState(() {
+              this.loading = true;
+            });
+            bool canceled = await context.read<LibraryCardRepository>()
+                .cancelReservationBook(this.account!, this.widget.seqNo!, this.widget.branchCode!, this.widget.omnidexId!);
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: canceled ? Colors.lightGreen : Colors
+                      .redAccent,
+                  content: Text(canceled
+                      ? "Reservation annulé"
+                      : "Cette réservation ne peut plus être annulé"),
+                )
+            );
+            setState(() {
+              this.action = canceled ? "canceled" : "cancel";
+              this.account = null;
+              this.loading = false;
+            });
+          };
+        }
         return Container(
           width: double.infinity,
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
-            onPressed: null,
+            onPressed: onPressed,
             child: const Text('Annuler la réservation'),
           ),
         );
@@ -163,6 +204,15 @@ class _BookActionState extends State<BookAction> {
           child: ElevatedButton(
             onPressed: null,
             child: const Text('Renouvelé'),
+          ),
+        );
+      case 'canceled':
+        return Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: null,
+            child: const Text('Annulé'),
           ),
         );
       default:

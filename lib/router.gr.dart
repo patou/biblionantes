@@ -61,14 +61,20 @@ class AppRouter extends _i2.RootStackRouter {
               id: pathParams.getString('id'),
               action: queryParams.optString('action'),
               account: queryParams.optString('account'),
-              documentNumber: queryParams.optString('documentNumber')));
+              documentNumber: queryParams.optString('documentNumber'),
+              seqNo: queryParams.optString('seqNo'),
+              branchCode: queryParams.optString('branchCode'),
+              omnidexId: queryParams.optString('omnidexId')));
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
           child: _i4.DetailPage(
               id: args.id,
               action: args.action,
               account: args.account,
-              documentNumber: args.documentNumber));
+              documentNumber: args.documentNumber,
+              seqNo: args.seqNo,
+              branchCode: args.branchCode,
+              omnidexId: args.omnidexId));
     },
     LoansRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
@@ -226,21 +232,30 @@ class DetailRoute extends _i2.PageRouteInfo<DetailRouteArgs> {
       {required String id,
       String? action,
       String? account,
-      String? documentNumber})
+      String? documentNumber,
+      String? seqNo,
+      String? branchCode,
+      String? omnidexId})
       : super(DetailRoute.name,
             path: ':id',
             args: DetailRouteArgs(
                 id: id,
                 action: action,
                 account: account,
-                documentNumber: documentNumber),
+                documentNumber: documentNumber,
+                seqNo: seqNo,
+                branchCode: branchCode,
+                omnidexId: omnidexId),
             rawPathParams: {
               'id': id
             },
             rawQueryParams: {
               'action': action,
               'account': account,
-              'documentNumber': documentNumber
+              'documentNumber': documentNumber,
+              'seqNo': seqNo,
+              'branchCode': branchCode,
+              'omnidexId': omnidexId
             });
 
   static const String name = 'DetailRoute';
@@ -248,7 +263,13 @@ class DetailRoute extends _i2.PageRouteInfo<DetailRouteArgs> {
 
 class DetailRouteArgs {
   const DetailRouteArgs(
-      {required this.id, this.action, this.account, this.documentNumber});
+      {required this.id,
+      this.action,
+      this.account,
+      this.documentNumber,
+      this.seqNo,
+      this.branchCode,
+      this.omnidexId});
 
   final String id;
 
@@ -258,9 +279,15 @@ class DetailRouteArgs {
 
   final String? documentNumber;
 
+  final String? seqNo;
+
+  final String? branchCode;
+
+  final String? omnidexId;
+
   @override
   String toString() {
-    return 'DetailRouteArgs{id: $id, action: $action, account: $account, documentNumber: $documentNumber}';
+    return 'DetailRouteArgs{id: $id, action: $action, account: $account, documentNumber: $documentNumber, seqNo: $seqNo, branchCode: $branchCode, omnidexId: $omnidexId}';
   }
 }
 

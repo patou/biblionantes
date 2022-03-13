@@ -248,6 +248,27 @@ class LibraryCardRepository {
     return response.data['extended'] as bool;
   }
 
+  Future<bool> cancelReservationBook(String account, String seqNo, String branchCode, String omnidexId) async {
+    final response = await client.get('cancelReservation',
+        queryParameters: {
+          'seqNo': seqNo,
+          'pickupBranch': branchCode,
+          'omnidexId': omnidexId,
+        },
+        options: Options(
+            headers:{
+              'Authorization': 'Bearer ${tokens[account]}'
+            }
+        )
+    );
+    if (response.statusCode != 200) {
+      print("error");
+      return false;
+    }
+    print(response.data);
+    return response.data as bool;
+  }
+
   Future<List<ReservationChoices>> reservationChoices(String bookId) async {
     await refreshTokens();
     final response = await client.get('reservationChoices',

@@ -17,6 +17,8 @@ class ReservationsBook extends Book {
   final DateTime? expiryDate;
   final ReservationsStatus status;
   final String branchName;
+  final String branchCode;
+  final String omnidexId;
   final int rank;
   final String documentNumber;
 
@@ -29,6 +31,8 @@ class ReservationsBook extends Book {
     required this.rank,
     required this.status,
     required this.branchName,
+    required this.branchCode,
+    required this.omnidexId,
     required this.documentNumber,
     DateTime? this.expiryDate,
     String? id,
@@ -57,6 +61,8 @@ class ReservationsBook extends Book {
         expiryDate: DateTime.tryParse(json['data']['expiryDate']),
         rank: int.parse(json['data']['rank']),
         branchName: json['data']['branch']['desc'],
+        branchCode: json['data']['branch']['branchCode'],
+        omnidexId: json['data']['omnidexId'] as String,
         status: parseReservationsStatus(json['data']['statusCode']),
         account: account,
         login: login,
@@ -88,6 +94,8 @@ class ReservationsBook extends Book {
     String? documentNumber,
     String? title,
     String? branchName,
+    String? branchCode,
+    String? omnidexId,
     DateTime? resvDate,
     DateTime? expiryDate,
     ReservationsStatus? status,
@@ -109,6 +117,8 @@ class ReservationsBook extends Book {
       resvDate: resvDate ?? this.resvDate,
       rank: rank ?? this.rank,
       branchName: branchName ?? this.branchName,
+      branchCode: branchCode ?? this.branchCode,
+      omnidexId: omnidexId ?? this.omnidexId,
       status: status ?? this.status,
       expiryDate: expiryDate ?? this.expiryDate,
       account: account ?? this.account,
@@ -132,7 +142,7 @@ class ReservationsBook extends Book {
   }
 
   @override
-  List<Object?> get props => [...super.props, account, resvDate, expiryDate, rank, branchName, status, login];
+  List<Object?> get props => [...super.props, account, resvDate, expiryDate, rank, branchName, branchCode, omnidexId, status, login];
 }
 
 /// On ne connais pas l'ID du document dans la liste des prêts et reservation seulement le seqNo.
