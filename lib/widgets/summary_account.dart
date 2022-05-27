@@ -29,7 +29,7 @@ class SummaryAccountCard extends StatelessWidget {
                 if (snapshot.hasError) {
                   print(snapshot.error);
                   return Center(
-                    child: Text('An error occurred'),
+                    child: Text('Une erreur est apparue'),
                   );
                 }
 

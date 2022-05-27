@@ -4,6 +4,7 @@ import 'package:biblionantes/models/loansbook.dart';
 import 'package:biblionantes/models/reservationsbook.dart';
 import 'package:biblionantes/router.gr.dart';
 import 'package:biblionantes/widgets/book_card.dart';
+import 'package:biblionantes/widgets/no_result_widget.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -34,9 +35,12 @@ class ReservationPage extends StatelessWidget {
             } else if (state is ReservationsList) {
               List<ReservationsBook> list = state.list;
               if (list.length == 0) {
-                return Center(
-                  child: Text("Aucune reservations en cours"),
-                );
+                return NoResultWidget(
+                    noResultText: 'Aucune reservations en cours',
+                    retryButtonText: 'Rafraichir',
+                    onRetry: () async {
+                      event.add(LoadReservationsEvent());
+                    });
               }
               return RefreshIndicator(
                 onRefresh: () async {
@@ -71,20 +75,12 @@ class ReservationPage extends StatelessWidget {
                     }),
               );
             } else {
-              return Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('Une erreur est apparue'),
-                    ElevatedButton(
-                      onPressed: () async {
-                        event.add(LoadReservationsEvent());
-                      },
-                      child: const Text('Ré-essayer'),
-                    ),
-                  ],
-                ),
-              );
+              return NoResultWidget(
+                  noResultText: 'Une erreur est apparue',
+                  retryButtonText: 'Ré-essayer',
+                  onRetry: () async {
+                    event.add(LoadReservationsEvent());
+                  });
             }
           },
         ),
