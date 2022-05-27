@@ -67,6 +67,8 @@ class ReservationPage extends StatelessWidget {
                                 account: element.login,
                                 documentNumber: element.documentNumber,
                                 seqNo: element.seqNo,
+                                omnidexId: element.omnidexId,
+                                branchCode: element.branchCode
                               )),
                           child: BookCard(
                             book: element,
