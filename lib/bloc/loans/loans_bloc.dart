@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:biblionantes/models/loansbook.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
@@ -12,19 +13,27 @@ class LoansBloc extends Bloc<LoansEvent, LoansState> {
 
   LoansBloc({required this.accountRepository}) : super(LoansInitial()) {
     on<LoadLoansEvent>(onLoadLoansEvent);
+    on<SelectLoansEvent>(onSelectLoandEvent);
   }
 
   final LibraryCardRepository accountRepository;
+
+  FutureOr<void> onSelectLoandEvent(SelectLoansEvent event, Emitter<LoansState> emit) {
+    var currentState = state;
+    if (currentState is LoansList) {
+      emit(currentState.selectDocument(event.documentId));
+    }
+  }
 
   FutureOr<void> onLoadLoansEvent(LoadLoansEvent event, Emitter<LoansState> emit) async {
     try {
       emit(LoansInProgress());
       // On récupère la liste des prêts
       var list = await accountRepository.loadLoansList();
-      emit(LoansList(list));
+      emit(LoansList(list: list));
       // On complète pour récupérer les infos plus précises des documents.
       list = await accountRepository.resolveBook(list);
-      emit(LoansList(list));
+      emit(LoansList(list: list));
     }
     catch (e, stack) {
       print(e);

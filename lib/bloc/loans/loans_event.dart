@@ -9,3 +9,12 @@ abstract class LoansEvent extends Equatable {
 
 class LoadLoansEvent extends LoansEvent {
 }
+
+class SelectLoansEvent extends LoansEvent {
+  final String documentId;
+
+  SelectLoansEvent({ required this.documentId });
+
+  @override
+  List<Object?> get props => [documentId];
+}

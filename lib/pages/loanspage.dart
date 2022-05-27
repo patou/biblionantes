@@ -24,6 +24,18 @@ class LoansPage extends StatelessWidget {
           title: Text('Mes livres empruntés'),
           centerTitle: true,
         ),
+        /*floatingActionButton: BlocBuilder<LoansBloc, LoansState>(
+          buildWhen: (_, state) => (state is LoansList) && state.isSelectionMode,
+          builder: (_, state) {
+            if (state is LoansList && state.isSelectionMode) {
+              return FloatingActionButton(onPressed: () {
+
+              }, child: Text(state.selectedFlag.values.where((element) => element).length.toString())
+              );
+            }
+            return Container();
+          },
+        ),*/
         body: BlocBuilder<LoansBloc, LoansState>(
           builder: (_, state) {
             if (state is LoansInProgress) {
@@ -59,15 +71,29 @@ class LoansPage extends StatelessWidget {
                         ),
                     itemBuilder: (c, element) {
                       return GestureDetector(
-                          onTap: () => context.pushRoute(DetailRoute(
+                          onLongPress: () {
+                            event.add(SelectLoansEvent(documentId: element.id));
+                          },
+                          onTap: () {
+                            if (state.isSelectionMode) {
+                              event.add(SelectLoansEvent(documentId: element.id));
+                            }
+                            else {
+                              context.pushRoute(DetailRoute(
                                 id: element.id,
                                 action: element.renewable ? 'renew' : null,
-                                account: element.renewable ? element.login : null,
+                                account: element.renewable
+                                    ? element.login
+                                    : null,
                                 documentNumber: element.documentNumber,
-                              )),
+                              ));
+                            }
+                          },
                           child: BookCard(
                             book: element,
                             widget: LoansReturn(loansBook: element),
+                            isSelected: state.isSelected(element.id),
+                            isSelectedMode: state.isSelectionMode,
                           ));
                     }),
               );
