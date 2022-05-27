@@ -278,7 +278,7 @@ class LibraryCardRepository {
         },
         options: Options(
             headers:{
-              'X-InMedia-Authorization': 'Bearer $lastToken 3'
+              'X-InMedia-Authorization': 'Bearer $lastToken 3' // The header is not the same and not work if there are not 2 tokens with defined value for the second one
             }
         )
     );
