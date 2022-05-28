@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors_in_immutables
+
 part of 'detail_bloc.dart';
 
 abstract class DetailState extends Equatable {

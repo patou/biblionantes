@@ -1,7 +1,9 @@
+// ignore_for_file: unnecessary_this
+
 import 'dart:async';
-import 'package:biblionantes/models/SummeryAccount.dart';
+import 'package:biblionantes/models/summery_account.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -10,7 +12,7 @@ part 'library_card_event.dart';
 part 'library_card_state.dart';
 
 class LibraryCardBloc extends Bloc<LibraryCardEvent, AbstractLibraryCardState> {
-  LibraryCardBloc({required LibraryCardRepository accountRepository}) : this.accountRepository = accountRepository, super(InitialLibraryCardState()) {
+  LibraryCardBloc({required this.accountRepository}) : super(InitialLibraryCardState()) {
     on<LoadLibraryCardEvent>(onLoadLibraryCardEvent);
     on<LibraryCardChangedEvent>(onLibraryCardChangedEvent);
     on<AddLibraryCardEvent>(onAddLibraryCardEvent);

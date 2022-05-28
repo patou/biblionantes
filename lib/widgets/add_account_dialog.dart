@@ -16,7 +16,7 @@ class AddAccountDialog extends StatelessWidget {
         return null;
       },
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Nom de la carte",
         border:
         OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
@@ -34,9 +34,9 @@ class AddAccountDialog extends StatelessWidget {
         }
         return null;
       },
-      keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
+      keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "0000000000",
         border:
         OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
@@ -51,18 +51,18 @@ class AddAccountDialog extends StatelessWidget {
         }
         return null;
       },
-      keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
+      keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Défaut date (JJMMAAAA)",
         border:
         OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
       )
   );
-  final GlobalKey<ScaffoldState> _scaffoldAlertKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _scaffoldAlertKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     return BlocListener<LibraryCardBloc, AbstractLibraryCardState>(
       listener: (context, state) {
         if (state is AddLibraryCardStateSuccess) {
@@ -71,7 +71,7 @@ class AddAccountDialog extends StatelessWidget {
         if (state is AddLibraryCardStateError) {
           print(state.error);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("La carte n'existe pas, vérifier le numero de la carte et la date de naissance"),
+            content: const Text("La carte n'existe pas, vérifier le numero de la carte et la date de naissance"),
             backgroundColor: Colors.red[100],
             elevation: 30,
             ));
@@ -81,23 +81,23 @@ class AddAccountDialog extends StatelessWidget {
         key: _scaffoldAlertKey,
         backgroundColor: Colors.transparent,
         body: AlertDialog(
-          title: new Text("Ajouter une carte de bibliothèque"),
+          title: const Text("Ajouter une carte de bibliothèque"),
           content: Form(
-            key: _formKey,
+            key: formKey,
             child: Padding(
               padding: const EdgeInsets.all(1.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  SizedBox(height: 5.0),
-                  Text("Nom de la carte"),
+                  const SizedBox(height: 5.0),
+                  const Text("Nom de la carte"),
                   nameField,
-                  SizedBox(height: 5.0),
-                  Text("Numero de la carte"),
+                  const SizedBox(height: 5.0),
+                  const Text("Numero de la carte"),
                   loginField,
-                  SizedBox(height: 5.0),
-                  Text("Mot de passe"),
+                  const SizedBox(height: 5.0),
+                  const Text("Mot de passe"),
                   passwordField,
                 ],
               ),
@@ -108,30 +108,31 @@ class AddAccountDialog extends StatelessWidget {
             BlocBuilder<LibraryCardBloc, AbstractLibraryCardState>(
               buildWhen: (previous, current) => current is AddLibraryCardState,
               builder: (context, state) {
-                if (state is AddLibraryCardStateInProgress)
-                  return  CircularProgressIndicator();
-                return new TextButton(
-                  child: new Text("Ajouter"),
+                if (state is AddLibraryCardStateInProgress) {
+                  return  const CircularProgressIndicator();
+                }
+                return TextButton(
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all(Colors.blueAccent),
                   ),
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
+                    if (formKey.currentState!.validate()) {
                       context.read<LibraryCardBloc>().add(AddLibraryCardEvent(login: loginField.controller!.value.text, name: nameField.controller!
                           .value.text, pass: passwordField.controller!.value.text));
                     }
                   },
+                  child: const Text("Ajouter"),
                 );
               }
             ),
-            new TextButton(
-              child: new Text("Annuler"),
+            TextButton(
               style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all(Colors.black45),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: const Text("Annuler"),
             ),
           ],
         ),

@@ -4,19 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchPage extends StatelessWidget {
+  const SearchPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SearchBookBloc>(
       create: (context) => SearchBookBloc(searchRepository: context.read()),
       child: Scaffold(
           appBar: AppBar(
-            title: Text('Recherche de livre'),
+            title: const Text('Recherche de livre'),
             centerTitle: true,
           ),
           body: Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
-                  children: [
+                  children: const [
                     SearchWidget(),
                     SizedBox(height: 20),
                     SearchList()
@@ -32,7 +34,7 @@ class SearchWidget extends StatefulWidget {
   @override
   _SearchWidgetState createState() => _SearchWidgetState();
 
-  SearchWidget({Key? key}) : super(key: key);
+  const SearchWidget({Key? key}) : super(key: key);
 }
 
 class _SearchWidgetState extends State<SearchWidget> {
@@ -45,14 +47,14 @@ class _SearchWidgetState extends State<SearchWidget> {
         context.read<SearchBookBloc>().add(SearchBookTextSearched(search: search));
       },
       decoration: InputDecoration(
-        prefixIcon: Icon(Icons.search),
-        suffixIcon: _controller.text.length > 0
+        prefixIcon: const Icon(Icons.search),
+        suffixIcon: _controller.text.isNotEmpty
             ? GestureDetector(
           onTap: () {
             _controller.clear();
             context.read<SearchBookBloc>().add(SearchBookTextCleared());
           }, // removes the content in the field
-          child: Icon(Icons.clear_rounded),
+          child: const Icon(Icons.clear_rounded),
         )
             : null,
       ),

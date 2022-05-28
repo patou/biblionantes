@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:biblionantes/models/loansbook.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 part 'loans_event.dart';

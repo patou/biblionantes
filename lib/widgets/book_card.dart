@@ -26,15 +26,15 @@ class BookCard extends StatelessWidget {
         color: isSelected ? Colors.blue[50] : Colors.white,
         boxShadow: [
           if (useBoxShadow == true)
-            BoxShadow(
+            const BoxShadow(
                 color: Colors.grey,
-                offset: const Offset(0.0, 1.0),
+                offset: Offset(0.0, 1.0),
                 blurRadius: 6.0),
         ],
       ),
       child: Row(
         children: [
-          Container(
+          SizedBox(
             width: 150,
             child: Stack(
               alignment: Alignment.center,
@@ -43,14 +43,14 @@ class BookCard extends StatelessWidget {
                     ? Image.network(
                         book.imageURL!,
                       )
-                    : Icon(Icons.book),
-                if (this.isSelectedMode)
+                    : const Icon(Icons.book),
+                if (isSelectedMode)
                   Positioned(
                       top: 5,
                       left: 5,
-                      child: this.isSelected
-                          ? Icon(Icons.check_box_rounded, color: Colors.green,)
-                          : Icon(Icons.check_box_outline_blank_rounded, color: Colors.grey))
+                      child: isSelected
+                          ? const Icon(Icons.check_box_rounded, color: Colors.green,)
+                          : const Icon(Icons.check_box_outline_blank_rounded, color: Colors.grey))
               ],
             ),
           ),
@@ -68,12 +68,12 @@ class BookCard extends StatelessWidget {
                     book.creators!,
                     softWrap: false,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 12,
                     ),
                   ),
-                Spacer(),
+                const Spacer(),
                 if (book.type != null)
                   Text(
                     book.type!,

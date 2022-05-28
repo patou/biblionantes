@@ -8,6 +8,7 @@ class FetchDataException implements Exception {
 
   FetchDataException([this._message]);
 
+  @override
   String toString() {
     return "$_prefix$_message";
   }
@@ -17,7 +18,7 @@ class FetchDataException implements Exception {
 class SearchRepository {
   final Dio client;
 
-  SearchRepository({required this.client});
+  const SearchRepository({required this.client});
 
   Future<List<Book>> search(String search, {int page = 1, int pageSize = 20}) async {
     final response = await client.post('search', data: {
@@ -47,7 +48,7 @@ class SearchRepository {
       return books;
     }
     return books.map((book) {
-      bool? available = response.data[book.id]?['isAvailable'] ?? null;
+      bool? available = response.data[book.id]?['isAvailable'];
       return book.copyWith(available: available);
     }).toList();
   }
@@ -72,10 +73,12 @@ class SearchRepository {
         creators: creators.map((item) => item['value']).join(', '),
         imageURL: 'https://catalogue-bm.nantes.fr${summary['imageSource_128']?['value']}');
     var details = <Detail>[];
-    if (creators.isNotEmpty)
+    if (creators.isNotEmpty) {
       details.addAll(creators.map((item) => Detail(display: item['display'], value: item['value'], icon: Icons.person, order: 1)).toList());
-    if (summary['meta.publicationStatement'] != null)
+    }
+    if (summary['meta.publicationStatement'] != null) {
       details.add(Detail(display: summary['meta.publicationStatement']?['display'], value: summary['meta.publicationStatement']?['value'], icon: Icons.publish, order: 3));
+    }
     return BookDetail(book: book, details: details);
   }
 

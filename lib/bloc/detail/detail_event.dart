@@ -7,7 +7,7 @@ abstract class DetailEvent extends Equatable {
 class LoadDetailEvent extends DetailEvent {
   final String id;
 
-  LoadDetailEvent(this.id);
+  const LoadDetailEvent(this.id);
 
   @override
   // TODO: implement props

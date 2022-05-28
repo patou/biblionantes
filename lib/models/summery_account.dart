@@ -20,7 +20,7 @@ class SummeryAccount {
   final DateTime? expiryDate;
   final bool hasTrapLevel;
 
-  SummeryAccount({
+  const SummeryAccount({
     required this.id,
     required this.firstName,
     required this.lastName,
@@ -67,7 +67,7 @@ class AuthentInfo {
   final String login;
   final String userId;
 
-  AuthentInfo({required this.token, required this.login, required this.userId});
+  const AuthentInfo({required this.token, required this.login, required this.userId});
 
   factory AuthentInfo.fromJson(Map<String, dynamic> json) {
     return AuthentInfo(
@@ -85,7 +85,7 @@ class LibraryCard extends Equatable {
   final String userId;
   final String name;
 
-  LibraryCard({required this.login, required this.password, required this.userId, required this.name});
+  const LibraryCard({required this.login, required this.password, required this.userId, required this.name});
 
   factory LibraryCard.fromSharedPref(String str) {
     var parts = str.split(SEPARATOR);

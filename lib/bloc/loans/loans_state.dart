@@ -20,7 +20,7 @@ class LoansList extends LoansState {
   final bool isSelectionMode;
   final LoansBookGroupBy groupBy;
 
-  LoansList(
+  const LoansList(
       {required this.list,
       this.selectedFlag = const {},
       this.isSelectionMode = false,
@@ -42,7 +42,7 @@ class LoansList extends LoansState {
 
   LoansList selectDocument(String documentId) {
     bool isSelected = selectedFlag[documentId] ?? false;
-    var newSelectedFlag = new Map<String, bool>.from(selectedFlag)
+    var newSelectedFlag = Map<String, bool>.from(selectedFlag)
       ..addAll({documentId: !isSelected});
     var isSelectionMode = newSelectedFlag.containsValue(true);
     return copyWith(
@@ -50,21 +50,22 @@ class LoansList extends LoansState {
   }
 
   bool isSelected(String documentId) {
-    return this.selectedFlag[documentId] ?? false;
+    return selectedFlag[documentId] ?? false;
   }
 
   @override
   List<Object> get props => [list, selectedFlag, isSelectionMode, groupBy];
 
+  @override
   String toString() {
-    return "LoansList(list: ${this.list.length} items, isSelectionMode: $isSelectionMode, groupBy: $groupBy)";
+    return "LoansList(list: ${list.length} items, isSelectionMode: $isSelectionMode, groupBy: $groupBy)";
   }
 }
 
 class LoansError extends LoansState {
   final String error;
 
-  LoansError(this.error);
+  const LoansError(this.error);
 
   @override
   List<Object> get props => [error];

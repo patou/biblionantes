@@ -1,4 +1,4 @@
-import 'package:biblionantes/models/SummeryAccount.dart';
+import 'package:biblionantes/models/summery_account.dart';
 import 'package:biblionantes/models/book.dart';
 import 'package:biblionantes/models/loansbook.dart';
 import 'package:biblionantes/models/reservation.dart';
@@ -14,6 +14,7 @@ class AuthenticateException implements Exception {
 
   AuthenticateException([this._message]);
 
+  @override
   String toString() {
     return "$_prefix$_message";
   }
@@ -47,17 +48,17 @@ class LibraryCardRepository {
 
   List<LibraryCard> accounts = [];
 
-  Map<String, String> tokens = Map();
+  Map<String, String> tokens = {};
   String? lastToken;
 
   Stream<List<LibraryCard>> getLibraryCards() async* {
     await loadLibraryCards();
-    yield* this._controller.stream;
+    yield* _controller.stream;
   }
 
   Future<AuthentInfo> addLibraryCards(String name, String login, String pass) async {
     AuthentInfo authentInfo = await refreshAccountToken(login, pass);
-    this.accounts.add(LibraryCard(login: login, password: pass, userId: authentInfo.userId, name: name));
+    accounts.add(LibraryCard(login: login, password: pass, userId: authentInfo.userId, name: name));
     await saveLibraryCards();
     _controller.add(accounts);
     return authentInfo;
@@ -108,13 +109,13 @@ class LibraryCardRepository {
   }
 
   Future<void> removeLibraryCard(LibraryCard libraryCard) async {
-    this.accounts.remove(libraryCard);
+    accounts.remove(libraryCard);
     await saveLibraryCards();
     _controller.add(accounts);
   }
 
   Future<List<LoansBook>> loadLoansList() async {
-    var results = await Future.wait(accounts.map((account) { return this.loadLoansListByAccount(account); }));
+    var results = await Future.wait(accounts.map((account) { return loadLoansListByAccount(account); }));
     return results.expand((element) => element).toList();
   }
 
@@ -147,7 +148,7 @@ class LibraryCardRepository {
   }
 
   Future<List<ReservationsBook>> loadReservationsList() async {
-    var results = await Future.wait(accounts.map((account) { return this.loadReservationsListByAccount(account); }));
+    var results = await Future.wait(accounts.map((account) { return loadReservationsListByAccount(account); }));
     return results.expand((element) => element).toList();
   }
 
@@ -180,8 +181,9 @@ class LibraryCardRepository {
   }
 
   Future<List<LoansBook>> resolveBook(List<LoansBook> books) async {
-    if (books.isEmpty)
+    if (books.isEmpty) {
       return [];
+    }
     var data = await resolveBookBySeqNos(books.map((e) => e.seqNo));
     if (data == null) {
       return books;
@@ -193,8 +195,9 @@ class LibraryCardRepository {
   }
 
   Future<List<ReservationsBook>> resolveReservableBook(List<ReservationsBook> books) async {
-    if (books.isEmpty)
+    if (books.isEmpty) {
       return [];
+    }
     var data = await resolveBookBySeqNos(books.map((e) => e.seqNo));
     if (data == null) {
       return books;
@@ -300,7 +303,7 @@ class LibraryCardRepository {
         )
     );
     if (response.statusCode != 200 || response.data['errorReponse'] != null) {
-      print("error" + response.data['error']);
+      print("error ${response.data['error']}");
       return Future.error(response.data['error']);
     }
     return response.data['errorCode'] == "SUCCESS";

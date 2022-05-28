@@ -46,6 +46,7 @@ class LoansBook extends Book {
     );
   }
 
+  @override
   LoansBook copyWith({
     String? id,
     String? seqNo,
@@ -96,7 +97,7 @@ class LoansBook extends Book {
 /// On ne connais pas l'ID du document dans la liste des prêts et reservation seulement le seqNo.
 /// L'id est composé de p::usmarcdef_ suivit du seqNo sur 10 chiffres.
 toId(String seqNo) {
-  return 'p::usmarcdef_' + seqNo.padLeft(10, '0');
+  return 'p::usmarcdef_${seqNo.padLeft(10, '0')}';
 }
 
 enum LoansBookGroupBy {

@@ -9,7 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class DetailPage extends StatelessWidget {
-  DetailPage({@PathParam('id') required this.id, @QueryParam('action') this.action, @QueryParam('account') this.account, @QueryParam('documentNumber') this.documentNumber, @QueryParam('seqNo') this.seqNo, @QueryParam('branchCode') this.branchCode, @QueryParam('omnidexId') this.omnidexId});
+  const DetailPage({@PathParam('id') required this.id, @QueryParam('action') this.action, @QueryParam('account') this.account, @QueryParam('documentNumber') this.documentNumber, @QueryParam('seqNo') this.seqNo, @QueryParam('branchCode') this.branchCode, @QueryParam('omnidexId') this.omnidexId, Key? key}) : super(key: key);
 
   final String id;
   final String? action;
@@ -21,17 +21,17 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => DetailBloc(searchRepository: context.read())..add(LoadDetailEvent(this.id)),
+        create: (context) => DetailBloc(searchRepository: context.read())..add(LoadDetailEvent(id)),
         child: Scaffold(
             appBar: AppBar(
-              title: Text('Détail'),
+              title: const Text('Détail'),
               centerTitle: true,
             ),
             body: BlocBuilder<DetailBloc, DetailState>(
-              buildWhen: (last, next) => !(last is DetailSuccess),
+              buildWhen: (last, next) => last is! DetailSuccess,
               builder: (context, state) {
                 if (state is DetailInProgress) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
@@ -45,26 +45,24 @@ class DetailPage extends StatelessWidget {
                           useBoxShadow: false,
                         ),
                         BookAction(id: id, action: action, account: account, documentNumber: documentNumber, seqNo: seqNo, branchCode: branchCode, omnidexId: omnidexId, context: context),
-                        Container(
-                          child: TabBar(
-                            labelColor: Colors.blue,
-                            tabs: [
-                              Tab(
-                                icon: Icon(Icons.map),
-                                text: "Où le trouver ?",
-                              ),
-                              Tab(
-                                icon: Icon(Icons.more),
-                                text: "En savoir plus",
-                              ),
-                            ],
-                          ),
+                        const TabBar(
+                          labelColor: Colors.blue,
+                          tabs: [
+                            Tab(
+                              icon: Icon(Icons.map),
+                              text: "Où le trouver ?",
+                            ),
+                            Tab(
+                              icon: Icon(Icons.more),
+                              text: "En savoir plus",
+                            ),
+                          ],
                         ),
                         Flexible(
                           child: TabBarView(
                             children: [
                               StockList(),
-                              DetailMoreList(),
+                              const DetailMoreList(),
                             ],
                           ),
                         ),
@@ -72,7 +70,7 @@ class DetailPage extends StatelessWidget {
                     ),
                   );
                 }
-                return Center(
+                return const Center(
                   child: Text('An error occurred'),
                 );
               },
@@ -81,7 +79,7 @@ class DetailPage extends StatelessWidget {
 }
 
 class BookAction extends StatefulWidget {
-  BookAction({
+  const BookAction({
     Key? key,
     required this.id,
     required this.action,
@@ -113,36 +111,36 @@ class _BookActionState extends State<BookAction> {
 
   @override
   void initState() {
-    this.account = this.widget.account;
-    this.action = this.widget.action;
+    account = widget.account;
+    action = widget.action;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (this.loading) {
-      return CircularProgressIndicator();
+    if (loading) {
+      return const CircularProgressIndicator();
     }
-    switch (this.action) {
+    switch (action) {
       case 'reserve':
         return Container(
           width: double.infinity,
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
             onPressed: () async {
-              openModal(context, this.widget.id);
+              openModal(context, widget.id);
             },
             child: const Text('Réserver'),
           ),
         );
       case 'renew':
         var onPressed;
-        if (this.account != null && this.widget.documentNumber != null) {
+        if (account != null && widget.documentNumber != null) {
           onPressed = () async {
             setState(() {
-              this.loading = true;
+              loading = true;
             });
-            bool renewed = await context.read<LibraryCardRepository>().renewBook(this.account!, this.widget.documentNumber!);
+            bool renewed = await context.read<LibraryCardRepository>().renewBook(account!, widget.documentNumber!);
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   backgroundColor: renewed ? Colors.lightGreen : Colors.redAccent,
@@ -150,9 +148,9 @@ class _BookActionState extends State<BookAction> {
                 )
             );
             setState(() {
-              this.action = renewed ? "renewed" : "renew";
-              this.account = null;
-              this.loading = false;
+              action = renewed ? "renewed" : "renew";
+              account = null;
+              loading = false;
             });
           };
         }
@@ -166,13 +164,13 @@ class _BookActionState extends State<BookAction> {
         );
       case 'cancel':
         var onPressed;
-        if (this.account != null && this.widget.seqNo != null) {
+        if (account != null && widget.seqNo != null) {
           onPressed = () async {
             setState(() {
-              this.loading = true;
+              loading = true;
             });
             bool canceled = await context.read<LibraryCardRepository>()
-                .cancelReservationBook(this.account!, this.widget.seqNo!, this.widget.branchCode!, this.widget.omnidexId!);
+                .cancelReservationBook(account!, widget.seqNo!, widget.branchCode!, widget.omnidexId!);
             ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   backgroundColor: canceled ? Colors.lightGreen : Colors
@@ -183,9 +181,9 @@ class _BookActionState extends State<BookAction> {
                 )
             );
             setState(() {
-              this.action = canceled ? "canceled" : "cancel";
-              this.account = null;
-              this.loading = false;
+              action = canceled ? "canceled" : "cancel";
+              account = null;
+              loading = false;
             });
           };
         }
@@ -201,22 +199,22 @@ class _BookActionState extends State<BookAction> {
         return Container(
           width: double.infinity,
           padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
+          child: const ElevatedButton(
             onPressed: null,
-            child: const Text('Renouvelé'),
+            child: Text('Renouvelé'),
           ),
         );
       case 'canceled':
         return Container(
           width: double.infinity,
           padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
+          child: const ElevatedButton(
             onPressed: null,
-            child: const Text('Annulé'),
+            child: Text('Annulé'),
           ),
         );
       default:
-        return SizedBox(
+        return const SizedBox(
           height: 10,
         );
     }
@@ -231,7 +229,7 @@ class _BookActionState extends State<BookAction> {
     );
     if (result == true) {
       setState(() {
-        this.action = "cancel";
+        action = "cancel";
       });
     }
   }
@@ -247,7 +245,7 @@ class StockList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        Text(
+        const Text(
           'Exemplaires:',
           style: TextStyle(fontSize: 16),
         ),
@@ -255,10 +253,11 @@ class StockList extends StatelessWidget {
             buildWhen: (last, next) => next is DetailSuccess && next.detail.stock.isNotEmpty,
             builder: (context, state) {
               if (state is DetailSuccess) {
-                if (state.detail.stock.isEmpty)
-                  return Center(
+                if (state.detail.stock.isEmpty) {
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
+                }
 
                 return Column(children: [
                   for (var element in state.detail.stock)
@@ -270,15 +269,15 @@ class StockList extends StatelessWidget {
                       ),
                       trailing: InkWell(
                         onTap: () => openModal(element, context),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
+                        child: const Padding(
+                          padding: EdgeInsets.all(15.0),
                           child: Icon(Icons.place),
                         ),
                       ),
                     ),
                 ]);
               }
-              return Center(
+              return const Center(
                 child: Text("Une erreur est apparus"),
               );
             })
@@ -313,7 +312,7 @@ class StockList extends StatelessWidget {
           title: Row(
             children: [
               Icon(stockIcon(element.stat, element.isReserved)),
-              Text("Où trouver ce document ?"),
+              const Text("Où trouver ce document ?"),
             ],
           ),
           content: Column(
@@ -321,20 +320,20 @@ class StockList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Bibliothèque : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text("Bibliothèque : ", style: TextStyle(fontWeight: FontWeight.bold)),
               Text(element.branch),
-              Text("Section : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text("Section : ", style: TextStyle(fontWeight: FontWeight.bold)),
               Text(element.subloca),
-              Text("Categorie : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text("Categorie : ", style: TextStyle(fontWeight: FontWeight.bold)),
               Text(element.category),
-              Text("Collection : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text("Collection : ", style: TextStyle(fontWeight: FontWeight.bold)),
               Text(element.collection),
-              Text("Code du livre : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text("Code du livre : ", style: TextStyle(fontWeight: FontWeight.bold)),
               Text(element.callnumber),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
-              Text(formatStatut(element), style: TextStyle(fontWeight: FontWeight.bold)),
+              Text(formatStatut(element), style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
           actions: <Widget>[
@@ -352,7 +351,7 @@ class StockList extends StatelessWidget {
 }
 
 class DetailMoreList extends StatelessWidget {
-  DetailMoreList({
+  const DetailMoreList({
     Key? key,
   }) : super(key: key);
 
@@ -362,10 +361,11 @@ class DetailMoreList extends StatelessWidget {
         buildWhen: (last, next) => next is DetailSuccess && next.detail.details.isNotEmpty,
         builder: (context, state) {
           if (state is DetailSuccess) {
-            if (state.detail.details.isEmpty)
-              return Center(
+            if (state.detail.details.isEmpty) {
+              return const Center(
                 child: CircularProgressIndicator(),
               );
+            }
 
             return ListView.builder(
                 padding: const EdgeInsets.all(8),
@@ -378,12 +378,12 @@ class DetailMoreList extends StatelessWidget {
                     leading: Icon(detail.icon),
                   ) : Padding(
                       padding: const EdgeInsets.all(12),
-                      child: Text(detail.value, textAlign: TextAlign.justify, softWrap: true, style: TextStyle(fontSize: 16),)
+                      child: Text(detail.value, textAlign: TextAlign.justify, softWrap: true, style: const TextStyle(fontSize: 16),)
                   );
                 }
             );
           }
-          return Center(
+          return const Center(
             child: Text("Une erreur est apparus"),
           );
         });

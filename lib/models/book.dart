@@ -12,7 +12,7 @@ class Book extends Equatable {
   final String? ark;
   final bool? available;
 
-  Book({
+  const Book({
     required this.id,
     this.localNumber,
     required this.title,
@@ -58,8 +58,9 @@ class Book extends Equatable {
 
   static decodeCreators(json) {
     try {
-      if (json['meta']['creator'] != null)
+      if (json['meta']['creator'] != null) {
         return json['meta']['creator'].map((json) => json['value']).join("; ");
+      }
     }
     catch (e) {
       print(e.toString());
@@ -79,7 +80,7 @@ class Detail extends Equatable {
   final int order;
 
 
-  Detail({required this.display, required this.value, this.icon, this.order = 2});
+  const Detail({required this.display, required this.value, this.icon, this.order = 2});
 
   @override
   List<Object?> get props => [display, value, icon];
@@ -98,7 +99,7 @@ class Stock extends Equatable {
   final DateTime? duedate;
 
 
-  Stock({
+  const Stock({
     required this.branch,
     required this.subloca,
     required this.category,
@@ -120,7 +121,7 @@ class BookDetail extends Equatable {
   final List<Detail> details;
   final List<Stock> stock;
 
-  BookDetail({required this.book, this.details = const [], this.stock = const []});
+  const BookDetail({required this.book, this.details = const [], this.stock = const []});
 
   BookDetail copyWith({
     Book? book,
@@ -128,8 +129,9 @@ class BookDetail extends Equatable {
     List<Stock>? stock,
   }) {
     final detailsList = [...this.details];
-    if (details != null)
+    if (details != null) {
       detailsList.addAll(details);
+    }
     detailsList.sort((d1, d2) => d1.order.compareTo(d2.order));
     return BookDetail(
         book: book ?? this.book,

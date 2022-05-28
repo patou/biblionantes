@@ -17,7 +17,7 @@ class QuitSelectionModeLoansEvent extends LoansEvent {}
 class SelectLoansEvent extends LoansEvent {
   final String documentId;
 
-  SelectLoansEvent({ required this.documentId });
+  const SelectLoansEvent({ required this.documentId });
 
   @override
   List<Object?> get props => [documentId];
@@ -26,7 +26,7 @@ class SelectLoansEvent extends LoansEvent {
 class ChangeGroupByLoansEvent extends LoansEvent {
   final LoansBookGroupBy groupBy;
 
-  ChangeGroupByLoansEvent({ required this.groupBy });
+  const ChangeGroupByLoansEvent({ required this.groupBy });
 
   @override
   List<Object?> get props => [groupBy];

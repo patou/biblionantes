@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_const
+
 import 'package:biblionantes/bloc/loans/loans_bloc.dart';
 import 'package:biblionantes/models/loansbook.dart';
 import 'package:biblionantes/router.gr.dart';
@@ -13,7 +15,7 @@ final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
 class LoansPage extends StatelessWidget {
 
-  LoansPage();
+  const LoansPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,14 +35,14 @@ class LoansPage extends StatelessWidget {
   AppBar buildAppBar(LoansState state, LoansBloc event) {
     if (state is LoansList) {
       return AppBar(
-        title: Text('Mes livres empruntés'),
+        title: const Text('Mes livres empruntés'),
         centerTitle: true,
         actions: [
           PopupMenuButton<LoansBookGroupBy>(
             onSelected: (groupBy) {
               event.add(ChangeGroupByLoansEvent(groupBy: groupBy));
             },
-              icon: Icon(Icons.sort),
+              icon: const Icon(Icons.sort),
               itemBuilder: (BuildContext context) {
                 return <PopupMenuEntry<LoansBookGroupBy>>[
                     const PopupMenuItem(child: const Text('Grouper les documents par :')),
@@ -49,7 +51,7 @@ class LoansPage extends StatelessWidget {
                       child: ListTile(
                           leading: const Icon(Icons.card_membership),
                           title: const Text('Carte de bibliothèque'),
-                          trailing: state.groupBy == LoansBookGroupBy.account ? Icon(Icons.check_circle) : Icon(Icons.circle_outlined),
+                          trailing: state.groupBy == LoansBookGroupBy.account ? const Icon(Icons.check_circle) : const Icon(Icons.circle_outlined),
                       ),
                     ),
                     PopupMenuItem<LoansBookGroupBy>(
@@ -57,7 +59,7 @@ class LoansPage extends StatelessWidget {
                       child: ListTile(
                           leading: const Icon(Icons.date_range),
                           title: const Text('Date de retour'),
-                          trailing: state.groupBy == LoansBookGroupBy.returnDate ? Icon(Icons.check_circle) : Icon(Icons.circle_outlined),
+                          trailing: state.groupBy == LoansBookGroupBy.returnDate ? const Icon(Icons.check_circle) : const Icon(Icons.circle_outlined),
                       ),
                     ),
                   ];
@@ -66,19 +68,19 @@ class LoansPage extends StatelessWidget {
       );
     }
     return AppBar(
-      title: Text('Mes livres empruntés'),
+      title: const Text('Mes livres empruntés'),
       centerTitle: true,
     );
   }
 
   Widget buildBody(LoansState state, LoansBloc event, BuildContext context) {
     if (state is LoansInProgress) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     } else if (state is LoansList) {
       List<LoansBook> list = state.list;
-      if (list.length == 0) {
+      if (list.isEmpty) {
         return NoResultWidget(
             noResultText: 'Aucun emprunt en cours',
             retryButtonText: 'Rafraichir',
@@ -100,7 +102,7 @@ class LoansPage extends StatelessWidget {
                   child: Text(
                     value,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
             itemBuilder: (c, element) {
@@ -162,7 +164,7 @@ class LoansPage extends StatelessWidget {
       } else {
         return FloatingActionButton(
             onPressed: () => event.add(EnterSelectionModeLoansEvent()),
-            child: Icon(Icons.library_add_check_outlined));
+            child: const Icon(Icons.library_add_check_outlined));
       }
     }
     return null;
@@ -170,7 +172,7 @@ class LoansPage extends StatelessWidget {
 }
 
 class LoansReturn extends StatelessWidget {
-  LoansReturn({
+  const LoansReturn({
     Key? key,
     required this.loansBook,
   }) : super(key: key);
@@ -181,13 +183,13 @@ class LoansReturn extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       dense: true,
-      contentPadding: EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
-      visualDensity: VisualDensity(horizontal: 0, vertical: -4.0),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
+      visualDensity: const VisualDensity(horizontal: 0, vertical: -4.0),
       minVerticalPadding: 0,
       horizontalTitleGap: 0,
-      leading: Icon(Icons.date_range),
+      leading: const Icon(Icons.date_range),
       title: Text(dateFormat.format(loansBook.returnDate)),
-      subtitle: Text("Date de retour"),
+      subtitle: const Text("Date de retour"),
     );
   }
 }

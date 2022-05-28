@@ -34,7 +34,7 @@ class ReservationsBook extends Book {
     required this.branchCode,
     required this.omnidexId,
     required this.documentNumber,
-    DateTime? this.expiryDate,
+    this.expiryDate,
     String? id,
     String? localNumber,
     String? creators,
@@ -86,6 +86,7 @@ class ReservationsBook extends Book {
     return status;
   }
 
+  @override
   ReservationsBook copyWith({
     String? id,
     String? seqNo,
@@ -129,7 +130,6 @@ class ReservationsBook extends Book {
     );
   }
 
-  @override
   ReservationsBook copyFromBook(Book book) {
     return copyWith(
       localNumber: book.localNumber,
@@ -147,5 +147,5 @@ class ReservationsBook extends Book {
 /// On ne connais pas l'ID du document dans la liste des prêts et reservation seulement le seqNo.
 /// L'id est composé de p::usmarcdef_ suivit du seqNo sur 10 chiffres.
 toId(String seqNo) {
-  return 'p::usmarcdef_' + seqNo.padLeft(10, '0');
+  return 'p::usmarcdef_${seqNo.padLeft(10, '0')}';
 }

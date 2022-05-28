@@ -1,6 +1,6 @@
-import 'package:biblionantes/bloc/loans/loans_bloc.dart';
+// ignore_for_file: unnecessary_const
+
 import 'package:biblionantes/bloc/reservation/reservation_bloc.dart';
-import 'package:biblionantes/models/loansbook.dart';
 import 'package:biblionantes/models/reservationsbook.dart';
 import 'package:biblionantes/router.gr.dart';
 import 'package:biblionantes/widgets/book_card.dart';
@@ -12,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auto_route/auto_route.dart';
 
 class ReservationPage extends StatelessWidget {
-  ReservationPage();
+  const ReservationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +22,18 @@ class ReservationPage extends StatelessWidget {
       value: event,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Mes reservations'),
+          title: const Text('Mes reservations'),
           centerTitle: true,
         ),
         body: BlocBuilder<ReservationsBloc, ReservationsState>(
           builder: (_, state) {
             if (state is ReservationsInProgress) {
-              return Center(
-                child: CircularProgressIndicator(),
+              return const Center(
+                child: const CircularProgressIndicator(),
               );
             } else if (state is ReservationsList) {
               List<ReservationsBook> list = state.list;
-              if (list.length == 0) {
+              if (list.isEmpty) {
                 return NoResultWidget(
                     noResultText: 'Aucune reservations en cours',
                     retryButtonText: 'Rafraichir',
@@ -55,7 +55,7 @@ class ReservationPage extends StatelessWidget {
                           child: Text(
                             value,
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ),
                     itemBuilder: (c, element) {
@@ -106,41 +106,38 @@ class ReservationInfo extends StatelessWidget {
       case ReservationsStatus.available:
         return ListTile(
           dense: true,
-          contentPadding: EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
-          visualDensity: VisualDensity(horizontal: 0, vertical: -4.0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
+          visualDensity: const VisualDensity(horizontal: 0, vertical: -4.0),
           minVerticalPadding: 0,
           horizontalTitleGap: 0,
-          leading: Icon(Icons.check, color: Colors.green),
+          leading: const Icon(Icons.check, color: Colors.green),
           title: Text("""Votre réservation est disponible à ${reservationsBook.branchName}"""),
           subtitle: Text("""A récupérer avant ${dateFormat.format(reservationsBook.expiryDate!)}"""),
         );
-        break;
       case ReservationsStatus.notAvailable:
         return ListTile(
           dense: true,
-          contentPadding: EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
-          visualDensity: VisualDensity(horizontal: 0, vertical: -4.0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
+          visualDensity: const VisualDensity(horizontal: 0, vertical: -4.0),
           minVerticalPadding: 0,
           horizontalTitleGap: 0,
-          leading: Icon(Icons.hourglass_full, color: Colors.red),
-          title: Text("Votre réservation n'est pas encore disponible"),
+          leading: const Icon(Icons.hourglass_full, color: Colors.red),
+          title: const Text("Votre réservation n'est pas encore disponible"),
           subtitle: Text("""Rang ${reservationsBook.rank} depuis ${dateFormat.format(reservationsBook.resvDate)}"""),
         );
-        break;
       case ReservationsStatus.soonAvailable:
         return ListTile(
           dense: true,
-          contentPadding: EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
-          visualDensity: VisualDensity(horizontal: 0, vertical: -4.0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
+          visualDensity: const VisualDensity(horizontal: 0, vertical: -4.0),
           minVerticalPadding: 0,
           horizontalTitleGap: 0,
-          leading: Icon(Icons.hourglass_bottom, color: Colors.amber),
-          title: Text("Votre réservation est bientôt disponible"),
+          leading: const Icon(Icons.hourglass_bottom, color: Colors.amber),
+          title: const Text("Votre réservation est bientôt disponible"),
           subtitle: Text("""Rang ${reservationsBook.rank} depuis ${dateFormat.format(reservationsBook.resvDate)}"""),
         );
-        break;
       default:
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
     }
 
   }

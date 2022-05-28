@@ -1,7 +1,9 @@
+// ignore_for_file: unnecessary_this
+
 import 'dart:async';
 import 'package:biblionantes/models/book.dart';
 import 'package:biblionantes/repositories/search.dart';
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
@@ -32,7 +34,7 @@ class SearchBookBloc extends Bloc<SearchBookEvent, SearchBookState> {
   }
 
   FutureOr<void> onSearchBookTextSearched(SearchBookTextSearched event, Emitter<SearchBookState> emit) async {
-    print("search " + event.search);
+    print("search ${event.search}");
     try {
         emit(SearchBookLoadingState());
         final books = await searchRepository.search(event.search);

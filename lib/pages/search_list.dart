@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auto_route/auto_route.dart';
 
 class SearchList extends StatefulWidget {
-  SearchList();
+  const SearchList({Key? key}) : super(key: key);
 
   @override
   _SearchListState createState() => _SearchListState();
@@ -21,32 +21,32 @@ class _SearchListState extends State<SearchList> {
     return BlocBuilder<SearchBookBloc, SearchBookState>(
       builder: (context, state) {
         if (state is SearchBookErrorState) {
-          return Center(
+          return const Center(
             child: Text('An error occurred'),
           );
         }
 
         if (state is SearchBookLoadingState) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
 
         if (state is SearchBookWelcomeState) {
-          return Center(
+          return const Center(
             child: Text('Recherchez un livre'),
           );
         }
 
         if (state is SearchBookNotFoundState) {
-          return Center(
+          return const Center(
             child: Text('Pas de résultats trouvés'),
           );
         }
 
         if (state is SearchBookSucessState) {
           if (state.books.isEmpty) {
-            return Center(
+            return const Center(
               child: Text('Pas de résultats trouvés'),
             );
           }
@@ -58,9 +58,9 @@ class _SearchListState extends State<SearchList> {
                 shrinkWrap: true,
                 itemBuilder: (_, index) {
                   return  index >= state.books.length
-                      ? BottomLoader()
+                      ? const BottomLoader()
                       : Container(
-                    margin: EdgeInsets.only(bottom: 10),
+                    margin: const EdgeInsets.only(bottom: 10),
                     child: GestureDetector(
                         onTap: () => context.pushRoute(DetailRoute(
                           id: state.books[index].id,
@@ -72,7 +72,7 @@ class _SearchListState extends State<SearchList> {
               )
           );
         }
-        return Center(
+        return const Center(
           child: Text('Erreur state not exist'),
         );
       },
@@ -119,11 +119,13 @@ class _SearchListState extends State<SearchList> {
 }
 
 class BottomLoader extends StatelessWidget {
+  const BottomLoader({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      child: Center(
+      child: const Center(
         child: SizedBox(
           width: 33,
           height: 33,

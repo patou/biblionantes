@@ -1,4 +1,4 @@
-import 'package:biblionantes/models/SummeryAccount.dart';
+import 'package:biblionantes/models/summery_account.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -28,13 +28,13 @@ class SummaryAccountCard extends StatelessWidget {
               builder: (_, snapshot) {
                 if (snapshot.hasError) {
                   print(snapshot.error);
-                  return Center(
+                  return const Center(
                     child: Text('Une erreur est apparue'),
                   );
                 }
 
                 if (!snapshot.hasData || snapshot.data == null) {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
@@ -43,64 +43,64 @@ class SummaryAccountCard extends StatelessWidget {
                 return Column(
                   children: [
                     ListTile(
-                      leading: Icon(Icons.supervised_user_circle),
+                      leading: const Icon(Icons.supervised_user_circle),
                       title: Text("${summary.firstName} ${summary.lastName}"),
-                      subtitle: Text("Numéro : " + account.login),
+                      subtitle: Text("Numéro : ${account.login}"),
                     ),
                     if (summary.hasTrapLevel)
-                        ListTile(
+                        const ListTile(
                             leading: Icon(Icons.warning, color: Colors.red),
                             title: Text(
                                 "Votre carte est bloqué, rapprochez vous de votre bibliothèque"),
                         ),
                     if (summary.expiryDate != null && expirationDays < 30)
-                      ListTile(
+                      const ListTile(
                         leading: Icon(Icons.warning, color: Colors.amber),
                         title: Text(
                             "Votre abonnement sera bientôt à renouveler."),
                       ),
                     if (summary.expiryDate != null && summary.subscriptionDate != null)
                         ListTile(
-                          leading: Icon(Icons.date_range),
+                          leading: const Icon(Icons.date_range),
                           title: Text(
                                 "Expire le ${dateFormat.format(summary.expiryDate!)}${expirationDays < 30 ? ' (dans $expirationDays jours)':''}"),
                           subtitle: Text(
                               "Depuis le ${dateFormat.format(summary.subscriptionDate!)}"),
                         ),
                     ListTile(
-                      leading: Icon(Icons.import_contacts),
+                      leading: const Icon(Icons.import_contacts),
                       title: Text(
                           "Emprunts en cours : ${summary.loanCount}/${summary.maxLoans}"),
                     ),
                     (summary.overdueLoans > 0)
                         ? ListTile(
-                            leading: Icon(Icons.watch_later, color: Colors.red),
+                            leading: const Icon(Icons.watch_later, color: Colors.red),
                             title: Text(
                                 "Emprunts en retards : ${summary.overdueLoans}"),
                           )
-                        : SizedBox.shrink(),
+                        : const SizedBox.shrink(),
                     ListTile(
-                      leading: Icon(Icons.my_library_books),
+                      leading: const Icon(Icons.my_library_books),
                       title: Text("Réservations : ${summary.resvCount}"),
                     ),
                     ListTile(
-                      leading: Icon(Icons.email),
+                      leading: const Icon(Icons.email),
                       title: Text(summary.emailAddress),
-                      subtitle: Text("Courriel"),
+                      subtitle: const Text("Courriel"),
                     ),
                     ListTile(
-                      leading: Icon(Icons.phone),
+                      leading: const Icon(Icons.phone),
                       title: Text(summary.telephone),
-                      subtitle: Text("Téléphone"),
+                      subtitle: const Text("Téléphone"),
                     ),
                     ListTile(
-                      leading: Icon(Icons.location_pin),
+                      leading: const Icon(Icons.location_pin),
                       title: Text([
                         summary.street,
                         summary.postalCode,
                         summary.city
                       ].join(" ")),
-                      subtitle: Text("Adresse"),
+                      subtitle: const Text("Adresse"),
                     ),
                   ],
                 );

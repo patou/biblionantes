@@ -13,17 +13,17 @@ void main() {
   runApp(BiblioNantesApp());
 }
 
-BaseOptions options = new BaseOptions(
+BaseOptions options = BaseOptions(
   baseUrl: "https://catalogue-bm.nantes.fr/in/rest/api/",
   connectTimeout: 5000,
   receiveTimeout: 3000,
 );
-Dio dio = new Dio(options);
+Dio dio = Dio(options);
 
 class BiblioNantesApp extends StatelessWidget {
   final _appRouter = AppRouter();
 
-  BiblioNantesApp() {
+  BiblioNantesApp({Key? key}) : super(key: key) {
     dio.interceptors.add(PrettyDioLogger(
         requestHeader: true, requestBody: false, responseBody: false, responseHeader: false, error: true, compact: true, maxWidth: 90));
   }
