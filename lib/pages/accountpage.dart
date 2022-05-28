@@ -54,7 +54,6 @@ class AccountPage extends StatelessWidget {
           PopupMenuButton<int>(
             icon: Icon(Icons.more_vert),
             onSelected: (value) {
-              print('Select menu $value');
               switch(value) {
                 case 1:
                   context.pushRoute(AboutRoute());

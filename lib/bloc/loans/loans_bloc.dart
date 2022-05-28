@@ -15,6 +15,7 @@ class LoansBloc extends Bloc<LoansEvent, LoansState> {
     on<LoadLoansEvent>(onLoadLoansEvent);
     on<SelectLoansEvent>(onSelectLoandEvent);
     on<EnterSelectLoansEvent>(onEnterSelectLoansEvent);
+    on<ChangeGroupByLoansEvent>(onChangeGroupByLoansEvent);
   }
 
   final LibraryCardRepository accountRepository;
@@ -47,6 +48,13 @@ class LoansBloc extends Bloc<LoansEvent, LoansState> {
       print(e);
       print(stack);
       emit(LoansError(e.toString()));
+    }
+  }
+
+  FutureOr<void> onChangeGroupByLoansEvent(ChangeGroupByLoansEvent event, Emitter<LoansState> emit) {
+    var currentState = state;
+    if (currentState is LoansList) {
+      emit(currentState.copyWith(groupBy: event.groupBy));
     }
   }
 }

@@ -63,7 +63,6 @@ class SearchRepository {
     }
     Map<String, Map<String, dynamic>> summary = Map.fromIterable(response.data['summary'], key: (json) => json['name']);
     var creators = List.from(response.data['summary']).where((item) => item['name'] == 'meta.creator').toList();
-    print(creators);
     var book = Book(
         id: id,
         ark: summary['ark']?['value'],

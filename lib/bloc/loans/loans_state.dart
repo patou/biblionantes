@@ -18,21 +18,26 @@ class LoansList extends LoansState {
   final List<LoansBook> list;
   final Map<String, bool> selectedFlag;
   final bool isSelectionMode;
+  final LoansBookGroupBy groupBy;
 
   LoansList(
       {required this.list,
       this.selectedFlag = const {},
-      this.isSelectionMode = false});
+      this.isSelectionMode = false,
+      this.groupBy = LoansBookGroupBy.account});
 
   LoansList copyWith({
     List<LoansBook>? list,
     Map<String, bool>? selectedFlag,
     bool? isSelectionMode,
+    LoansBookGroupBy? groupBy,
   }) {
     return LoansList(
-        list: list ?? this.list,
-        selectedFlag: selectedFlag ?? this.selectedFlag,
-        isSelectionMode: isSelectionMode ?? this.isSelectionMode);
+      list: list ?? this.list,
+      selectedFlag: selectedFlag ?? this.selectedFlag,
+      isSelectionMode: isSelectionMode ?? this.isSelectionMode,
+      groupBy: groupBy ?? this.groupBy,
+    );
   }
 
   LoansList selectDocument(String documentId) {
@@ -41,8 +46,7 @@ class LoansList extends LoansState {
       ..addAll({documentId: !isSelected});
     var isSelectionMode = newSelectedFlag.containsValue(true);
     return copyWith(
-        selectedFlag: newSelectedFlag,
-        isSelectionMode: isSelectionMode);
+        selectedFlag: newSelectedFlag, isSelectionMode: isSelectionMode);
   }
 
   bool isSelected(String documentId) {
@@ -50,7 +54,11 @@ class LoansList extends LoansState {
   }
 
   @override
-  List<Object> get props => [list, selectedFlag, isSelectionMode];
+  List<Object> get props => [list, selectedFlag, isSelectionMode, groupBy];
+
+  String toString() {
+    return "LoansList(list: ${this.list.length} items, isSelectionMode: $isSelectionMode, groupBy: $groupBy)";
+  }
 }
 
 class LoansError extends LoansState {

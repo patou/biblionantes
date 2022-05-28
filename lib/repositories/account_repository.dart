@@ -139,7 +139,6 @@ class LibraryCardRepository {
     );
     if (response.statusCode != 200) {
       tokens.remove(account.userId);
-      print(response);
       return Future.error(AuthenticateException(
           'error occurred when authenticate: ${response.statusCode}'));
     }
@@ -173,7 +172,6 @@ class LibraryCardRepository {
     );
     if (response.statusCode != 200) {
       tokens.remove(account.userId);
-      print(response);
       return Future.error(AuthenticateException(
           'error occurred when authenticate: ${response.statusCode}'));
     }
@@ -241,10 +239,9 @@ class LibraryCardRepository {
         )
     );
     if (response.statusCode != 200 || response.data['extended'] == null) {
-      print("error");
+      print("error renewBook");
       return false;
     }
-    print(response.data);
     return response.data['extended'] as bool;
   }
 
@@ -262,10 +259,9 @@ class LibraryCardRepository {
         )
     );
     if (response.statusCode != 200) {
-      print("error");
+      print("error cancelReservationBook");
       return false;
     }
-    print(response.data);
     return response.data as bool;
   }
 
@@ -307,7 +303,6 @@ class LibraryCardRepository {
       print("error" + response.data['error']);
       return Future.error(response.data['error']);
     }
-    print(response.data);
     return response.data['errorCode'] == "SUCCESS";
   }
 }

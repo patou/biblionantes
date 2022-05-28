@@ -16,7 +16,6 @@ class ReservationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("build reservationPage");
     final event = ReservationsBloc(accountRepository: context.read())
       ..add(LoadReservationsEvent());
     return BlocProvider.value(

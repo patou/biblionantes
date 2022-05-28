@@ -56,7 +56,6 @@ class SearchBookBloc extends Bloc<SearchBookEvent, SearchBookState> {
     if (this._hasReachedMax(currentState)) {
       return;
     }
-    print("load next");
     try {
       if (currentState is SearchBookSucessState) {
         final books = await searchRepository.search(currentState.search, page: currentState.page + 1);

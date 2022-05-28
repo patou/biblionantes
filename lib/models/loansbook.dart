@@ -35,7 +35,6 @@ class LoansBook extends Book {
         );
 
   factory LoansBook.fromJson(Map<String, dynamic> json, String account, String login) {
-    print(json['data']['title']);
     return LoansBook(
         seqNo: json['data']['seqNo'] as String,
         documentNumber: json['data']['documentNumber'],
@@ -98,4 +97,9 @@ class LoansBook extends Book {
 /// L'id est composé de p::usmarcdef_ suivit du seqNo sur 10 chiffres.
 toId(String seqNo) {
   return 'p::usmarcdef_' + seqNo.padLeft(10, '0');
+}
+
+enum LoansBookGroupBy {
+  account,
+  returnDate
 }

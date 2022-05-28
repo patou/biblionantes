@@ -20,3 +20,12 @@ class SelectLoansEvent extends LoansEvent {
   @override
   List<Object?> get props => [documentId];
 }
+
+class ChangeGroupByLoansEvent extends LoansEvent {
+  final LoansBookGroupBy groupBy;
+
+  ChangeGroupByLoansEvent({ required this.groupBy });
+
+  @override
+  List<Object?> get props => [groupBy];
+}

@@ -46,7 +46,6 @@ class _ReserveBookDialogState extends State<ReserveBookDialog> {
   Widget build(BuildContext context) {
     var libraryCardRepository = context.read<LibraryCardRepository>();
     var accounts = libraryCardRepository.accounts;
-    print(accounts);
     if (accounts.isEmpty)
       return AlertDialog(
         title: Row(

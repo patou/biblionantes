@@ -24,7 +24,6 @@ class Book extends Equatable {
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
-    print(json['title'][0]['value']);
     return Book(
       id: json['id'][0]['value'] as String,
       title: json['title'][0]['value'] as String,

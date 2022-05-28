@@ -9,39 +9,66 @@ import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auto_route/auto_route.dart';
 
+final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
+
 class LoansPage extends StatelessWidget {
+
   LoansPage();
 
   @override
   Widget build(BuildContext context) {
-    print("build loanspage");
     final event = LoansBloc(accountRepository: context.read())
       ..add(LoadLoansEvent());
     return BlocBuilder<LoansBloc, LoansState>(
       bloc: event,
-      builder: (_, state) {
+      builder: (buildContext, state) {
         return Scaffold(
-            appBar: buildAppBar(state),
+            appBar: buildAppBar(state, event),
             floatingActionButton: buildFloatingActionButton(state, event),
-            body: buildBody(state, event, context));
+            body: buildBody(state, event, buildContext));
       },
     );
   }
 
-  AppBar buildAppBar(LoansState state) {
+  AppBar buildAppBar(LoansState state, LoansBloc event) {
     if (state is LoansList) {
       return AppBar(
         title: Text('Mes livres empruntés'),
         centerTitle: true,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.sort))
+          PopupMenuButton<LoansBookGroupBy>(
+            onSelected: (groupBy) {
+              event.add(ChangeGroupByLoansEvent(groupBy: groupBy));
+            },
+              icon: Icon(Icons.sort),
+              itemBuilder: (BuildContext context) {
+                return <PopupMenuEntry<LoansBookGroupBy>>[
+                    const PopupMenuItem(child: const Text('Grouper les documents par :')),
+                    PopupMenuItem<LoansBookGroupBy>(
+                      value: LoansBookGroupBy.account,
+                      child: ListTile(
+                          leading: const Icon(Icons.card_membership),
+                          title: const Text('Carte de bibliothèque'),
+                          trailing: state.groupBy == LoansBookGroupBy.account ? Icon(Icons.check_circle) : Icon(Icons.circle_outlined),
+                      ),
+                    ),
+                    PopupMenuItem<LoansBookGroupBy>(
+                      value: LoansBookGroupBy.returnDate,
+                      child: ListTile(
+                          leading: const Icon(Icons.date_range),
+                          title: const Text('Date de retour'),
+                          trailing: state.groupBy == LoansBookGroupBy.returnDate ? Icon(Icons.check_circle) : Icon(Icons.circle_outlined),
+                      ),
+                    ),
+                  ];
+              }),
         ],
       );
     }
     return AppBar(
-            title: Text('Mes livres empruntés'),
-            centerTitle: true,
-          );
+      title: Text('Mes livres empruntés'),
+      centerTitle: true,
+    );
   }
 
   Widget buildBody(LoansState state, LoansBloc event, BuildContext context) {
@@ -65,7 +92,7 @@ class LoansPage extends StatelessWidget {
         },
         child: GroupedListView<LoansBook, String>(
             elements: list,
-            groupBy: (element) => element.account,
+            groupBy: groupBy(state.groupBy),
             useStickyGroupSeparators: true,
             physics: const AlwaysScrollableScrollPhysics(),
             groupSeparatorBuilder: (String value) => Padding(
@@ -111,19 +138,33 @@ class LoansPage extends StatelessWidget {
     }
   }
 
+  String Function(LoansBook) groupBy(LoansBookGroupBy groupByElement) {
+    return (element) {
+      switch (groupByElement) {
+        case LoansBookGroupBy.returnDate:
+          return dateFormat.format(element.returnDate);
+      case LoansBookGroupBy.account:
+        default:
+          return element.account;
+      }
+    };
+  }
+
   buildFloatingActionButton(LoansState state, LoansBloc event) {
     if (state is LoansList) {
       if (state.isSelectionMode) {
-        return FloatingActionButton(onPressed: () {
-
-        }, child: Text(state.selectedFlag.values.where((element) => element).length.toString())
-        );
-      }
-      else {
-        return FloatingActionButton(onPressed: () {
-          event.add(EnterSelectLoansEvent());
-        }, child: Icon(Icons.library_add_check_outlined)
-        );
+        return FloatingActionButton(
+            onPressed: () {},
+            child: Text(state.selectedFlag.values
+                .where((element) => element)
+                .length
+                .toString()));
+      } else {
+        return FloatingActionButton(
+            onPressed: () {
+              event.add(EnterSelectLoansEvent());
+            },
+            child: Icon(Icons.library_add_check_outlined));
       }
     }
     return null;
@@ -131,8 +172,6 @@ class LoansPage extends StatelessWidget {
 }
 
 class LoansReturn extends StatelessWidget {
-  final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
-
   LoansReturn({
     Key? key,
     required this.loansBook,

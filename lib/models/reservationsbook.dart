@@ -52,7 +52,6 @@ class ReservationsBook extends Book {
         );
 
   factory ReservationsBook.fromJson(Map<String, dynamic> json, String account, String login) {
-    print(json['data']['title']);
     return ReservationsBook(
         seqNo: json['data']['seqNo'] as String,
         documentNumber: json['data']['document'] ?? '',

@@ -66,7 +66,6 @@ class AddAccountDialog extends StatelessWidget {
     return BlocListener<LibraryCardBloc, AbstractLibraryCardState>(
       listener: (context, state) {
         if (state is AddLibraryCardStateSuccess) {
-          print("Carte ajouté");
           Navigator.pop(context);
         }
         if (state is AddLibraryCardStateError) {
