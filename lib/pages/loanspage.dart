@@ -154,16 +154,14 @@ class LoansPage extends StatelessWidget {
     if (state is LoansList) {
       if (state.isSelectionMode) {
         return FloatingActionButton(
-            onPressed: () {},
+            onPressed: () => event.add(QuitSelectionModeLoansEvent()),
             child: Text(state.selectedFlag.values
                 .where((element) => element)
                 .length
                 .toString()));
       } else {
         return FloatingActionButton(
-            onPressed: () {
-              event.add(EnterSelectLoansEvent());
-            },
+            onPressed: () => event.add(EnterSelectionModeLoansEvent()),
             child: Icon(Icons.library_add_check_outlined));
       }
     }
