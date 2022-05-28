@@ -23,7 +23,7 @@ class BookCard extends StatelessWidget {
       height: 200,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: isSelected ? Colors.blueAccent.withOpacity(0.01) : Colors.white,
+        color: isSelected ? Colors.blue[50] : Colors.white,
         boxShadow: [
           if (useBoxShadow == true)
             BoxShadow(
@@ -48,9 +48,9 @@ class BookCard extends StatelessWidget {
                   Positioned(
                       top: 5,
                       left: 5,
-                      child: Icon(this.isSelected
-                          ? Icons.check_box_rounded
-                          : Icons.check_box_outline_blank_rounded))
+                      child: this.isSelected
+                          ? Icon(Icons.check_box_rounded, color: Colors.green,)
+                          : Icon(Icons.check_box_outline_blank_rounded, color: Colors.grey))
               ],
             ),
           ),

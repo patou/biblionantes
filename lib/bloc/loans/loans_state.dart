@@ -19,18 +19,30 @@ class LoansList extends LoansState {
   final Map<String, bool> selectedFlag;
   final bool isSelectionMode;
 
-  LoansList({ required this.list, this.selectedFlag = const {}, this.isSelectionMode = false });
+  LoansList(
+      {required this.list,
+      this.selectedFlag = const {},
+      this.isSelectionMode = false});
+
+  LoansList copyWith({
+    List<LoansBook>? list,
+    Map<String, bool>? selectedFlag,
+    bool? isSelectionMode,
+  }) {
+    return LoansList(
+        list: list ?? this.list,
+        selectedFlag: selectedFlag ?? this.selectedFlag,
+        isSelectionMode: isSelectionMode ?? this.isSelectionMode);
+  }
 
   LoansList selectDocument(String documentId) {
     bool isSelected = selectedFlag[documentId] ?? false;
     var newSelectedFlag = new Map<String, bool>.from(selectedFlag)
-      ..addAll({documentId : !isSelected });
+      ..addAll({documentId: !isSelected});
     var isSelectionMode = newSelectedFlag.containsValue(true);
-    return LoansList(
-      list: this.list,
-      selectedFlag: newSelectedFlag,
-      isSelectionMode: isSelectionMode
-    );
+    return copyWith(
+        selectedFlag: newSelectedFlag,
+        isSelectionMode: isSelectionMode);
   }
 
   bool isSelected(String documentId) {

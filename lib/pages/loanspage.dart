@@ -17,99 +17,116 @@ class LoansPage extends StatelessWidget {
     print("build loanspage");
     final event = LoansBloc(accountRepository: context.read())
       ..add(LoadLoansEvent());
-    return BlocProvider.value(
-      value: event,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Mes livres empruntés'),
-          centerTitle: true,
-        ),
-        /*floatingActionButton: BlocBuilder<LoansBloc, LoansState>(
-          buildWhen: (_, state) => (state is LoansList) && state.isSelectionMode,
-          builder: (_, state) {
-            if (state is LoansList && state.isSelectionMode) {
-              return FloatingActionButton(onPressed: () {
-
-              }, child: Text(state.selectedFlag.values.where((element) => element).length.toString())
-              );
-            }
-            return Container();
-          },
-        ),*/
-        body: BlocBuilder<LoansBloc, LoansState>(
-          builder: (_, state) {
-            if (state is LoansInProgress) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (state is LoansList) {
-              List<LoansBook> list = state.list;
-              if (list.length == 0) {
-                return NoResultWidget(
-                    noResultText: 'Aucun emprunt en cours',
-                    retryButtonText: 'Rafraichir',
-                    onRetry: () async {
-                      event.add(LoadLoansEvent());
-                    });
-              }
-              return RefreshIndicator(
-                onRefresh: () async {
-                  event.add(LoadLoansEvent());
-                },
-                child: GroupedListView<LoansBook, String>(
-                    elements: list,
-                    groupBy: (element) => element.account,
-                    useStickyGroupSeparators: true,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    groupSeparatorBuilder: (String value) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            value,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                    itemBuilder: (c, element) {
-                      return GestureDetector(
-                          onLongPress: () {
-                            event.add(SelectLoansEvent(documentId: element.id));
-                          },
-                          onTap: () {
-                            if (state.isSelectionMode) {
-                              event.add(SelectLoansEvent(documentId: element.id));
-                            }
-                            else {
-                              context.pushRoute(DetailRoute(
-                                id: element.id,
-                                action: element.renewable ? 'renew' : null,
-                                account: element.renewable
-                                    ? element.login
-                                    : null,
-                                documentNumber: element.documentNumber,
-                              ));
-                            }
-                          },
-                          child: BookCard(
-                            book: element,
-                            widget: LoansReturn(loansBook: element),
-                            isSelected: state.isSelected(element.id),
-                            isSelectedMode: state.isSelectionMode,
-                          ));
-                    }),
-              );
-            } else {
-              return NoResultWidget(
-                  noResultText: 'Une erreur est apparue',
-                  retryButtonText: 'Ré-essayer',
-                  onRetry: () async {
-                    event.add(LoadLoansEvent());
-                  });
-
-            }
-          },
-        ),
-      ),
+    return BlocBuilder<LoansBloc, LoansState>(
+      bloc: event,
+      builder: (_, state) {
+        return Scaffold(
+            appBar: buildAppBar(state),
+            floatingActionButton: buildFloatingActionButton(state, event),
+            body: buildBody(state, event, context));
+      },
     );
+  }
+
+  AppBar buildAppBar(LoansState state) {
+    if (state is LoansList) {
+      return AppBar(
+        title: Text('Mes livres empruntés'),
+        centerTitle: true,
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.sort))
+        ],
+      );
+    }
+    return AppBar(
+            title: Text('Mes livres empruntés'),
+            centerTitle: true,
+          );
+  }
+
+  Widget buildBody(LoansState state, LoansBloc event, BuildContext context) {
+    if (state is LoansInProgress) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    } else if (state is LoansList) {
+      List<LoansBook> list = state.list;
+      if (list.length == 0) {
+        return NoResultWidget(
+            noResultText: 'Aucun emprunt en cours',
+            retryButtonText: 'Rafraichir',
+            onRetry: () async {
+              event.add(LoadLoansEvent());
+            });
+      }
+      return RefreshIndicator(
+        onRefresh: () async {
+          event.add(LoadLoansEvent());
+        },
+        child: GroupedListView<LoansBook, String>(
+            elements: list,
+            groupBy: (element) => element.account,
+            useStickyGroupSeparators: true,
+            physics: const AlwaysScrollableScrollPhysics(),
+            groupSeparatorBuilder: (String value) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    value,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+            itemBuilder: (c, element) {
+              return GestureDetector(
+                  onLongPress: () {
+                    event.add(SelectLoansEvent(documentId: element.id));
+                  },
+                  onTap: () {
+                    if (state.isSelectionMode) {
+                      event.add(SelectLoansEvent(documentId: element.id));
+                    } else {
+                      context.pushRoute(DetailRoute(
+                        id: element.id,
+                        action: element.renewable ? 'renew' : null,
+                        account: element.renewable ? element.login : null,
+                        documentNumber: element.documentNumber,
+                      ));
+                    }
+                  },
+                  child: BookCard(
+                    book: element,
+                    widget: LoansReturn(loansBook: element),
+                    isSelected: state.isSelected(element.id),
+                    isSelectedMode: state.isSelectionMode,
+                  ));
+            }),
+      );
+    } else {
+      return NoResultWidget(
+          noResultText: 'Une erreur est apparue',
+          retryButtonText: 'Ré-essayer',
+          onRetry: () async {
+            event.add(LoadLoansEvent());
+          });
+    }
+  }
+
+  buildFloatingActionButton(LoansState state, LoansBloc event) {
+    if (state is LoansList) {
+      if (state.isSelectionMode) {
+        return FloatingActionButton(onPressed: () {
+
+        }, child: Text(state.selectedFlag.values.where((element) => element).length.toString())
+        );
+      }
+      else {
+        return FloatingActionButton(onPressed: () {
+          event.add(EnterSelectLoansEvent());
+        }, child: Icon(Icons.library_add_check_outlined)
+        );
+      }
+    }
+    return null;
   }
 }
 

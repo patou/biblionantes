@@ -14,6 +14,7 @@ class LoansBloc extends Bloc<LoansEvent, LoansState> {
   LoansBloc({required this.accountRepository}) : super(LoansInitial()) {
     on<LoadLoansEvent>(onLoadLoansEvent);
     on<SelectLoansEvent>(onSelectLoandEvent);
+    on<EnterSelectLoansEvent>(onEnterSelectLoansEvent);
   }
 
   final LibraryCardRepository accountRepository;
@@ -22,6 +23,13 @@ class LoansBloc extends Bloc<LoansEvent, LoansState> {
     var currentState = state;
     if (currentState is LoansList) {
       emit(currentState.selectDocument(event.documentId));
+    }
+  }
+
+  FutureOr<void> onEnterSelectLoansEvent(EnterSelectLoansEvent event, Emitter<LoansState> emit) {
+    var currentState = state;
+    if (currentState is LoansList) {
+      emit(currentState.copyWith(isSelectionMode: true));
     }
   }
 

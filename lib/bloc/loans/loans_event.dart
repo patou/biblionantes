@@ -10,6 +10,8 @@ abstract class LoansEvent extends Equatable {
 class LoadLoansEvent extends LoansEvent {
 }
 
+class EnterSelectLoansEvent extends LoansEvent {}
+
 class SelectLoansEvent extends LoansEvent {
   final String documentId;
 
