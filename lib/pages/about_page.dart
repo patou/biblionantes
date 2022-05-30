@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -45,8 +45,9 @@ class AboutPage extends StatelessWidget {
   }
 
   Future<void> lauchUrl(String url) async {
-    if (await canLaunchUrlString(url)) {
-      await launchUrlString(url);
+    var uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
       throw 'Could not launch $url';
     }

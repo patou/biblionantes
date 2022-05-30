@@ -47,5 +47,11 @@
       <string>http</string>
       <string>mailto</string>
     </array>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>https</string>
+      <string>http</string>
+      <string>mailto</string>
+    </array>
 </dict>
 </plist>
