@@ -7,8 +7,14 @@ Bibliothèque de Nantes
 Application permettant de gérer sur son mobile son compte de bibliothèque à la bibliothèque municipale de Nantes.
 
 - Recherche de livre dans le catalogue de la bibliothèque
-- Ajouter l'ensemble des cartes de bibliothèques de la famille
+- Ajouter l'enssemble des cartes de bibliothèques de la famille
 - Voir la liste des documents qui ont été emprunté et savoir quand on doit les rendre.
+- Réserver des livres
+
+![Page de recherche](./images/search.png)
+![Carte de bibliothèque](./images/cartes.png)
+![Liste des emprunts](./images/emprunt.png)
+![Detail d'un ligne](./images/detail.png)
 
 ## Getting Started
 
