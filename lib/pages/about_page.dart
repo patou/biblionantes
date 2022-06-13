@@ -38,7 +38,7 @@ class AboutPage extends StatelessWidget {
               await lauchUrl('https://github.com/patou/biblionantes');
             },
               child: const Text("github.com/patou/biblionantes"),),
-            const Text("Le projet utilise crashalitics pour récuper les rapports de bugs pour permettre d'améliorer la stabilité de l'application.", style: TextStyle(fontSize: 14),),
+            const Text("Le projet utilise firebase crashlytics pour récuper les rapports de bugs pour permettre d'améliorer la stabilité de l'application.", style: TextStyle(fontSize: 14),),
           ],
         ),
       ),
