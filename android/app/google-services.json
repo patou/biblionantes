@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "74652393664",
+    "project_id": "biblionantes",
+    "storage_bucket": "biblionantes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74652393664:android:0afb69c801ada8e47f0d25",
+        "android_client_info": {
+          "package_name": "com.biblionantes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74652393664-500ph89mpir509ocjsalqrfa30hpvh87.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSJdY6_-Yx7jWXDqZn0IsN4q5_4OLdnk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74652393664-500ph89mpir509ocjsalqrfa30hpvh87.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "74652393664-helg0jgc5clbkk1ntp2ha3ljadi1vlk9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.biblionantes"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

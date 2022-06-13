@@ -18,9 +18,9 @@ class AboutPage extends StatelessWidget {
             const SizedBox(height: 10,),
             const Text("Cette application est développé par Patrice de Saint Steban. Elle est indépendante de la bibliothèque municipale de Nantes et ne fait que dialoguer avec les serveurs de celle-ci.", style: TextStyle(fontSize: 14),),
             const SizedBox(height: 10,),
-            const Text("Les informations sur vos cartes de bibliothèques sont uniquement enregistrés dans votre téléphone. "
-                "Ils sont simplement utilisé pour se connecter sur les serveurs de la bibliothèque de Nantes. "
-                "A aucun moment, l'application ne dialogue avec un autre serveur ou partage de l'information avec l'auteur de l'application.", style: TextStyle(fontSize: 14),),
+            const Text("""Les informations sur vos cartes de bibliothèques sont uniquement enregistrés dans votre téléphone.
+                Ils sont simplement utilisé pour se connecter sur les serveurs de la bibliothèque de Nantes.
+                A aucun moment, l'application ne dialogue avec un autre serveur ou partage de l'information avec l'auteur de l'application.""", style: TextStyle(fontSize: 14),),
             const SizedBox(height: 10,),
             const Text("Si vous rencontrez un problème sur l'application ou une idée d'amélioration, n'hésitez pas à me contacter à ", style: TextStyle(fontSize: 14),),
             TextButton(onPressed: () async {
@@ -38,6 +38,7 @@ class AboutPage extends StatelessWidget {
               await lauchUrl('https://github.com/patou/biblionantes');
             },
               child: const Text("github.com/patou/biblionantes"),),
+            const Text("Le projet utilise crashalitics pour récuper les rapports de bugs pour permettre d'améliorer la stabilité de l'application.", style: TextStyle(fontSize: 14),),
           ],
         ),
       ),

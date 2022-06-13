@@ -37,6 +37,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.4
   auto_route: ^4.0.1
+  firebase_crashlytics: ^2.8.1
 
 dev_dependencies:
   flutter_test:
