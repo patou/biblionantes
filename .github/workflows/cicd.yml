@@ -15,12 +15,16 @@ jobs:
         with:
           flutter-version: '3.0.1'
           channel: stable
-      - name: Build
+      - name: install pub get
+        run: flutter pub get
+      - name: format and analyse
         run: |
-          flutter pub get
           flutter format --set-exit-if-changed .
           flutter analyze
-          flutter test
+      - name: test
+        run: flutter test
+      - name: Build apk
+        run: |
           flutter build apk --debug
   build-mac:
     runs-on: macos-latest
@@ -30,10 +34,7 @@ jobs:
         with:
           flutter-version: '3.0.1'
           channel: stable
-      - name: Build web
+      - name: Build IOS
         run: |
           flutter pub get
-          flutter format --set-exit-if-changed .
-          flutter analyze
-          flutter test
           flutter build ios --debug --no-codesign
