@@ -9,7 +9,7 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticateException implements Exception {
-  final _message;
+  final dynamic _message;
   final _prefix = 'Error during HTTP call: ';
 
   AuthenticateException([this._message]);
@@ -21,7 +21,7 @@ class AuthenticateException implements Exception {
 }
 
 class LibraryCardRepository {
-  static const String ACCOUNTS_LIST_SHARED_PREF = "bionantes.accounts";
+  static const String accountsListSharedPref = "biblionantes.accounts";
   final Dio client;
   final _controller = StreamController<List<LibraryCard>>();
 
@@ -29,9 +29,9 @@ class LibraryCardRepository {
 
   Future<void> loadLibraryCards() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey(ACCOUNTS_LIST_SHARED_PREF)) {
+    if (prefs.containsKey(accountsListSharedPref)) {
       accounts = prefs
-          .getStringList(ACCOUNTS_LIST_SHARED_PREF)!
+          .getStringList(accountsListSharedPref)!
           .map((str) => LibraryCard.fromSharedPref(str))
           .toList();
     } else {
@@ -45,7 +45,7 @@ class LibraryCardRepository {
     List<String> saved =
         accounts.map<String>((e) => e.toSharedPref()).toList(growable: false);
     print(saved.join(","));
-    prefs.setStringList(ACCOUNTS_LIST_SHARED_PREF, saved);
+    prefs.setStringList(accountsListSharedPref, saved);
   }
 
   List<LibraryCard> accounts = [];

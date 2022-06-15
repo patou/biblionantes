@@ -9,10 +9,10 @@ class SearchList extends StatefulWidget {
   const SearchList({Key? key}) : super(key: key);
 
   @override
-  _SearchListState createState() => _SearchListState();
+  SearchListState createState() => SearchListState();
 }
 
-class _SearchListState extends State<SearchList> {
+class SearchListState extends State<SearchList> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   late SearchBookBloc searchBookBloc;

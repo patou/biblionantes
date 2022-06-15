@@ -28,12 +28,12 @@ class SearchPage extends StatelessWidget {
 
 class SearchWidget extends StatefulWidget {
   @override
-  _SearchWidgetState createState() => _SearchWidgetState();
+  SearchWidgetState createState() => SearchWidgetState();
 
   const SearchWidget({Key? key}) : super(key: key);
 }
 
-class _SearchWidgetState extends State<SearchWidget> {
+class SearchWidgetState extends State<SearchWidget> {
   final _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {

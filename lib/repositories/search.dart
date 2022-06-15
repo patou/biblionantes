@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class FetchDataException implements Exception {
-  final _message;
+  final dynamic _message;
   final _prefix = 'Error during HTTP call: ';
 
   FetchDataException([this._message]);

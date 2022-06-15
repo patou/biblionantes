@@ -30,11 +30,9 @@ jobs:
           flutter analyze
           flutter test
       - name: Build apk
-          run: |
-            flutter build apk
+        run: flutter build apk
       - name: Build appbundle
-          run: |
-            flutter build appbundle
+        run: flutter build appbundle
       - name: Retrieve Release Version
         id: versionstep
         run: |

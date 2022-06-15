@@ -79,7 +79,7 @@ class AuthentInfo {
 }
 
 class LibraryCard extends Equatable {
-  static const String SEPARATOR = "\x29";
+  static const String separator = "\x29";
   final String login;
   final String password;
   final String userId;
@@ -92,7 +92,7 @@ class LibraryCard extends Equatable {
       required this.name});
 
   factory LibraryCard.fromSharedPref(String str) {
-    var parts = str.split(SEPARATOR);
+    var parts = str.split(separator);
     return LibraryCard(
       login: parts[0],
       password: parts[1],
@@ -102,7 +102,7 @@ class LibraryCard extends Equatable {
   }
 
   String toSharedPref() {
-    return [login, password, userId, name].join(SEPARATOR);
+    return [login, password, userId, name].join(separator);
   }
 
   @override

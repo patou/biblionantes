@@ -119,10 +119,10 @@ class BookAction extends StatefulWidget {
   final BuildContext context;
 
   @override
-  _BookActionState createState() => _BookActionState();
+  BookActionState createState() => BookActionState();
 }
 
-class _BookActionState extends State<BookAction> {
+class BookActionState extends State<BookAction> {
   String? action;
   String? account;
   bool loading = false;
@@ -152,6 +152,7 @@ class _BookActionState extends State<BookAction> {
           ),
         );
       case 'renew':
+        // ignore: prefer_typing_uninitialized_variables
         var onPressed;
         if (account != null && widget.documentNumber != null) {
           onPressed = () async {
@@ -161,6 +162,7 @@ class _BookActionState extends State<BookAction> {
             bool renewed = await context
                 .read<LibraryCardRepository>()
                 .renewBook(account!, widget.documentNumber!);
+            if (!mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: renewed ? Colors.lightGreen : Colors.redAccent,
               content: Text(renewed
@@ -183,6 +185,7 @@ class _BookActionState extends State<BookAction> {
           ),
         );
       case 'cancel':
+        // ignore: prefer_typing_uninitialized_variables
         var onPressed;
         if (account != null && widget.seqNo != null) {
           onPressed = () async {
@@ -193,6 +196,7 @@ class _BookActionState extends State<BookAction> {
                 .read<LibraryCardRepository>()
                 .cancelReservationBook(account!, widget.seqNo!,
                     widget.branchCode!, widget.omnidexId!);
+            if (!mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: canceled ? Colors.lightGreen : Colors.redAccent,
               content: Text(canceled

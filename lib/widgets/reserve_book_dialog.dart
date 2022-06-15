@@ -13,10 +13,10 @@ class ReserveBookDialog extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ReserveBookDialogState createState() => _ReserveBookDialogState();
+  ReserveBookDialogState createState() => ReserveBookDialogState();
 }
 
-class _ReserveBookDialogState extends State<ReserveBookDialog> {
+class ReserveBookDialogState extends State<ReserveBookDialog> {
   String? _account;
   String? _lieu;
   bool _loading = true;
@@ -189,6 +189,7 @@ class _ReserveBookDialogState extends State<ReserveBookDialog> {
       bool reserved = await context
           .read<LibraryCardRepository>()
           .reserveBook(_account!, _lieu!, widget.bookId);
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: reserved ? Colors.lightGreen : Colors.redAccent,
         content: Text(reserved
