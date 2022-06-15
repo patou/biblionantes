@@ -12,12 +12,14 @@ part 'library_card_event.dart';
 part 'library_card_state.dart';
 
 class LibraryCardBloc extends Bloc<LibraryCardEvent, AbstractLibraryCardState> {
-  LibraryCardBloc({required this.accountRepository}) : super(InitialLibraryCardState()) {
+  LibraryCardBloc({required this.accountRepository})
+      : super(InitialLibraryCardState()) {
     on<LoadLibraryCardEvent>(onLoadLibraryCardEvent);
     on<LibraryCardChangedEvent>(onLibraryCardChangedEvent);
     on<AddLibraryCardEvent>(onAddLibraryCardEvent);
     on<RemoveLibraryCardEvent>(onRemoveLibraryCardEvent);
-    _listLibraryCardsSubscription = accountRepository.getLibraryCards()
+    _listLibraryCardsSubscription = accountRepository
+        .getLibraryCards()
         .listen((list) => add(LibraryCardChangedEvent(list)));
   }
 
@@ -31,37 +33,38 @@ class LibraryCardBloc extends Bloc<LibraryCardEvent, AbstractLibraryCardState> {
     return super.close();
   }
 
-  Future<FutureOr<void>> onLoadLibraryCardEvent(LoadLibraryCardEvent event, Emitter<AbstractLibraryCardState> emit) async {
+  Future<FutureOr<void>> onLoadLibraryCardEvent(LoadLibraryCardEvent event,
+      Emitter<AbstractLibraryCardState> emit) async {
     await accountRepository.loadLibraryCards();
   }
 
-  FutureOr<void> onLibraryCardChangedEvent(LibraryCardChangedEvent event, Emitter<AbstractLibraryCardState> emit) {
+  FutureOr<void> onLibraryCardChangedEvent(
+      LibraryCardChangedEvent event, Emitter<AbstractLibraryCardState> emit) {
     emit(LibraryCardStateChange(event.libraryCards));
   }
 
-  Future<FutureOr<void>> onAddLibraryCardEvent(AddLibraryCardEvent event, Emitter<AbstractLibraryCardState> emit) async {
+  Future<FutureOr<void>> onAddLibraryCardEvent(
+      AddLibraryCardEvent event, Emitter<AbstractLibraryCardState> emit) async {
     try {
       emit(AddLibraryCardStateInProgress());
-      await accountRepository.addLibraryCards(event.name, event.login, event.pass);
+      await accountRepository.addLibraryCards(
+          event.name, event.login, event.pass);
       emit(AddLibraryCardStateSuccess());
-    }
-    catch (e, stack) {
+    } catch (e, stack) {
       print(e);
       print(stack);
       emit(AddLibraryCardStateError(e.toString()));
     }
   }
 
-
-  Future<FutureOr<void>> onRemoveLibraryCardEvent(RemoveLibraryCardEvent event, Emitter<AbstractLibraryCardState> emit) async {
+  Future<FutureOr<void>> onRemoveLibraryCardEvent(RemoveLibraryCardEvent event,
+      Emitter<AbstractLibraryCardState> emit) async {
     try {
       emit(RemoveLibraryCardStateInProgress());
       await accountRepository.removeLibraryCard(event.libraryCard);
       emit(RemoveLibraryCardStateSuccess());
-    }
-    catch (e) {
+    } catch (e) {
       emit(RemoveLibraryCardStateError(e.toString()));
     }
   }
 }
-

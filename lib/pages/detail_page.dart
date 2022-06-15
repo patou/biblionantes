@@ -9,7 +9,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({@PathParam('id') required this.id, @QueryParam('action') this.action, @QueryParam('account') this.account, @QueryParam('documentNumber') this.documentNumber, @QueryParam('seqNo') this.seqNo, @QueryParam('branchCode') this.branchCode, @QueryParam('omnidexId') this.omnidexId, Key? key}) : super(key: key);
+  const DetailPage(
+      {@PathParam('id') required this.id,
+      @QueryParam('action') this.action,
+      @QueryParam('account') this.account,
+      @QueryParam('documentNumber') this.documentNumber,
+      @QueryParam('seqNo') this.seqNo,
+      @QueryParam('branchCode') this.branchCode,
+      @QueryParam('omnidexId') this.omnidexId,
+      Key? key})
+      : super(key: key);
 
   final String id;
   final String? action;
@@ -21,7 +30,8 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => DetailBloc(searchRepository: context.read())..add(LoadDetailEvent(id)),
+        create: (context) => DetailBloc(searchRepository: context.read())
+          ..add(LoadDetailEvent(id)),
         child: Scaffold(
             appBar: AppBar(
               title: const Text('Détail'),
@@ -44,7 +54,15 @@ class DetailPage extends StatelessWidget {
                           book: state.detail.book,
                           useBoxShadow: false,
                         ),
-                        BookAction(id: id, action: action, account: account, documentNumber: documentNumber, seqNo: seqNo, branchCode: branchCode, omnidexId: omnidexId, context: context),
+                        BookAction(
+                            id: id,
+                            action: action,
+                            account: account,
+                            documentNumber: documentNumber,
+                            seqNo: seqNo,
+                            branchCode: branchCode,
+                            omnidexId: omnidexId,
+                            context: context),
                         const TabBar(
                           labelColor: Colors.blue,
                           tabs: [
@@ -140,13 +158,15 @@ class _BookActionState extends State<BookAction> {
             setState(() {
               loading = true;
             });
-            bool renewed = await context.read<LibraryCardRepository>().renewBook(account!, widget.documentNumber!);
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: renewed ? Colors.lightGreen : Colors.redAccent,
-                  content: Text(renewed ? "Emprunt renouvelé" : "Cet emprunt ne peut plus être renouvelé"),
-                )
-            );
+            bool renewed = await context
+                .read<LibraryCardRepository>()
+                .renewBook(account!, widget.documentNumber!);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: renewed ? Colors.lightGreen : Colors.redAccent,
+              content: Text(renewed
+                  ? "Emprunt renouvelé"
+                  : "Cet emprunt ne peut plus être renouvelé"),
+            ));
             setState(() {
               action = renewed ? "renewed" : "renew";
               account = null;
@@ -169,17 +189,16 @@ class _BookActionState extends State<BookAction> {
             setState(() {
               loading = true;
             });
-            bool canceled = await context.read<LibraryCardRepository>()
-                .cancelReservationBook(account!, widget.seqNo!, widget.branchCode!, widget.omnidexId!);
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: canceled ? Colors.lightGreen : Colors
-                      .redAccent,
-                  content: Text(canceled
-                      ? "Reservation annulé"
-                      : "Cette réservation ne peut plus être annulé"),
-                )
-            );
+            bool canceled = await context
+                .read<LibraryCardRepository>()
+                .cancelReservationBook(account!, widget.seqNo!,
+                    widget.branchCode!, widget.omnidexId!);
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: canceled ? Colors.lightGreen : Colors.redAccent,
+              content: Text(canceled
+                  ? "Reservation annulé"
+                  : "Cette réservation ne peut plus être annulé"),
+            ));
             setState(() {
               action = canceled ? "canceled" : "cancel";
               account = null;
@@ -250,7 +269,8 @@ class StockList extends StatelessWidget {
           style: TextStyle(fontSize: 16),
         ),
         BlocBuilder<DetailBloc, DetailState>(
-            buildWhen: (last, next) => next is DetailSuccess && next.detail.stock.isNotEmpty,
+            buildWhen: (last, next) =>
+                next is DetailSuccess && next.detail.stock.isNotEmpty,
             builder: (context, state) {
               if (state is DetailSuccess) {
                 if (state.detail.stock.isEmpty) {
@@ -262,7 +282,8 @@ class StockList extends StatelessWidget {
                 return Column(children: [
                   for (var element in state.detail.stock)
                     ListTile(
-                      leading: Icon(stockIcon(element.stat, element.isReserved)),
+                      leading:
+                          Icon(stockIcon(element.stat, element.isReserved)),
                       title: Text(element.branch),
                       subtitle: Text(
                         formatStatut(element),
@@ -320,20 +341,26 @@ class StockList extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("Bibliothèque : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text("Bibliothèque : ",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               Text(element.branch),
-              const Text("Section : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text("Section : ",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               Text(element.subloca),
-              const Text("Categorie : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text("Categorie : ",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               Text(element.category),
-              const Text("Collection : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text("Collection : ",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               Text(element.collection),
-              const Text("Code du livre : ", style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text("Code du livre : ",
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               Text(element.callnumber),
               const SizedBox(
                 height: 15,
               ),
-              Text(formatStatut(element), style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(formatStatut(element),
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
           ),
           actions: <Widget>[
@@ -358,7 +385,8 @@ class DetailMoreList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DetailBloc, DetailState>(
-        buildWhen: (last, next) => next is DetailSuccess && next.detail.details.isNotEmpty,
+        buildWhen: (last, next) =>
+            next is DetailSuccess && next.detail.details.isNotEmpty,
         builder: (context, state) {
           if (state is DetailSuccess) {
             if (state.detail.details.isEmpty) {
@@ -372,16 +400,21 @@ class DetailMoreList extends StatelessWidget {
                 itemCount: state.detail.details.length,
                 itemBuilder: (BuildContext context, int index) {
                   var detail = state.detail.details[index];
-                  return detail.icon != null ? ListTile(
-                    title: Text(detail.value),
-                    subtitle: Text(detail.display),
-                    leading: Icon(detail.icon),
-                  ) : Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Text(detail.value, textAlign: TextAlign.justify, softWrap: true, style: const TextStyle(fontSize: 16),)
-                  );
-                }
-            );
+                  return detail.icon != null
+                      ? ListTile(
+                          title: Text(detail.value),
+                          subtitle: Text(detail.display),
+                          leading: Icon(detail.icon),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Text(
+                            detail.value,
+                            textAlign: TextAlign.justify,
+                            softWrap: true,
+                            style: const TextStyle(fontSize: 16),
+                          ));
+                });
           }
           return const Center(
             child: Text("Une erreur est apparus"),

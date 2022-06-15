@@ -24,7 +24,7 @@ class LoansBook extends Book {
     String? type,
     String? imageURL,
     String? ark,
-  })  : super(
+  }) : super(
           id: id ?? toId(seqNo),
           title: title,
           creators: creators,
@@ -34,15 +34,16 @@ class LoansBook extends Book {
           imageURL: imageURL,
         );
 
-  factory LoansBook.fromJson(Map<String, dynamic> json, String account, String login) {
+  factory LoansBook.fromJson(
+      Map<String, dynamic> json, String account, String login) {
     return LoansBook(
-        seqNo: json['data']['seqNo'] as String,
-        documentNumber: json['data']['documentNumber'],
-        title: json['data']['title'] as String,
-        returnDate: DateTime.parse(json['data']['returnDate']),
-        renewable: json['data']['isRenewable'] as bool,
-        account: account,
-        login: login,
+      seqNo: json['data']['seqNo'] as String,
+      documentNumber: json['data']['documentNumber'],
+      title: json['data']['title'] as String,
+      returnDate: DateTime.parse(json['data']['returnDate']),
+      renewable: json['data']['isRenewable'] as bool,
+      account: account,
+      login: login,
     );
   }
 
@@ -91,7 +92,8 @@ class LoansBook extends Book {
   }
 
   @override
-  List<Object?> get props => [...super.props, account, returnDate, login, renewable];
+  List<Object?> get props =>
+      [...super.props, account, returnDate, login, renewable];
 }
 
 /// On ne connais pas l'ID du document dans la liste des prêts et reservation seulement le seqNo.
@@ -100,7 +102,4 @@ toId(String seqNo) {
   return 'p::usmarcdef_${seqNo.padLeft(10, '0')}';
 }
 
-enum LoansBookGroupBy {
-  account,
-  returnDate
-}
+enum LoansBookGroupBy { account, returnDate }

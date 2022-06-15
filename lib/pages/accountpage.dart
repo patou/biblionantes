@@ -30,62 +30,62 @@ class AccountPage extends StatelessWidget {
         itemBuilder: (_, index) {
           return Container(
             margin: const EdgeInsets.only(bottom: 10),
-            child: SummaryAccountCard(account: state.libraryCards[index], onDeleteAccount: (account) {
-              _showConfirmDelete(account, context, context.read());
-            }),
+            child: SummaryAccountCard(
+                account: state.libraryCards[index],
+                onDeleteAccount: (account) {
+                  _showConfirmDelete(account, context, context.read());
+                }),
           );
         },
       );
-    }
-    else {
+    } else {
       return const Center(
-          child: Text('An error occurred'),
-        );
-
+        child: Text('An error occurred'),
+      );
     }
   }
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: const Text('Mes cartes de bibliothèque'),
-        centerTitle: true,
-        actions: [
-          PopupMenuButton<int>(
-            icon: const Icon(Icons.more_vert),
-            onSelected: (value) {
-              switch(value) {
-                case 1:
-                  context.pushRoute(const AboutRoute());
-                  break;
-              }
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem<int>(
-                value: 1,
-                child: Text("A propos"),
-              ),
-            ],
-          )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: const Icon(Icons.add),
-        backgroundColor: Colors.blueAccent,
-        label: const Text("Ajouter une carte"),
-        onPressed: () => _showDialog(context, context.read()),
-      ),
-      body: BlocBuilder<LibraryCardBloc, AbstractLibraryCardState>(
-        buildWhen: (prev, next) => next is LibraryCardState,
-        builder: _displayBody,
-      )
-    );
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: const Text('Mes cartes de bibliothèque'),
+          centerTitle: true,
+          actions: [
+            PopupMenuButton<int>(
+              icon: const Icon(Icons.more_vert),
+              onSelected: (value) {
+                switch (value) {
+                  case 1:
+                    context.pushRoute(const AboutRoute());
+                    break;
+                }
+              },
+              itemBuilder: (context) => [
+                const PopupMenuItem<int>(
+                  value: 1,
+                  child: Text("A propos"),
+                ),
+              ],
+            )
+          ],
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          icon: const Icon(Icons.add),
+          backgroundColor: Colors.blueAccent,
+          label: const Text("Ajouter une carte"),
+          onPressed: () => _showDialog(context, context.read()),
+        ),
+        body: BlocBuilder<LibraryCardBloc, AbstractLibraryCardState>(
+          buildWhen: (prev, next) => next is LibraryCardState,
+          builder: _displayBody,
+        ));
   }
 
-
-  Future<void> _showConfirmDelete(LibraryCard account, BuildContext context, LibraryCardBloc libraryCardBloc) async {
+  Future<void> _showConfirmDelete(LibraryCard account, BuildContext context,
+      LibraryCardBloc libraryCardBloc) async {
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {

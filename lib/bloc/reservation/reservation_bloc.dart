@@ -9,14 +9,15 @@ part 'reservations_event.dart';
 part 'reservations_state.dart';
 
 class ReservationsBloc extends Bloc<ReservationsEvent, ReservationsState> {
-
-  ReservationsBloc({required this.accountRepository}) : super(ReservationsInitial()) {
+  ReservationsBloc({required this.accountRepository})
+      : super(ReservationsInitial()) {
     on<LoadReservationsEvent>(onLoadLoansEvent);
   }
 
   final LibraryCardRepository accountRepository;
 
-  FutureOr<void> onLoadLoansEvent(LoadReservationsEvent event, Emitter<ReservationsState> emit) async {
+  FutureOr<void> onLoadLoansEvent(
+      LoadReservationsEvent event, Emitter<ReservationsState> emit) async {
     try {
       emit(ReservationsInProgress());
       // On récupère la liste des prêts
@@ -25,8 +26,7 @@ class ReservationsBloc extends Bloc<ReservationsEvent, ReservationsState> {
       // On complète pour récupérer les infos plus précises des documents.
       list = await accountRepository.resolveReservableBook(list);
       emit(ReservationsList(list));
-    }
-    catch (e, stack) {
+    } catch (e, stack) {
       print(e);
       print(stack);
       emit(ResrvationsError(e.toString()));

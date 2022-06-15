@@ -13,7 +13,7 @@ class SummaryAccountCard extends StatelessWidget {
     Key? key,
     required this.account,
     required this.onDeleteAccount,
-  })  : super(key: key);
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,9 @@ class SummaryAccountCard extends StatelessWidget {
         children: [
           Text(account.name, textAlign: TextAlign.center, textScaleFactor: 1.5),
           FutureBuilder<SummeryAccount>(
-              future: context.read<LibraryCardRepository>().loadSummaryAccount(account),
+              future: context
+                  .read<LibraryCardRepository>()
+                  .loadSummaryAccount(account),
               builder: (_, snapshot) {
                 if (snapshot.hasError) {
                   print(snapshot.error);
@@ -39,7 +41,8 @@ class SummaryAccountCard extends StatelessWidget {
                   );
                 }
                 SummeryAccount summary = snapshot.requireData;
-                var expirationDays = summary.expiryDate!.difference(DateTime.now()).inDays;
+                var expirationDays =
+                    summary.expiryDate!.difference(DateTime.now()).inDays;
                 return Column(
                   children: [
                     ListTile(
@@ -48,25 +51,26 @@ class SummaryAccountCard extends StatelessWidget {
                       subtitle: Text("Numéro : ${account.login}"),
                     ),
                     if (summary.hasTrapLevel)
-                        const ListTile(
-                            leading: Icon(Icons.warning, color: Colors.red),
-                            title: Text(
-                                "Votre carte est bloqué, rapprochez vous de votre bibliothèque"),
-                        ),
+                      const ListTile(
+                        leading: Icon(Icons.warning, color: Colors.red),
+                        title: Text(
+                            "Votre carte est bloqué, rapprochez vous de votre bibliothèque"),
+                      ),
                     if (summary.expiryDate != null && expirationDays < 30)
                       const ListTile(
                         leading: Icon(Icons.warning, color: Colors.amber),
-                        title: Text(
-                            "Votre abonnement sera bientôt à renouveler."),
+                        title:
+                            Text("Votre abonnement sera bientôt à renouveler."),
                       ),
-                    if (summary.expiryDate != null && summary.subscriptionDate != null)
-                        ListTile(
-                          leading: const Icon(Icons.date_range),
-                          title: Text(
-                                "Expire le ${dateFormat.format(summary.expiryDate!)}${expirationDays < 30 ? ' (dans $expirationDays jours)':''}"),
-                          subtitle: Text(
-                              "Depuis le ${dateFormat.format(summary.subscriptionDate!)}"),
-                        ),
+                    if (summary.expiryDate != null &&
+                        summary.subscriptionDate != null)
+                      ListTile(
+                        leading: const Icon(Icons.date_range),
+                        title: Text(
+                            "Expire le ${dateFormat.format(summary.expiryDate!)}${expirationDays < 30 ? ' (dans $expirationDays jours)' : ''}"),
+                        subtitle: Text(
+                            "Depuis le ${dateFormat.format(summary.subscriptionDate!)}"),
+                      ),
                     ListTile(
                       leading: const Icon(Icons.import_contacts),
                       title: Text(
@@ -74,7 +78,8 @@ class SummaryAccountCard extends StatelessWidget {
                     ),
                     (summary.overdueLoans > 0)
                         ? ListTile(
-                            leading: const Icon(Icons.watch_later, color: Colors.red),
+                            leading: const Icon(Icons.watch_later,
+                                color: Colors.red),
                             title: Text(
                                 "Emprunts en retards : ${summary.overdueLoans}"),
                           )

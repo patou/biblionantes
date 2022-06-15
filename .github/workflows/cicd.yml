@@ -15,7 +15,7 @@ jobs:
         with:
           flutter-version: '3.0.1'
           channel: stable
-      - name: Build apk
+      - name: Build
         run: |
           flutter pub get
           flutter format --set-exit-if-changed .

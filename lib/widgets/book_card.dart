@@ -27,9 +27,7 @@ class BookCard extends StatelessWidget {
         boxShadow: [
           if (useBoxShadow == true)
             const BoxShadow(
-                color: Colors.grey,
-                offset: Offset(0.0, 1.0),
-                blurRadius: 6.0),
+                color: Colors.grey, offset: Offset(0.0, 1.0), blurRadius: 6.0),
         ],
       ),
       child: Row(
@@ -49,8 +47,12 @@ class BookCard extends StatelessWidget {
                       top: 5,
                       left: 5,
                       child: isSelected
-                          ? const Icon(Icons.check_box_rounded, color: Colors.green,)
-                          : const Icon(Icons.check_box_outline_blank_rounded, color: Colors.grey))
+                          ? const Icon(
+                              Icons.check_box_rounded,
+                              color: Colors.green,
+                            )
+                          : const Icon(Icons.check_box_outline_blank_rounded,
+                              color: Colors.grey))
               ],
             ),
           ),

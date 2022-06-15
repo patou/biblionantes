@@ -10,7 +10,6 @@ import 'package:biblionantes/repositories/search.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-
 import 'router.gr.dart';
 
 void main() async {
@@ -38,7 +37,13 @@ class BiblioNantesApp extends StatelessWidget {
 
   BiblioNantesApp({Key? key}) : super(key: key) {
     dio.interceptors.add(PrettyDioLogger(
-        requestHeader: true, requestBody: false, responseBody: false, responseHeader: false, error: true, compact: true, maxWidth: 90));
+        requestHeader: true,
+        requestBody: false,
+        responseBody: false,
+        responseHeader: false,
+        error: true,
+        compact: true,
+        maxWidth: 90));
   }
 
   // This widget is the root of your application.
@@ -46,11 +51,15 @@ class BiblioNantesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
         providers: [
-          RepositoryProvider(create: (context) => LibraryCardRepository(client: dio)),
-          RepositoryProvider(create: (context) => SearchRepository(client: dio)),
+          RepositoryProvider(
+              create: (context) => LibraryCardRepository(client: dio)),
+          RepositoryProvider(
+              create: (context) => SearchRepository(client: dio)),
         ],
         child: BlocProvider(
-            create: (context) => LibraryCardBloc(accountRepository: context.read())..add(LoadLibraryCardEvent()),
+            create: (context) =>
+                LibraryCardBloc(accountRepository: context.read())
+                  ..add(LoadLibraryCardEvent()),
             lazy: false,
             child: MaterialApp.router(
               title: 'Biblio Nantes',

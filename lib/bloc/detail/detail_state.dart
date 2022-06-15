@@ -9,18 +9,17 @@ abstract class DetailState extends Equatable {
   List<Object?> get props => [];
 }
 
-class DetailInitial extends DetailState {
-}
+class DetailInitial extends DetailState {}
 
-class DetailInProgress extends DetailState {
-}
+class DetailInProgress extends DetailState {}
 
 class DetailSuccess extends DetailState {
   final BookDetail detail;
 
   DetailSuccess({required this.detail});
 
-  DetailSuccess copyWith({BookDetail? detail}) => DetailSuccess(detail: detail ?? this.detail);
+  DetailSuccess copyWith({BookDetail? detail}) =>
+      DetailSuccess(detail: detail ?? this.detail);
 
   @override
   List<Object?> get props => [detail];

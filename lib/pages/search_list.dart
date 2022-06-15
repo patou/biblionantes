@@ -50,39 +50,44 @@ class _SearchListState extends State<SearchList> {
               child: Text('Pas de résultats trouvés'),
             );
           }
-          return Expanded( // wrap in Expanded
+          return Expanded(
+              // wrap in Expanded
               child: ListView.builder(
-                itemCount: state.hasReachedMax ? state.books.length : state.books.length + 1,
-                scrollDirection: Axis.vertical,
-                controller: _scrollController,
-                shrinkWrap: true,
-                itemBuilder: (_, index) {
-                  return  index >= state.books.length
-                      ? const BottomLoader()
-                      : Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    child: GestureDetector(
-                        onTap: () => context.pushRoute(DetailRoute(
-                          id: state.books[index].id,
-                          action: 'reserve'
-                        )),
-                        child: BookCard(book: state.books[index], widget: available(state.books[index].available),)),
-                  );
-                },
-              )
-          );
+            itemCount: state.hasReachedMax
+                ? state.books.length
+                : state.books.length + 1,
+            scrollDirection: Axis.vertical,
+            controller: _scrollController,
+            shrinkWrap: true,
+            itemBuilder: (_, index) {
+              return index >= state.books.length
+                  ? const BottomLoader()
+                  : Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      child: GestureDetector(
+                          onTap: () => context.pushRoute(DetailRoute(
+                              id: state.books[index].id, action: 'reserve')),
+                          child: BookCard(
+                            book: state.books[index],
+                            widget: available(state.books[index].available),
+                          )),
+                    );
+            },
+          ));
         }
         return const Center(
           child: Text('Erreur state not exist'),
         );
       },
     );
-
   }
 
   Widget? available(bool? available) {
     if (available != null) {
-      return Text(available ? 'Disponible' : 'Non disponible', style: TextStyle(color: available ? Colors.green : Colors.red),);
+      return Text(
+        available ? 'Disponible' : 'Non disponible',
+        style: TextStyle(color: available ? Colors.green : Colors.red),
+      );
     }
     return null;
   }
@@ -111,8 +116,7 @@ class _SearchListState extends State<SearchList> {
     if (maxScroll - currentScroll <= _scrollThreshold) {
       var state = searchBookBloc.state;
       if (state is SearchBookSucessState) {
-        searchBookBloc.add(
-            SearchBookLoadNext());
+        searchBookBloc.add(SearchBookLoadNext());
       }
     }
   }

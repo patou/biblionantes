@@ -9,7 +9,7 @@ abstract class AbstractLibraryCardState extends Equatable {
 abstract class LibraryCardState extends AbstractLibraryCardState {}
 
 @immutable
-class LibraryCardStateChange  extends LibraryCardState {
+class LibraryCardStateChange extends LibraryCardState {
   final List<LibraryCard> libraryCards;
 
   LibraryCardStateChange(this.libraryCards);
@@ -19,10 +19,10 @@ class LibraryCardStateChange  extends LibraryCardState {
 }
 
 @immutable
-class InitialLibraryCardState  extends LibraryCardState {}
+class InitialLibraryCardState extends LibraryCardState {}
 
 @immutable
-class LibraryCardStateLoadError  extends LibraryCardState {
+class LibraryCardStateLoadError extends LibraryCardState {
   final String error;
 
   LibraryCardStateLoadError(this.error);
@@ -30,17 +30,16 @@ class LibraryCardStateLoadError  extends LibraryCardState {
   List<Object?> get props => ['error'];
 }
 
-
 abstract class AddLibraryCardState extends AbstractLibraryCardState {}
 
 @immutable
-class AddLibraryCardStateInProgress  extends AddLibraryCardState {}
+class AddLibraryCardStateInProgress extends AddLibraryCardState {}
 
 @immutable
-class AddLibraryCardStateSuccess  extends AddLibraryCardState {}
+class AddLibraryCardStateSuccess extends AddLibraryCardState {}
 
 @immutable
-class AddLibraryCardStateError  extends AddLibraryCardState {
+class AddLibraryCardStateError extends AddLibraryCardState {
   final String error;
 
   AddLibraryCardStateError(this.error);
@@ -49,14 +48,15 @@ class AddLibraryCardStateError  extends AddLibraryCardState {
 }
 
 abstract class RemoveLibraryCardState extends AbstractLibraryCardState {}
-@immutable
-class RemoveLibraryCardStateInProgress  extends RemoveLibraryCardState {}
 
 @immutable
-class RemoveLibraryCardStateSuccess  extends RemoveLibraryCardState {}
+class RemoveLibraryCardStateInProgress extends RemoveLibraryCardState {}
 
 @immutable
-class RemoveLibraryCardStateError  extends RemoveLibraryCardState {
+class RemoveLibraryCardStateSuccess extends RemoveLibraryCardState {}
+
+@immutable
+class RemoveLibraryCardStateError extends RemoveLibraryCardState {
   final String error;
 
   RemoveLibraryCardStateError(this.error);

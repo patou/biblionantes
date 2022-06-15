@@ -27,10 +27,13 @@ class Book extends Equatable {
     return Book(
       id: json['id'][0]['value'] as String,
       title: json['title'][0]['value'] as String,
-      localNumber: json['LocalNumber'] != null ? json['LocalNumber'][0]['value'] as String : null,
+      localNumber: json['LocalNumber'] != null
+          ? json['LocalNumber'][0]['value'] as String
+          : null,
       type: json['zmatIndex'][0]['value'] as String,
       creators: decodeCreators(json),
-      imageURL: 'https://catalogue-bm.nantes.fr${json['imageSource_128'][0]['value']}',
+      imageURL:
+          'https://catalogue-bm.nantes.fr${json['imageSource_128'][0]['value']}',
     );
   }
 
@@ -44,16 +47,16 @@ class Book extends Equatable {
     String? ark,
     bool? available,
   }) {
-    return Book(id: id ?? this.id,
-        localNumber: localNumber ?? this.localNumber,
-        title: title ?? this.title,
-        type: type ?? this.type,
-        imageURL: imageURL ?? this.imageURL,
-        creators: creators ?? this.creators,
-        ark: ark ?? this.ark,
-        available: available ?? this.available,
+    return Book(
+      id: id ?? this.id,
+      localNumber: localNumber ?? this.localNumber,
+      title: title ?? this.title,
+      type: type ?? this.type,
+      imageURL: imageURL ?? this.imageURL,
+      creators: creators ?? this.creators,
+      ark: ark ?? this.ark,
+      available: available ?? this.available,
     );
-
   }
 
   static decodeCreators(json) {
@@ -61,15 +64,15 @@ class Book extends Equatable {
       if (json['meta']['creator'] != null) {
         return json['meta']['creator'].map((json) => json['value']).join("; ");
       }
-    }
-    catch (e) {
+    } catch (e) {
       print(e.toString());
     }
     return null;
   }
 
   @override
-  List<Object?> get props => [id, localNumber, title, type, creators, imageURL, available];
+  List<Object?> get props =>
+      [id, localNumber, title, type, creators, imageURL, available];
 }
 
 @immutable
@@ -79,8 +82,8 @@ class Detail extends Equatable {
   final IconData? icon;
   final int order;
 
-
-  const Detail({required this.display, required this.value, this.icon, this.order = 2});
+  const Detail(
+      {required this.display, required this.value, this.icon, this.order = 2});
 
   @override
   List<Object?> get props => [display, value, icon];
@@ -98,7 +101,6 @@ class Stock extends Equatable {
   final bool isReserved;
   final DateTime? duedate;
 
-
   const Stock({
     required this.branch,
     required this.subloca,
@@ -112,7 +114,17 @@ class Stock extends Equatable {
   });
 
   @override
-  List<Object?> get props => [branch, subloca, category, collection, callnumber, status, stat, isReserved, duedate];
+  List<Object?> get props => [
+        branch,
+        subloca,
+        category,
+        collection,
+        callnumber,
+        status,
+        stat,
+        isReserved,
+        duedate
+      ];
 }
 
 @immutable
@@ -121,7 +133,8 @@ class BookDetail extends Equatable {
   final List<Detail> details;
   final List<Stock> stock;
 
-  const BookDetail({required this.book, this.details = const [], this.stock = const []});
+  const BookDetail(
+      {required this.book, this.details = const [], this.stock = const []});
 
   BookDetail copyWith({
     Book? book,
@@ -134,9 +147,9 @@ class BookDetail extends Equatable {
     }
     detailsList.sort((d1, d2) => d1.order.compareTo(d2.order));
     return BookDetail(
-        book: book ?? this.book,
-        details: detailsList,
-        stock: stock ?? this.stock,
+      book: book ?? this.book,
+      details: detailsList,
+      stock: stock ?? this.stock,
     );
   }
 

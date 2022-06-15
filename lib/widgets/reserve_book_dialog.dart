@@ -54,8 +54,8 @@ class _ReserveBookDialogState extends State<ReserveBookDialog> {
             Text("Pas de carte"),
           ],
         ),
-
-        content: const Text("Vous devez ajouter une carte pour pouvoir effectuer une réservation"),
+        content: const Text(
+            "Vous devez ajouter une carte pour pouvoir effectuer une réservation"),
         actions: <Widget>[
           TextButton(
             child: const Text('Fermer'),
@@ -80,20 +80,25 @@ class _ReserveBookDialogState extends State<ReserveBookDialog> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("Avec quel carte ? : ", style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text("Avec quel carte ? : ",
+                style: TextStyle(fontWeight: FontWeight.bold)),
             DropdownButtonFormField<String>(
-              focusColor:Colors.white,
+              focusColor: Colors.white,
               value: _account,
               //elevation: 5,
               style: const TextStyle(color: Colors.white),
-              iconEnabledColor:Colors.black,
-              items: accounts.map<DropdownMenuItem<String>>((LibraryCard value) {
+              iconEnabledColor: Colors.black,
+              items:
+                  accounts.map<DropdownMenuItem<String>>((LibraryCard value) {
                 return DropdownMenuItem<String>(
                   value: value.login,
-                  child: Text(value.name,style:const TextStyle(color:Colors.black),),
+                  child: Text(
+                    value.name,
+                    style: const TextStyle(color: Colors.black),
+                  ),
                 );
               }).toList(),
-              hint:const Text(
+              hint: const Text(
                 "Choisissez une carte",
                 style: TextStyle(
                     color: Colors.black,
@@ -112,20 +117,25 @@ class _ReserveBookDialogState extends State<ReserveBookDialog> {
                 return null;
               },
             ),
-            const Text("Lieu de retrait : ", style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text("Lieu de retrait : ",
+                style: TextStyle(fontWeight: FontWeight.bold)),
             DropdownButtonFormField<String>(
-              focusColor:Colors.white,
+              focusColor: Colors.white,
               value: _lieu,
               //elevation: 5,
               style: const TextStyle(color: Colors.white),
-              iconEnabledColor:Colors.black,
-              items: reservationChoices.map<DropdownMenuItem<String>>((ReservationChoices value) {
+              iconEnabledColor: Colors.black,
+              items: reservationChoices
+                  .map<DropdownMenuItem<String>>((ReservationChoices value) {
                 return DropdownMenuItem<String>(
                   value: value.code,
-                  child: Text(value.name, style:const TextStyle(color:Colors.black),),
+                  child: Text(
+                    value.name,
+                    style: const TextStyle(color: Colors.black),
+                  ),
                 );
               }).toList(),
-              hint:const Text(
+              hint: const Text(
                 "Choisissez le lieu de retrait",
                 style: TextStyle(
                     color: Colors.black,
@@ -151,14 +161,16 @@ class _ReserveBookDialogState extends State<ReserveBookDialog> {
         ),
       ),
       actions: <Widget>[
-        _loading ? const CircularProgressIndicator() : TextButton(
-          child: const Text('Réserver'),
-          onPressed: () async {
-            if (formKey.currentState!.validate()) {
-              await doReserveBook(context);
-            }
-          },
-        ),
+        _loading
+            ? const CircularProgressIndicator()
+            : TextButton(
+                child: const Text('Réserver'),
+                onPressed: () async {
+                  if (formKey.currentState!.validate()) {
+                    await doReserveBook(context);
+                  }
+                },
+              ),
         TextButton(
           child: const Text('Annuler'),
           onPressed: () {
@@ -174,28 +186,22 @@ class _ReserveBookDialogState extends State<ReserveBookDialog> {
       setState(() {
         _loading = true;
       });
-      bool reserved = await context.read<LibraryCardRepository>()
-          .reserveBook(
-          _account!, _lieu!, widget.bookId);
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: reserved ? Colors.lightGreen : Colors
-                .redAccent,
-            content: Text(reserved
-                ? "Document reservé, vous recevrez un mail lors qu'il sera disponible."
-                : "Il n'est pas possible de réserver ce document"),
-          )
-      );
+      bool reserved = await context
+          .read<LibraryCardRepository>()
+          .reserveBook(_account!, _lieu!, widget.bookId);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: reserved ? Colors.lightGreen : Colors.redAccent,
+        content: Text(reserved
+            ? "Document reservé, vous recevrez un mail lors qu'il sera disponible."
+            : "Il n'est pas possible de réserver ce document"),
+      ));
       Navigator.of(context).pop(reserved);
-    }
-    catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors
-                .redAccent,
-            content: Text("""Il n'est pas possible de réserver ce document : $error"""),
-          )
-      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        backgroundColor: Colors.redAccent,
+        content:
+            Text("""Il n'est pas possible de réserver ce document : $error"""),
+      ));
       Navigator.of(context).pop(false);
     }
   }

@@ -14,7 +14,6 @@ import 'package:auto_route/auto_route.dart';
 final DateFormat dateFormat = DateFormat("dd/MM/yyyy");
 
 class LoansPage extends StatelessWidget {
-
   const LoansPage({Key? key}) : super(key: key);
 
   @override
@@ -39,30 +38,35 @@ class LoansPage extends StatelessWidget {
         centerTitle: true,
         actions: [
           PopupMenuButton<LoansBookGroupBy>(
-            onSelected: (groupBy) {
-              event.add(ChangeGroupByLoansEvent(groupBy: groupBy));
-            },
+              onSelected: (groupBy) {
+                event.add(ChangeGroupByLoansEvent(groupBy: groupBy));
+              },
               icon: const Icon(Icons.sort),
               itemBuilder: (BuildContext context) {
                 return <PopupMenuEntry<LoansBookGroupBy>>[
-                    const PopupMenuItem(child: const Text('Grouper les documents par :')),
-                    PopupMenuItem<LoansBookGroupBy>(
-                      value: LoansBookGroupBy.account,
-                      child: ListTile(
-                          leading: const Icon(Icons.card_membership),
-                          title: const Text('Carte de bibliothèque'),
-                          trailing: state.groupBy == LoansBookGroupBy.account ? const Icon(Icons.check_circle) : const Icon(Icons.circle_outlined),
-                      ),
+                  const PopupMenuItem(
+                      child: const Text('Grouper les documents par :')),
+                  PopupMenuItem<LoansBookGroupBy>(
+                    value: LoansBookGroupBy.account,
+                    child: ListTile(
+                      leading: const Icon(Icons.card_membership),
+                      title: const Text('Carte de bibliothèque'),
+                      trailing: state.groupBy == LoansBookGroupBy.account
+                          ? const Icon(Icons.check_circle)
+                          : const Icon(Icons.circle_outlined),
                     ),
-                    PopupMenuItem<LoansBookGroupBy>(
-                      value: LoansBookGroupBy.returnDate,
-                      child: ListTile(
-                          leading: const Icon(Icons.date_range),
-                          title: const Text('Date de retour'),
-                          trailing: state.groupBy == LoansBookGroupBy.returnDate ? const Icon(Icons.check_circle) : const Icon(Icons.circle_outlined),
-                      ),
+                  ),
+                  PopupMenuItem<LoansBookGroupBy>(
+                    value: LoansBookGroupBy.returnDate,
+                    child: ListTile(
+                      leading: const Icon(Icons.date_range),
+                      title: const Text('Date de retour'),
+                      trailing: state.groupBy == LoansBookGroupBy.returnDate
+                          ? const Icon(Icons.check_circle)
+                          : const Icon(Icons.circle_outlined),
                     ),
-                  ];
+                  ),
+                ];
               }),
         ],
       );
@@ -102,7 +106,8 @@ class LoansPage extends StatelessWidget {
                   child: Text(
                     value,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
             itemBuilder: (c, element) {
@@ -145,7 +150,7 @@ class LoansPage extends StatelessWidget {
       switch (groupByElement) {
         case LoansBookGroupBy.returnDate:
           return dateFormat.format(element.returnDate);
-      case LoansBookGroupBy.account:
+        case LoansBookGroupBy.account:
         default:
           return element.account;
       }
@@ -183,7 +188,8 @@ class LoansReturn extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       dense: true,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
       visualDensity: const VisualDensity(horizontal: 0, vertical: -4.0),
       minVerticalPadding: 0,
       horizontalTitleGap: 0,

@@ -41,7 +41,7 @@ class ReservationsBook extends Book {
     String? type,
     String? imageURL,
     String? ark,
-  })  : super(
+  }) : super(
           id: id ?? toId(seqNo),
           title: title,
           creators: creators,
@@ -51,26 +51,27 @@ class ReservationsBook extends Book {
           imageURL: imageURL,
         );
 
-  factory ReservationsBook.fromJson(Map<String, dynamic> json, String account, String login) {
+  factory ReservationsBook.fromJson(
+      Map<String, dynamic> json, String account, String login) {
     return ReservationsBook(
-        seqNo: json['data']['seqNo'] as String,
-        documentNumber: json['data']['document'] ?? '',
-        title: json['data']['title'] as String,
-        resvDate: DateTime.parse(json['data']['resvDate']),
-        expiryDate: DateTime.tryParse(json['data']['expiryDate']),
-        rank: int.parse(json['data']['rank']),
-        branchName: json['data']['branch']['desc'],
-        branchCode: json['data']['branch']['branchCode'],
-        omnidexId: json['data']['omnidexId'] as String,
-        status: parseReservationsStatus(json['data']['statusCode']),
-        account: account,
-        login: login,
+      seqNo: json['data']['seqNo'] as String,
+      documentNumber: json['data']['document'] ?? '',
+      title: json['data']['title'] as String,
+      resvDate: DateTime.parse(json['data']['resvDate']),
+      expiryDate: DateTime.tryParse(json['data']['expiryDate']),
+      rank: int.parse(json['data']['rank']),
+      branchName: json['data']['branch']['desc'],
+      branchCode: json['data']['branch']['branchCode'],
+      omnidexId: json['data']['omnidexId'] as String,
+      status: parseReservationsStatus(json['data']['statusCode']),
+      account: account,
+      login: login,
     );
   }
 
   static ReservationsStatus parseReservationsStatus(String statusCode) {
     ReservationsStatus status = ReservationsStatus.none;
-    switch(statusCode) {
+    switch (statusCode) {
       case "ReservationCard.RESV_NOT_AVAILABLE":
         status = ReservationsStatus.notAvailable;
         break;
@@ -141,7 +142,18 @@ class ReservationsBook extends Book {
   }
 
   @override
-  List<Object?> get props => [...super.props, account, resvDate, expiryDate, rank, branchName, branchCode, omnidexId, status, login];
+  List<Object?> get props => [
+        ...super.props,
+        account,
+        resvDate,
+        expiryDate,
+        rank,
+        branchName,
+        branchCode,
+        omnidexId,
+        status,
+        login
+      ];
 }
 
 /// On ne connais pas l'ID du document dans la liste des prêts et reservation seulement le seqNo.

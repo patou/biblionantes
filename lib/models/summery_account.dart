@@ -41,23 +41,22 @@ class SummeryAccount {
 
   factory SummeryAccount.fromJson(Map<String, dynamic> json) {
     return SummeryAccount(
-      id: json['subscriberId'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
-      loanCount: int.tryParse(json['loanCount']) ?? 0,
-      resvCount: int.tryParse(json['resvCount']) ?? 0,
-      maxLoans: int.tryParse(json['maxLoans']) ?? 0,
-      overdueLoans: int.tryParse(json['overdueLoans']) ?? 0,
-      subscriptionDate: DateTime.tryParse(json['subscriptionDate']),
-      sex: json['sex'] as String,
-      telephone: json['telephone'] as String,
-      emailAddress: json['emailAddress'] as String,
-      street: json['address1'] as String,
-      city: json['address2'] as String,
-      postalCode: json['postalCode'] as String,
-      expiryDate: DateTime.tryParse(json['expiryDate']),
-      hasTrapLevel: json['trapLevel'] == 'Error'
-    );
+        id: json['subscriberId'] as String,
+        firstName: json['firstName'] as String,
+        lastName: json['lastName'] as String,
+        loanCount: int.tryParse(json['loanCount']) ?? 0,
+        resvCount: int.tryParse(json['resvCount']) ?? 0,
+        maxLoans: int.tryParse(json['maxLoans']) ?? 0,
+        overdueLoans: int.tryParse(json['overdueLoans']) ?? 0,
+        subscriptionDate: DateTime.tryParse(json['subscriptionDate']),
+        sex: json['sex'] as String,
+        telephone: json['telephone'] as String,
+        emailAddress: json['emailAddress'] as String,
+        street: json['address1'] as String,
+        city: json['address2'] as String,
+        postalCode: json['postalCode'] as String,
+        expiryDate: DateTime.tryParse(json['expiryDate']),
+        hasTrapLevel: json['trapLevel'] == 'Error');
   }
 }
 
@@ -67,7 +66,8 @@ class AuthentInfo {
   final String login;
   final String userId;
 
-  const AuthentInfo({required this.token, required this.login, required this.userId});
+  const AuthentInfo(
+      {required this.token, required this.login, required this.userId});
 
   factory AuthentInfo.fromJson(Map<String, dynamic> json) {
     return AuthentInfo(
@@ -85,7 +85,11 @@ class LibraryCard extends Equatable {
   final String userId;
   final String name;
 
-  const LibraryCard({required this.login, required this.password, required this.userId, required this.name});
+  const LibraryCard(
+      {required this.login,
+      required this.password,
+      required this.userId,
+      required this.name});
 
   factory LibraryCard.fromSharedPref(String str) {
     var parts = str.split(SEPARATOR);

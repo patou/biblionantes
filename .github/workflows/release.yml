@@ -1,9 +1,9 @@
 name: RELEASE
 
 on:
-  push:
-    tags:
-      - '*'
+  workflow_dispatch:
+    branches:
+      - main
 
 jobs:
   release:
@@ -23,13 +23,18 @@ jobs:
         with:
           flutter-version: '3.0.1'
           channel: stable
-      - name: Build apk
+      - name: Build
         run: |
           flutter pub get
           flutter format --set-exit-if-changed .
           flutter analyze
           flutter test
-          flutter build apk
+      - name: Build apk
+          run: |
+            flutter build apk
+      - name: Build appbundle
+          run: |
+            flutter build appbundle
       - name: Retrieve Release Version
         id: versionstep
         run: |
@@ -38,6 +43,6 @@ jobs:
       - name: Upload the APK onto Github
         uses: ncipollo/release-action@v1
         with:
-          artifacts: 'build/app/outputs/flutter-apk/*.apk'
+          artifacts: 'build/app/outputs/flutter-apk/*.apk,build/app/outputs/bundle/release/*.apk'
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.versionstep.outputs.VERSION }}

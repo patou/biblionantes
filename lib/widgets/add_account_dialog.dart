@@ -18,10 +18,8 @@ class AddAccountDialog extends StatelessWidget {
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Nom de la carte",
-        border:
-        OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      )
-  );
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+      ));
   final TextFormField loginField = TextFormField(
       controller: TextEditingController(),
       obscureText: false,
@@ -34,14 +32,13 @@ class AddAccountDialog extends StatelessWidget {
         }
         return null;
       },
-      keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+      keyboardType:
+          const TextInputType.numberWithOptions(signed: false, decimal: false),
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "0000000000",
-        border:
-        OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      )
-  );
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+      ));
   final TextFormField passwordField = TextFormField(
       controller: TextEditingController(),
       obscureText: false,
@@ -51,14 +48,13 @@ class AddAccountDialog extends StatelessWidget {
         }
         return null;
       },
-      keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: false),
+      keyboardType:
+          const TextInputType.numberWithOptions(signed: false, decimal: false),
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Défaut date (JJMMAAAA)",
-        border:
-        OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      )
-  );
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+      ));
   final GlobalKey<ScaffoldState> _scaffoldAlertKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
@@ -71,10 +67,11 @@ class AddAccountDialog extends StatelessWidget {
         if (state is AddLibraryCardStateError) {
           print(state.error);
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: const Text("La carte n'existe pas, vérifier le numero de la carte et la date de naissance"),
+            content: const Text(
+                "La carte n'existe pas, vérifier le numero de la carte et la date de naissance"),
             backgroundColor: Colors.red[100],
             elevation: 30,
-            ));
+          ));
         }
       },
       child: Scaffold(
@@ -106,25 +103,28 @@ class AddAccountDialog extends StatelessWidget {
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             BlocBuilder<LibraryCardBloc, AbstractLibraryCardState>(
-              buildWhen: (previous, current) => current is AddLibraryCardState,
-              builder: (context, state) {
-                if (state is AddLibraryCardStateInProgress) {
-                  return  const CircularProgressIndicator();
-                }
-                return TextButton(
-                  style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all(Colors.blueAccent),
-                  ),
-                  onPressed: () async {
-                    if (formKey.currentState!.validate()) {
-                      context.read<LibraryCardBloc>().add(AddLibraryCardEvent(login: loginField.controller!.value.text, name: nameField.controller!
-                          .value.text, pass: passwordField.controller!.value.text));
-                    }
-                  },
-                  child: const Text("Ajouter"),
-                );
-              }
-            ),
+                buildWhen: (previous, current) =>
+                    current is AddLibraryCardState,
+                builder: (context, state) {
+                  if (state is AddLibraryCardStateInProgress) {
+                    return const CircularProgressIndicator();
+                  }
+                  return TextButton(
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all(Colors.blueAccent),
+                    ),
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        context.read<LibraryCardBloc>().add(AddLibraryCardEvent(
+                            login: loginField.controller!.value.text,
+                            name: nameField.controller!.value.text,
+                            pass: passwordField.controller!.value.text));
+                      }
+                    },
+                    child: const Text("Ajouter"),
+                  );
+                }),
             TextButton(
               style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all(Colors.black45),
@@ -138,6 +138,5 @@ class AddAccountDialog extends StatelessWidget {
         ),
       ),
     );
-
   }
 }

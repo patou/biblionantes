@@ -55,20 +55,20 @@ class ReservationPage extends StatelessWidget {
                           child: Text(
                             value,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                         ),
                     itemBuilder: (c, element) {
                       return GestureDetector(
                           onTap: () => context.pushRoute(DetailRoute(
-                                id: element.id,
-                                action: 'cancel',
-                                account: element.login,
-                                documentNumber: element.documentNumber,
-                                seqNo: element.seqNo,
-                                omnidexId: element.omnidexId,
-                                branchCode: element.branchCode
-                              )),
+                              id: element.id,
+                              action: 'cancel',
+                              account: element.login,
+                              documentNumber: element.documentNumber,
+                              seqNo: element.seqNo,
+                              omnidexId: element.omnidexId,
+                              branchCode: element.branchCode)),
                           child: BookCard(
                             book: element,
                             widget: ReservationInfo(reservationsBook: element),
@@ -106,39 +106,45 @@ class ReservationInfo extends StatelessWidget {
       case ReservationsStatus.available:
         return ListTile(
           dense: true,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
           visualDensity: const VisualDensity(horizontal: 0, vertical: -4.0),
           minVerticalPadding: 0,
           horizontalTitleGap: 0,
           leading: const Icon(Icons.check, color: Colors.green),
-          title: Text("""Votre réservation est disponible à ${reservationsBook.branchName}"""),
-          subtitle: Text("""A récupérer avant ${dateFormat.format(reservationsBook.expiryDate!)}"""),
+          title: Text(
+              """Votre réservation est disponible à ${reservationsBook.branchName}"""),
+          subtitle: Text(
+              """A récupérer avant ${dateFormat.format(reservationsBook.expiryDate!)}"""),
         );
       case ReservationsStatus.notAvailable:
         return ListTile(
           dense: true,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
           visualDensity: const VisualDensity(horizontal: 0, vertical: -4.0),
           minVerticalPadding: 0,
           horizontalTitleGap: 0,
           leading: const Icon(Icons.hourglass_full, color: Colors.red),
           title: const Text("Votre réservation n'est pas encore disponible"),
-          subtitle: Text("""Rang ${reservationsBook.rank} depuis ${dateFormat.format(reservationsBook.resvDate)}"""),
+          subtitle: Text(
+              """Rang ${reservationsBook.rank} depuis ${dateFormat.format(reservationsBook.resvDate)}"""),
         );
       case ReservationsStatus.soonAvailable:
         return ListTile(
           dense: true,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
           visualDensity: const VisualDensity(horizontal: 0, vertical: -4.0),
           minVerticalPadding: 0,
           horizontalTitleGap: 0,
           leading: const Icon(Icons.hourglass_bottom, color: Colors.amber),
           title: const Text("Votre réservation est bientôt disponible"),
-          subtitle: Text("""Rang ${reservationsBook.rank} depuis ${dateFormat.format(reservationsBook.resvDate)}"""),
+          subtitle: Text(
+              """Rang ${reservationsBook.rank} depuis ${dateFormat.format(reservationsBook.resvDate)}"""),
         );
       default:
         return const SizedBox.shrink();
     }
-
   }
 }

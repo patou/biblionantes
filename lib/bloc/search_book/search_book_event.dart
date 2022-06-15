@@ -6,7 +6,6 @@ abstract class SearchBookEvent extends Equatable {}
 class SearchBookTextSearched extends SearchBookEvent {
   final String search;
 
-
   SearchBookTextSearched({required this.search});
 
   @override

@@ -15,7 +15,8 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
     on<LoadDetailEvent>(onLoadDetailEvent);
   }
 
-  FutureOr<void> onLoadDetailEvent(LoadDetailEvent event, Emitter<DetailState> emit) async {
+  FutureOr<void> onLoadDetailEvent(
+      LoadDetailEvent event, Emitter<DetailState> emit) async {
     emit(DetailInProgress());
     BookDetail detail = await searchRepository.detail(event.id);
     emit(DetailSuccess(detail: detail));

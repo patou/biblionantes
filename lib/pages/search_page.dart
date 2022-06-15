@@ -17,20 +17,16 @@ class SearchPage extends StatelessWidget {
           ),
           body: Padding(
               padding: const EdgeInsets.all(20),
-              child: Column(
-                  children: const [
-                    SearchWidget(),
-                    SizedBox(height: 20),
-                    SearchList()
-                  ])
-          )
-      ),
+              child: Column(children: const [
+                SearchWidget(),
+                SizedBox(height: 20),
+                SearchList()
+              ]))),
     );
   }
 }
 
 class SearchWidget extends StatefulWidget {
-
   @override
   _SearchWidgetState createState() => _SearchWidgetState();
 
@@ -44,18 +40,20 @@ class _SearchWidgetState extends State<SearchWidget> {
     return TextField(
       controller: _controller,
       onSubmitted: (search) {
-        context.read<SearchBookBloc>().add(SearchBookTextSearched(search: search));
+        context
+            .read<SearchBookBloc>()
+            .add(SearchBookTextSearched(search: search));
       },
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.search),
         suffixIcon: _controller.text.isNotEmpty
             ? GestureDetector(
-          onTap: () {
-            _controller.clear();
-            context.read<SearchBookBloc>().add(SearchBookTextCleared());
-          }, // removes the content in the field
-          child: const Icon(Icons.clear_rounded),
-        )
+                onTap: () {
+                  _controller.clear();
+                  context.read<SearchBookBloc>().add(SearchBookTextCleared());
+                }, // removes the content in the field
+                child: const Icon(Icons.clear_rounded),
+              )
             : null,
       ),
     );
