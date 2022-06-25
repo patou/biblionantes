@@ -102,6 +102,15 @@ class AddAccountDialog extends StatelessWidget {
           ),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all(Colors.black45),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Annuler"),
+            ),
             BlocBuilder<LibraryCardBloc, AbstractLibraryCardState>(
                 buildWhen: (previous, current) =>
                     current is AddLibraryCardState,
@@ -109,9 +118,9 @@ class AddAccountDialog extends StatelessWidget {
                   if (state is AddLibraryCardStateInProgress) {
                     return const CircularProgressIndicator();
                   }
-                  return TextButton(
+                  return ElevatedButton(
                     style: ButtonStyle(
-                      foregroundColor:
+                      backgroundColor:
                           MaterialStateProperty.all(Colors.blueAccent),
                     ),
                     onPressed: () async {
@@ -125,15 +134,6 @@ class AddAccountDialog extends StatelessWidget {
                     child: const Text("Ajouter"),
                   );
                 }),
-            TextButton(
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all(Colors.black45),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Annuler"),
-            ),
           ],
         ),
       ),
