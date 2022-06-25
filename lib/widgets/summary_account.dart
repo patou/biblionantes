@@ -1,6 +1,7 @@
 import 'package:biblionantes/models/summery_account.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:expandable/expandable.dart';
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -160,6 +161,15 @@ class SummaryAccountCard extends StatelessWidget {
         title:
             Text([summary.street, summary.postalCode, summary.city].join(" ")),
         subtitle: const Text("Adresse"),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: BarcodeWidget(
+          barcode: Barcode.itf(zeroPrepend: true),
+          data: account.login,
+          width: 400,
+          height: 160,
+        ),
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.end,

@@ -39,6 +39,7 @@ dependencies:
   auto_route: ^4.0.1
   firebase_crashlytics: ^2.8.1
   expandable: ^5.0.1
+  barcode_widget: ^2.0.2
 
 dev_dependencies:
   flutter_test:
