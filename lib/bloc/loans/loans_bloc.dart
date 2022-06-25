@@ -58,11 +58,8 @@ class LoansBloc extends Bloc<LoansEvent, LoansState> {
       print(error);
       print(stackTrace);
       emit(LoansError(error.toString()));
-      await FirebaseCrashlytics.instance.recordError(
-          error,
-          stackTrace,
-          reason: 'onLoadLoansEvent'
-      );
+      await FirebaseCrashlytics.instance
+          .recordError(error, stackTrace, reason: 'onLoadLoansEvent');
     }
   }
 

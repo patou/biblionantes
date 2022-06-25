@@ -55,11 +55,8 @@ class LibraryCardBloc extends Bloc<LibraryCardEvent, AbstractLibraryCardState> {
       print(error);
       print(stackTrace);
       emit(AddLibraryCardStateError(error.toString()));
-      await FirebaseCrashlytics.instance.recordError(
-          error,
-          stackTrace,
-          reason: 'onAddLibraryCardEvent'
-      );
+      await FirebaseCrashlytics.instance
+          .recordError(error, stackTrace, reason: 'onAddLibraryCardEvent');
     }
   }
 
@@ -71,11 +68,8 @@ class LibraryCardBloc extends Bloc<LibraryCardEvent, AbstractLibraryCardState> {
       emit(RemoveLibraryCardStateSuccess());
     } catch (error, stackTrace) {
       emit(RemoveLibraryCardStateError(error.toString()));
-      await FirebaseCrashlytics.instance.recordError(
-          error,
-          stackTrace,
-          reason: 'onRemoveLibraryCardEvent'
-      );
+      await FirebaseCrashlytics.instance
+          .recordError(error, stackTrace, reason: 'onRemoveLibraryCardEvent');
     }
   }
 }

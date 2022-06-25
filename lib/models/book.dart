@@ -67,11 +67,8 @@ class Book extends Equatable {
       }
     } catch (error, stackTrace) {
       print(error.toString());
-      await FirebaseCrashlytics.instance.recordError(
-          error,
-          stackTrace,
-          reason: 'onLoadLoansEvent'
-      );
+      await FirebaseCrashlytics.instance
+          .recordError(error, stackTrace, reason: 'onLoadLoansEvent');
     }
     return null;
   }

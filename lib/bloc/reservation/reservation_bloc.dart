@@ -31,11 +31,8 @@ class ReservationsBloc extends Bloc<ReservationsEvent, ReservationsState> {
       print(error);
       print(stackTrace);
       emit(ResrvationsError(error.toString()));
-      await FirebaseCrashlytics.instance.recordError(
-          error,
-          stackTrace,
-          reason: 'onLoadReservationsEvent'
-      );
+      await FirebaseCrashlytics.instance
+          .recordError(error, stackTrace, reason: 'onLoadReservationsEvent');
     }
   }
 }

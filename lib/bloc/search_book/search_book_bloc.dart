@@ -61,11 +61,8 @@ class SearchBookBloc extends Bloc<SearchBookEvent, SearchBookState> {
     } catch (error, stackTrace) {
       print(error.toString());
       emit(SearchBookErrorState(error: error.toString()));
-      await FirebaseCrashlytics.instance.recordError(
-          error,
-          stackTrace,
-          reason: 'onLoadLoansEvent'
-      );
+      await FirebaseCrashlytics.instance
+          .recordError(error, stackTrace, reason: 'onLoadLoansEvent');
     }
   }
 
@@ -100,11 +97,8 @@ class SearchBookBloc extends Bloc<SearchBookEvent, SearchBookState> {
     } catch (error, stackTrace) {
       print('Error get list item $error \n$stackTrace');
       emit(SearchBookErrorState(error: error.toString()));
-      await FirebaseCrashlytics.instance.recordError(
-          error,
-          stackTrace,
-          reason: 'onLoadLoansEvent'
-      );
+      await FirebaseCrashlytics.instance
+          .recordError(error, stackTrace, reason: 'onLoadLoansEvent');
     }
   }
 }
