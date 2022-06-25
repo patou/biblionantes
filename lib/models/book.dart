@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 
 @immutable
@@ -59,13 +60,18 @@ class Book extends Equatable {
     );
   }
 
-  static decodeCreators(json) {
+  static decodeCreators(json) async {
     try {
       if (json['meta']['creator'] != null) {
         return json['meta']['creator'].map((json) => json['value']).join("; ");
       }
-    } catch (e) {
-      print(e.toString());
+    } catch (error, stackTrace) {
+      print(error.toString());
+      await FirebaseCrashlytics.instance.recordError(
+          error,
+          stackTrace,
+          reason: 'onLoadLoansEvent'
+      );
     }
     return null;
   }

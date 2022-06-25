@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:biblionantes/models/book.dart';
 import 'package:biblionantes/repositories/search.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -57,9 +58,14 @@ class SearchBookBloc extends Bloc<SearchBookEvent, SearchBookState> {
             page: 1));
       }
       return;
-    } catch (e) {
-      print(e.toString());
-      emit(SearchBookErrorState(error: e.toString()));
+    } catch (error, stackTrace) {
+      print(error.toString());
+      emit(SearchBookErrorState(error: error.toString()));
+      await FirebaseCrashlytics.instance.recordError(
+          error,
+          stackTrace,
+          reason: 'onLoadLoansEvent'
+      );
     }
   }
 
@@ -91,9 +97,14 @@ class SearchBookBloc extends Bloc<SearchBookEvent, SearchBookState> {
         }
         return;
       }
-    } catch (e, s) {
-      print('Error get list item $e \n$s');
-      emit(SearchBookErrorState(error: e.toString()));
+    } catch (error, stackTrace) {
+      print('Error get list item $error \n$stackTrace');
+      emit(SearchBookErrorState(error: error.toString()));
+      await FirebaseCrashlytics.instance.recordError(
+          error,
+          stackTrace,
+          reason: 'onLoadLoansEvent'
+      );
     }
   }
 }

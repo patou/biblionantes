@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:biblionantes/models/loansbook.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -53,10 +54,15 @@ class LoansBloc extends Bloc<LoansEvent, LoansState> {
       // On complète pour récupérer les infos plus précises des documents.
       list = await accountRepository.resolveBook(list);
       emit(LoansList(list: list));
-    } catch (e, stack) {
-      print(e);
-      print(stack);
-      emit(LoansError(e.toString()));
+    } catch (error, stackTrace) {
+      print(error);
+      print(stackTrace);
+      emit(LoansError(error.toString()));
+      await FirebaseCrashlytics.instance.recordError(
+          error,
+          stackTrace,
+          reason: 'onLoadLoansEvent'
+      );
     }
   }
 

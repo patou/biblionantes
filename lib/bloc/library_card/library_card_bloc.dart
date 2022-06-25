@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'package:biblionantes/models/summery_account.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -50,10 +51,15 @@ class LibraryCardBloc extends Bloc<LibraryCardEvent, AbstractLibraryCardState> {
       await accountRepository.addLibraryCards(
           event.name, event.login, event.pass);
       emit(AddLibraryCardStateSuccess());
-    } catch (e, stack) {
-      print(e);
-      print(stack);
-      emit(AddLibraryCardStateError(e.toString()));
+    } catch (error, stackTrace) {
+      print(error);
+      print(stackTrace);
+      emit(AddLibraryCardStateError(error.toString()));
+      await FirebaseCrashlytics.instance.recordError(
+          error,
+          stackTrace,
+          reason: 'onAddLibraryCardEvent'
+      );
     }
   }
 
@@ -63,8 +69,13 @@ class LibraryCardBloc extends Bloc<LibraryCardEvent, AbstractLibraryCardState> {
       emit(RemoveLibraryCardStateInProgress());
       await accountRepository.removeLibraryCard(event.libraryCard);
       emit(RemoveLibraryCardStateSuccess());
-    } catch (e) {
-      emit(RemoveLibraryCardStateError(e.toString()));
+    } catch (error, stackTrace) {
+      emit(RemoveLibraryCardStateError(error.toString()));
+      await FirebaseCrashlytics.instance.recordError(
+          error,
+          stackTrace,
+          reason: 'onRemoveLibraryCardEvent'
+      );
     }
   }
 }
