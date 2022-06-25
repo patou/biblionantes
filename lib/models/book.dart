@@ -60,14 +60,14 @@ class Book extends Equatable {
     );
   }
 
-  static decodeCreators(json) async {
+  static decodeCreators(json) {
     try {
       if (json['meta']['creator'] != null) {
         return json['meta']['creator'].map((json) => json['value']).join("; ");
       }
     } catch (error, stackTrace) {
       print(error.toString());
-      await FirebaseCrashlytics.instance
+      FirebaseCrashlytics.instance
           .recordError(error, stackTrace, reason: 'onLoadLoansEvent');
     }
     return null;

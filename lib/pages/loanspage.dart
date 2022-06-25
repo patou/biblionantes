@@ -101,15 +101,8 @@ class LoansPage extends StatelessWidget {
             groupBy: groupBy(state.groupBy),
             useStickyGroupSeparators: true,
             physics: const AlwaysScrollableScrollPhysics(),
-            groupSeparatorBuilder: (String value) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    value,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
+            groupSeparatorBuilder: (String value) =>
+                buildGroupSeparator(value, state.groupBy),
             itemBuilder: (c, element) {
               return GestureDetector(
                   onLongPress: () {
@@ -145,11 +138,32 @@ class LoansPage extends StatelessWidget {
     }
   }
 
+  Padding buildGroupSeparator(String value, LoansBookGroupBy groupBy) {
+    var title = value;
+    var color = Colors.blue;
+    if (groupBy == LoansBookGroupBy.returnDate) {
+      var date = DateTime.parse(value);
+      title = dateFormat.format(date);
+      if (date.isBefore(DateTime.now())) {
+        color = Colors.red;
+      }
+    }
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        title,
+        textAlign: TextAlign.center,
+        style:
+            TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: color),
+      ),
+    );
+  }
+
   String Function(LoansBook) groupBy(LoansBookGroupBy groupByElement) {
     return (element) {
       switch (groupByElement) {
         case LoansBookGroupBy.returnDate:
-          return dateFormat.format(element.returnDate);
+          return element.returnDate.toString();
         case LoansBookGroupBy.account:
         default:
           return element.account;
