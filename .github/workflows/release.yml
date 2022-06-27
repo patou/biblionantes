@@ -41,6 +41,6 @@ jobs:
       - name: Upload the APK onto Github
         uses: ncipollo/release-action@v1
         with:
-          artifacts: 'build/app/outputs/flutter-apk/*.apk,build/app/outputs/bundle/release/*.apk'
+          artifacts: 'build/app/outputs/flutter-apk/*.apk,build/app/outputs/bundle/release/*.aab'
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.versionstep.outputs.VERSION }}

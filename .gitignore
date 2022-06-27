@@ -40,3 +40,15 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+/.gradle/6.7/executionHistory/executionHistory.bin
+/.gradle/6.7/executionHistory/executionHistory.lock
+/.gradle/6.7/fileChanges/last-build.bin
+/.gradle/6.7/fileHashes/fileHashes.bin
+/.gradle/6.7/fileHashes/fileHashes.lock
+/.gradle/6.7/gc.properties
+/.gradle/buildOutputCleanup/buildOutputCleanup.lock
+/.gradle/buildOutputCleanup/cache.properties
+/.gradle/buildOutputCleanup/outputFiles.bin
+/.gradle/checksums/checksums.lock
+/.gradle/configuration-cache/gc.properties
+/.gradle/vcs-1/gc.properties

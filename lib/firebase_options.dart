@@ -63,8 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '74652393664',
     projectId: 'biblionantes',
     storageBucket: 'biblionantes.appspot.com',
-    iosClientId:
-        '74652393664-helg0jgc5clbkk1ntp2ha3ljadi1vlk9.apps.googleusercontent.com',
+    iosClientId: '74652393664-helg0jgc5clbkk1ntp2ha3ljadi1vlk9.apps.googleusercontent.com',
     iosBundleId: 'com.biblionantes',
   );
 }
