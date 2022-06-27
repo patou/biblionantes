@@ -1,5 +1,7 @@
 # Changelog
 
+## Version 1.2.0
+
 ## Version 1.1.0
 
 * Crashalytics sur toutes les erreurs fluter
