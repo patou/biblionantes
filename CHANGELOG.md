@@ -2,6 +2,9 @@
 
 ## Version 1.2.0
 
+* Ajout d'une carte de bibliothèque; saisie du mot de passe alphanumérique
+* Amélioration du formulaire d'ajout de carte (focus sur le clic du label, navigation dans le formulaire, texte d'aide)
+
 ## Version 1.1.0
 
 * Crashalytics sur toutes les erreurs fluter
