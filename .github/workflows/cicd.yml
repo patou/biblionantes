@@ -22,7 +22,7 @@ jobs:
           flutter format --set-exit-if-changed .
           flutter analyze
       - name: test
-        run: flutter test
+        run: flutter test -r expanded
       - name: Build apk
         run: |
           flutter build apk --debug
