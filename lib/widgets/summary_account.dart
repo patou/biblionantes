@@ -167,8 +167,8 @@ class SummaryAccountCard extends StatelessWidget {
         child: BarcodeWidget(
           barcode: Barcode.itf(zeroPrepend: true),
           data: account.login,
-          width: 400,
-          height: 160,
+          width: 200,
+          height: 80,
         ),
       ),
       Row(
