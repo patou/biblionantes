@@ -2,62 +2,42 @@ import 'package:biblionantes/bloc/library_card/library_card_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
-class AddAccountDialog extends StatelessWidget {
+class AddAccountDialog extends StatefulWidget {
   AddAccountDialog({
     Key? key,
   }) : super(key: key);
-  final TextFormField nameField = TextFormField(
-      controller: TextEditingController(),
-      obscureText: false,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Entrez un nom de carte';
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        hintText: "Nom de la carte",
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      ));
-  final TextFormField loginField = TextFormField(
-      controller: TextEditingController(),
-      obscureText: false,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Entrez le numéro de la carte';
-        }
-        if (value.length != 10) {
-          return 'Le numéro de la carte est de 10 chiffre';
-        }
-        return null;
-      },
-      keyboardType:
-          const TextInputType.numberWithOptions(signed: false, decimal: false),
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        hintText: "0000000000",
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      ));
-  final TextFormField passwordField = TextFormField(
-      controller: TextEditingController(),
-      obscureText: true,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Entrez le mot de passe';
-        }
-        return null;
-      },
-      keyboardType: TextInputType.visiblePassword,
-      decoration: InputDecoration(
-        contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-        hintText: "Défaut date (JJMMAAAA)",
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
-      ));
+
+  @override
+  State<AddAccountDialog> createState() => _AddAccountDialogState();
+}
+
+class _AddAccountDialogState extends State<AddAccountDialog> {
+  final FocusNode nameFocus = FocusNode();
+
+  final FocusNode loginFocus = FocusNode();
+
+  final FocusNode passwordFocus = FocusNode();
+
+  final TextEditingController nameField = TextEditingController();
+
+  final TextEditingController loginField = TextEditingController();
+
+  final TextEditingController passwordField = TextEditingController();
+
   final GlobalKey<ScaffoldState> _scaffoldAlertKey = GlobalKey<ScaffoldState>();
+
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    nameField.dispose();
+    loginField.dispose();
+    passwordField.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
     return BlocListener<LibraryCardBloc, AbstractLibraryCardState>(
       listener: (context, state) {
         if (state is AddLibraryCardStateSuccess) {
@@ -78,6 +58,7 @@ class AddAccountDialog extends StatelessWidget {
         backgroundColor: Colors.transparent,
         body: AlertDialog(
           title: const Text("Ajouter une carte de bibliothèque"),
+          scrollable: true,
           content: Form(
             key: formKey,
             child: Padding(
@@ -87,14 +68,82 @@ class AddAccountDialog extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   const SizedBox(height: 5.0),
-                  const Text("Nom de la carte"),
-                  nameField,
+                  GestureDetector(
+                      onTap: () => nameFocus.requestFocus(),
+                      child: const Text("Nom de la carte")),
+                  TextFormField(
+                      controller: nameField,
+                      obscureText: false,
+                      focusNode: nameFocus,
+                      textInputAction: TextInputAction.next,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Entrez un nom de carte';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        hintText: "Nom de la carte",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32.0)),
+                      )),
                   const SizedBox(height: 5.0),
-                  const Text("Numéro de la carte"),
-                  loginField,
+                  GestureDetector(
+                      onTap: () => loginFocus.requestFocus(),
+                      child: const Text("Numero de la carte")),
+                  TextFormField(
+                      controller: loginField,
+                      obscureText: false,
+                      focusNode: loginFocus,
+                      textInputAction: TextInputAction.next,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Entrez le numéro de la carte';
+                        }
+                        if (value.length != 10) {
+                          return 'Le numéro de la carte est de 10 chiffre';
+                        }
+                        return null;
+                      },
+                      keyboardType: const TextInputType.numberWithOptions(
+                          signed: false, decimal: false),
+                      decoration: InputDecoration(
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        hintText: "0000000000",
+                        helperText: "Numéro sur votre carte de bibliothèque",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32.0)),
+                      )),
                   const SizedBox(height: 5.0),
-                  const Text("Mot de passe"),
-                  passwordField,
+                  GestureDetector(
+                      onTap: () => passwordFocus.requestFocus(),
+                      child: const Text("Mot de passe")),
+                  TextFormField(
+                      controller: passwordField,
+                      obscureText: true,
+                      focusNode: passwordFocus,
+                      textInputAction: TextInputAction.done,
+                      onEditingComplete: saveForm,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Entrez le mot de passe';
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: InputDecoration(
+                        contentPadding:
+                            const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        hintText: "JJDDAAAA ou ******",
+                        helperText:
+                            "Par défaut votre date de naissance ou votre mot de passe modifié",
+                        helperMaxLines: 3,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(32.0)),
+                      )),
                 ],
               ),
             ),
@@ -122,14 +171,7 @@ class AddAccountDialog extends StatelessWidget {
                       backgroundColor:
                           MaterialStateProperty.all(Colors.blueAccent),
                     ),
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        context.read<LibraryCardBloc>().add(AddLibraryCardEvent(
-                            login: loginField.controller!.value.text,
-                            name: nameField.controller!.value.text,
-                            pass: passwordField.controller!.value.text));
-                      }
-                    },
+                    onPressed: saveForm,
                     child: const Text("Ajouter"),
                   );
                 }),
@@ -137,5 +179,14 @@ class AddAccountDialog extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void saveForm() async {
+    if (formKey.currentState!.validate()) {
+      context.read<LibraryCardBloc>().add(AddLibraryCardEvent(
+          login: loginField.value.text,
+          name: nameField.value.text,
+          pass: passwordField.value.text));
+    }
   }
 }
