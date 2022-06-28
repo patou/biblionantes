@@ -91,7 +91,7 @@ class AddAccountDialog extends StatelessWidget {
                   const Text("Nom de la carte"),
                   nameField,
                   const SizedBox(height: 5.0),
-                  const Text("Numero de la carte"),
+                  const Text("Numéro de la carte"),
                   loginField,
                   const SizedBox(height: 5.0),
                   const Text("Mot de passe"),
