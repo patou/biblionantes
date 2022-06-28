@@ -41,15 +41,14 @@ class AddAccountDialog extends StatelessWidget {
       ));
   final TextFormField passwordField = TextFormField(
       controller: TextEditingController(),
-      obscureText: false,
+      obscureText: true,
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Entrez le mot de passe';
         }
         return null;
       },
-      keyboardType:
-          const TextInputType.numberWithOptions(signed: false, decimal: false),
+      keyboardType: TextInputType.visiblePassword,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Défaut date (JJMMAAAA)",
