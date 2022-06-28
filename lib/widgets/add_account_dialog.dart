@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 class AddAccountDialog extends StatefulWidget {
-  AddAccountDialog({
+  const AddAccountDialog({
     Key? key,
   }) : super(key: key);
 

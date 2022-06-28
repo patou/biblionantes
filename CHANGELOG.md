@@ -4,6 +4,7 @@
 
 * Ajout d'une carte de bibliothèque; saisie du mot de passe alphanumérique
 * Amélioration du formulaire d'ajout de carte (focus sur le clic du label, navigation dans le formulaire, texte d'aide)
+* Codebar de la carte plus petit (non fonctionnel pour l'instant)
 
 ## Version 1.1.0
 

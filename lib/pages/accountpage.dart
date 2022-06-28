@@ -126,7 +126,7 @@ class AccountPage extends StatelessWidget {
         // return object of type Dialog
         return BlocProvider.value(
           value: libraryCardBloc,
-          child: AddAccountDialog(),
+          child: const AddAccountDialog(),
         );
       },
     );
