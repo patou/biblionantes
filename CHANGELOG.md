@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 1.3.0
+
+* Amélioration de la gestion des revues.
+* Text hint sur le champ de recherche.
+
 ## Version 1.2.0
 
 * Ajout d'une carte de bibliothèque; saisie du mot de passe alphanumérique
