@@ -46,6 +46,7 @@ class SearchWidgetState extends State<SearchWidget> {
       },
       decoration: InputDecoration(
         prefixIcon: const Icon(Icons.search),
+        hintText: "Recherche par nom, auteur, ...",
         suffixIcon: _controller.text.isNotEmpty
             ? GestureDetector(
                 onTap: () {
