@@ -75,6 +75,16 @@ class BookCard extends StatelessWidget {
                       fontSize: 12,
                     ),
                   ),
+                if (book.issueCaption != null)
+                  Text(
+                    book.issueCaption!,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
+                  ),
                 const Spacer(),
                 if (book.type != null)
                   Text(

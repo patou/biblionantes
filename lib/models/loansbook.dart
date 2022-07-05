@@ -21,6 +21,7 @@ class LoansBook extends Book {
     String? id,
     String? localNumber,
     String? creators,
+    String? issueCaption,
     String? type,
     String? imageURL,
     String? ark,
@@ -28,6 +29,7 @@ class LoansBook extends Book {
           id: id ?? toId(seqNo),
           title: title,
           creators: creators,
+          issueCaption: issueCaption,
           localNumber: localNumber,
           ark: ark,
           type: type,
@@ -42,6 +44,7 @@ class LoansBook extends Book {
       title: json['data']['title'] as String,
       returnDate: DateTime.parse(json['data']['returnDate']),
       renewable: json['data']['isRenewable'] as bool,
+      issueCaption: json['data']['issueCaption'] != null ? json['data']['issueCaption'] as String : null,
       account: account,
       login: login,
     );
@@ -61,6 +64,7 @@ class LoansBook extends Book {
     String? type,
     String? imageURL,
     String? creators,
+    String? issueCaption,
     String? ark,
     bool? available,
   }) {
@@ -77,6 +81,7 @@ class LoansBook extends Book {
       type: type ?? this.type,
       imageURL: imageURL ?? this.imageURL,
       creators: creators ?? this.creators,
+      issueCaption: issueCaption ?? this.issueCaption,
       ark: ark ?? this.ark,
     );
   }

@@ -9,6 +9,7 @@ class Book extends Equatable {
   final String title;
   final String? type;
   final String? creators;
+  final String? issueCaption;
   final String? imageURL;
   final String? ark;
   final bool? available;
@@ -20,6 +21,7 @@ class Book extends Equatable {
     this.type,
     this.imageURL,
     this.creators,
+    this.issueCaption,
     this.available,
     this.ark,
   });
@@ -33,6 +35,7 @@ class Book extends Equatable {
           : null,
       type: json['zmatIndex'][0]['value'] as String,
       creators: decodeCreators(json),
+      issueCaption: json['issueCaption'] != null ? json['issueCaption'][0]['value'] as String : null,
       imageURL:
           'https://catalogue-bm.nantes.fr${json['imageSource_128'][0]['value']}',
     );
@@ -45,6 +48,7 @@ class Book extends Equatable {
     String? type,
     String? imageURL,
     String? creators,
+    String? issueCaption,
     String? ark,
     bool? available,
   }) {
@@ -55,6 +59,7 @@ class Book extends Equatable {
       type: type ?? this.type,
       imageURL: imageURL ?? this.imageURL,
       creators: creators ?? this.creators,
+      issueCaption: issueCaption ?? this.issueCaption,
       ark: ark ?? this.ark,
       available: available ?? this.available,
     );

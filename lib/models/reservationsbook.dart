@@ -38,6 +38,7 @@ class ReservationsBook extends Book {
     String? id,
     String? localNumber,
     String? creators,
+    String? issueCaption,
     String? type,
     String? imageURL,
     String? ark,
@@ -45,6 +46,7 @@ class ReservationsBook extends Book {
           id: id ?? toId(seqNo),
           title: title,
           creators: creators,
+          issueCaption: issueCaption,
           localNumber: localNumber,
           ark: ark,
           type: type,
@@ -106,6 +108,7 @@ class ReservationsBook extends Book {
     String? type,
     String? imageURL,
     String? creators,
+    String? issueCaption,
     String? ark,
     bool? available,
   }) {
@@ -127,6 +130,7 @@ class ReservationsBook extends Book {
       type: type ?? this.type,
       imageURL: imageURL ?? this.imageURL,
       creators: creators ?? this.creators,
+      issueCaption: issueCaption ?? this.issueCaption,
       ark: ark ?? this.ark,
     );
   }
