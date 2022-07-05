@@ -44,7 +44,9 @@ class LoansBook extends Book {
       title: json['data']['title'] as String,
       returnDate: DateTime.parse(json['data']['returnDate']),
       renewable: json['data']['isRenewable'] as bool,
-      issueCaption: json['data']['issueCaption'] != null ? json['data']['issueCaption'] as String : null,
+      issueCaption: json['data']['issueCaption'] != null
+          ? json['data']['issueCaption'] as String
+          : null,
       account: account,
       login: login,
     );

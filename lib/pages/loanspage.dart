@@ -106,11 +106,13 @@ class LoansPage extends StatelessWidget {
             itemBuilder: (c, element) {
               return GestureDetector(
                   onLongPress: () {
-                    event.add(SelectLoansEvent(documentId: element.documentNumber));
+                    event.add(
+                        SelectLoansEvent(documentId: element.documentNumber));
                   },
                   onTap: () {
                     if (state.isSelectionMode) {
-                      event.add(SelectLoansEvent(documentId: element.documentNumber));
+                      event.add(
+                          SelectLoansEvent(documentId: element.documentNumber));
                     } else {
                       context.pushRoute(DetailRoute(
                         id: element.id,

@@ -35,7 +35,9 @@ class Book extends Equatable {
           : null,
       type: json['zmatIndex'][0]['value'] as String,
       creators: decodeCreators(json),
-      issueCaption: json['issueCaption'] != null ? json['issueCaption'][0]['value'] as String : null,
+      issueCaption: json['issueCaption'] != null
+          ? json['issueCaption'][0]['value'] as String
+          : null,
       imageURL:
           'https://catalogue-bm.nantes.fr${json['imageSource_128'][0]['value']}',
     );

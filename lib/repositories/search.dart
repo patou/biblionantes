@@ -171,37 +171,35 @@ class SearchRepository {
     var result = <Stock>[];
     if (response.data['monographicCopies'] != null) {
       response.data['monographicCopies']
-          .forEach((element) =>
-          element['children'].forEach((item) {
-            result.add(Stock(
-              branch: item['data']['branch_desc'] ?? "",
-              subloca: item['data']['subloca_desc'] ?? "",
-              category: item['data']['category_desc'] ?? "",
-              collection: item['data']['collection_desc'] ?? "",
-              status: item['data']['stat_desc'] ?? "",
-              stat: item['data']['stat'] ?? "",
-              isReserved: item['data']?['isReserved'] == "true",
-              callnumber: item['data']['callnumber'] ?? "",
-              duedate: DateTime.tryParse(item['data']['dueDate'] ?? ""),
-            ));
-          }));
+          .forEach((element) => element['children'].forEach((item) {
+                result.add(Stock(
+                  branch: item['data']['branch_desc'] ?? "",
+                  subloca: item['data']['subloca_desc'] ?? "",
+                  category: item['data']['category_desc'] ?? "",
+                  collection: item['data']['collection_desc'] ?? "",
+                  status: item['data']['stat_desc'] ?? "",
+                  stat: item['data']['stat'] ?? "",
+                  isReserved: item['data']?['isReserved'] == "true",
+                  callnumber: item['data']['callnumber'] ?? "",
+                  duedate: DateTime.tryParse(item['data']['dueDate'] ?? ""),
+                ));
+              }));
     }
     if (response.data['serialCopies'] != null) {
       response.data['serialCopies']
-          .forEach((element) =>
-          element['children'].forEach((item) {
-            result.add(Stock(
-              branch: item['data']['branch_desc'] ?? "",
-              subloca: item['data']['subloca_desc'] ?? "",
-              category: item['data']['category_desc'] ?? "",
-              collection: item['data']['collection_desc'] ?? "",
-              status: item['data']['stat_desc'] ?? "",
-              stat: item['data']['stat'] ?? "",
-              isReserved: item['data']?['isReserved'] == "true",
-              callnumber: item['data']['callnumber'] ?? "",
-              duedate: DateTime.tryParse(item['data']['dueDate'] ?? ""),
-            ));
-          }));
+          .forEach((element) => element['children'].forEach((item) {
+                result.add(Stock(
+                  branch: item['data']['branch_desc'] ?? "",
+                  subloca: item['data']['subloca_desc'] ?? "",
+                  category: item['data']['category_desc'] ?? "",
+                  collection: item['data']['collection_desc'] ?? "",
+                  status: item['data']['stat_desc'] ?? "",
+                  stat: item['data']['stat'] ?? "",
+                  isReserved: item['data']?['isReserved'] == "true",
+                  callnumber: item['data']['callnumber'] ?? "",
+                  duedate: DateTime.tryParse(item['data']['dueDate'] ?? ""),
+                ));
+              }));
     }
     return result;
   }
