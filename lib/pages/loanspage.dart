@@ -106,11 +106,11 @@ class LoansPage extends StatelessWidget {
             itemBuilder: (c, element) {
               return GestureDetector(
                   onLongPress: () {
-                    event.add(SelectLoansEvent(documentId: element.id));
+                    event.add(SelectLoansEvent(documentId: element.documentNumber));
                   },
                   onTap: () {
                     if (state.isSelectionMode) {
-                      event.add(SelectLoansEvent(documentId: element.id));
+                      event.add(SelectLoansEvent(documentId: element.documentNumber));
                     } else {
                       context.pushRoute(DetailRoute(
                         id: element.id,
@@ -123,7 +123,7 @@ class LoansPage extends StatelessWidget {
                   child: BookCard(
                     book: element,
                     widget: LoansReturn(loansBook: element),
-                    isSelected: state.isSelected(element.id),
+                    isSelected: state.isSelected(element.documentNumber),
                     isSelectedMode: state.isSelectionMode,
                   ));
             }),
