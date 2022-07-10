@@ -6,7 +6,7 @@ import 'package:biblionantes/models/reservationsbook.dart';
 import 'package:dio/dio.dart';
 import 'dart:async';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthenticateException implements Exception {
   final dynamic _message;
@@ -24,28 +24,30 @@ class LibraryCardRepository {
   static const String accountsListSharedPref = "biblionantes.accounts";
   final Dio client;
   final _controller = StreamController<List<LibraryCard>>();
+  final _storage = const FlutterSecureStorage();
+  static const String separator = "\x01";
 
   LibraryCardRepository({required this.client});
 
   Future<void> loadLibraryCards() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey(accountsListSharedPref)) {
-      accounts = prefs
-          .getStringList(accountsListSharedPref)!
-          .map((str) => LibraryCard.fromSharedPref(str))
-          .toList();
-    } else {
-      accounts = [];
+    accounts = [];
+    if (await _storage.containsKey(key: accountsListSharedPref)) {
+      var accountListsString = await _storage.read(key: accountsListSharedPref);
+      if (accountListsString != null) {
+        accounts = accountListsString
+            .split(separator)
+            .map((str) => LibraryCard.fromSharedPref(str))
+            .toList();
+      }
     }
     _controller.add(accounts);
   }
 
   Future<void> saveLibraryCards() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> saved =
         accounts.map<String>((e) => e.toSharedPref()).toList(growable: false);
     print(saved.join(","));
-    prefs.setStringList(accountsListSharedPref, saved);
+    _storage.write(key: accountsListSharedPref, value: saved.join(separator));
   }
 
   List<LibraryCard> accounts = [];
