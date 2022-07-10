@@ -79,7 +79,7 @@ class AuthentInfo {
 }
 
 class LibraryCard extends Equatable {
-  static const String separator = "\x29";
+  static const String separator = "\x00";
   final String login;
   final String password;
   final String userId;
