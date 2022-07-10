@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 1.4.0
+
+* Utilise le stockage sécurisé pour sauvegarder les comptes (Attention, il faut resaisir les comptes)
+
 ## Version 1.3.0
 
 * Amélioration de la gestion des revues.
