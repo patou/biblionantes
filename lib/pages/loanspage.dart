@@ -146,7 +146,7 @@ class LoansPage extends StatelessWidget {
     if (groupBy == LoansBookGroupBy.returnDate) {
       var date = DateTime.parse(value);
       title = dateFormat.format(date);
-      var dateDifferenceDays = date.difference(DateTime.now()).inDays
+      var dateDifferenceDays = date.difference(DateTime.now()).inDays;
       if (dateDifferenceDays <= 0) {
         color = Colors.red;
       }
@@ -207,7 +207,7 @@ class LoansReturn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var color = Colors.blue;
-    var dateDifferenceDays = loansBook.returnDate.difference(DateTime.now()).inDays
+    var dateDifferenceDays = loansBook.returnDate.difference(DateTime.now()).inDays;
     if (dateDifferenceDays <= 0) {
       color = Colors.red;
     }
@@ -221,7 +221,7 @@ class LoansReturn extends StatelessWidget {
       visualDensity: const VisualDensity(horizontal: 0, vertical: -4.0),
       minVerticalPadding: 0,
       horizontalTitleGap: 0,
-      color,
+      textColor: color,
       leading: const Icon(Icons.date_range),
       title: Text(dateFormat.format(loansBook.returnDate)),
       subtitle: const Text("Date de retour"),
