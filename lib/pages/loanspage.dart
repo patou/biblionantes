@@ -147,6 +147,7 @@ class LoansPage extends StatelessWidget {
       var date = DateTime.parse(value);
       title = dateFormat.format(date);
       var dateDifferenceDays = date.difference(DateTime.now()).inDays;
+      title +=  formatDaysLeft(dateDifferenceDays);
       if (dateDifferenceDays <= 0) {
         color = Colors.red;
       }
@@ -206,13 +207,13 @@ class LoansReturn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var color = Colors.blue;
+    var color = Colors.black;
     var dateDifferenceDays = loansBook.returnDate.difference(DateTime.now()).inDays;
     if (dateDifferenceDays <= 0) {
-      color = Colors.red;
+      color = Colors.redAccent;
     }
-    else if (dateDifferenceDays <= 4) {
-      color = Colors.orange;
+    else if (dateDifferenceDays <= 5) {
+      color = Colors.orangeAccent;
     }
     return ListTile(
       dense: true,
@@ -222,9 +223,19 @@ class LoansReturn extends StatelessWidget {
       minVerticalPadding: 0,
       horizontalTitleGap: 0,
       textColor: color,
-      leading: const Icon(Icons.date_range),
-      title: Text(dateFormat.format(loansBook.returnDate)),
+      leading: Icon(Icons.date_range, color: color),
+      title: Text(dateFormat.format(loansBook.returnDate) + formatDaysLeft(dateDifferenceDays)),
       subtitle: const Text("Date de retour"),
     );
   }
+}
+
+String formatDaysLeft(int dateDifferenceDays) {
+  if (dateDifferenceDays <= 0) {
+    return ' (retard de ${-dateDifferenceDays} jours)';
+  }
+  if (dateDifferenceDays <= 5) {
+    return ' (dans $dateDifferenceDays jours)';
+  }
+  return '';
 }
