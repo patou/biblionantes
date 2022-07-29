@@ -2,7 +2,9 @@
 
 ![icon](https://user-images.githubusercontent.com/841858/154953703-c9a067aa-fb1d-4c10-92d8-a4f33d1280e9.png)
 
-Bibliothèque de Nantes
+Installation sur play store (version beta) : https://play.google.com/store/apps/details?id=com.biblionantes
+
+## Bibliothèque de Nantes
 
 Application permettant de gérer sur son mobile son compte de bibliothèque à la bibliothèque municipale de Nantes.
 
@@ -12,7 +14,7 @@ Application permettant de gérer sur son mobile son compte de bibliothèque à l
 - Réserver des livres
 
 ![Page de recherche](./images/search.png)
-![Carte de bibliothèque](./images/cartes.png)
+![Carte de bibliothèque](./images/cartes.jpeg)
 ![Liste des emprunts](./images/emprunt.png)
 ![Detail d'un ligne](./images/detail.png)
 
