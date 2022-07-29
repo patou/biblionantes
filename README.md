@@ -14,7 +14,7 @@ Application permettant de gérer sur son mobile son compte de bibliothèque à l
 - Réserver des livres
 
 ![Page de recherche](./images/search.png)
-![Carte de bibliothèque](./images/cartes.jpeg)
+![Carte de bibliothèque](./images/cartes.jpg)
 ![Liste des emprunts](./images/emprunt.png)
 ![Detail d'un ligne](./images/detail.png)
 
