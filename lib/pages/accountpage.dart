@@ -66,7 +66,7 @@ class AccountPage extends StatelessWidget {
               itemBuilder: (context) => [
                 const PopupMenuItem<int>(
                   value: 1,
-                  child: Text("A propos"),
+                  child: Text("À propos"),
                 ),
               ],
             )
