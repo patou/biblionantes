@@ -8,14 +8,14 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("A propos"),
+        title: const Text("À propos"),
       ),
       body: Container(
         padding: const EdgeInsets.all(15),
         child: Column(
           children: [
             const Text(
-              "A propos",
+              " propos",
               style: TextStyle(fontSize: 18),
             ),
             const SizedBox(
