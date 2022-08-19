@@ -15,7 +15,7 @@ class AboutPage extends StatelessWidget {
         child: Column(
           children: [
             const Text(
-              " propos",
+              "À propos",
               style: TextStyle(fontSize: 18),
             ),
             const SizedBox(
