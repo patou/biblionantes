@@ -161,6 +161,12 @@ class ReserveBookDialogState extends State<ReserveBookDialog> {
         ),
       ),
       actions: <Widget>[
+        TextButton(
+          child: const Text('Annuler'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         _loading
             ? const CircularProgressIndicator()
             : TextButton(
@@ -171,12 +177,6 @@ class ReserveBookDialogState extends State<ReserveBookDialog> {
                   }
                 },
               ),
-        TextButton(
-          child: const Text('Annuler'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
       ],
     );
   }
