@@ -1,8 +1,10 @@
-import 'package:biblionantes/pages/search_list.dart';
+import 'package:auto_route/annotations.dart';
 import 'package:biblionantes/bloc/search_book/search_book_bloc.dart';
+import 'package:biblionantes/pages/search_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+@RoutePage()
 class SearchPage extends StatelessWidget {
   const SearchPage({Key? key}) : super(key: key);
 
@@ -20,7 +22,7 @@ class SearchPage extends StatelessWidget {
               child: Column(children: const [
                 SearchWidget(),
                 SizedBox(height: 20),
-                SearchList()
+                SearchListPage()
               ]))),
     );
   }

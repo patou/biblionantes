@@ -1,18 +1,20 @@
-import 'package:biblionantes/bloc/search_book/search_book_bloc.dart';
-import 'package:biblionantes/router.gr.dart';
-import 'package:flutter/material.dart';
-import 'package:biblionantes/widgets/book_card.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:biblionantes/bloc/search_book/search_book_bloc.dart';
+import 'package:biblionantes/widgets/book_card.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SearchList extends StatefulWidget {
-  const SearchList({Key? key}) : super(key: key);
+import '../router.dart';
+
+@RoutePage()
+class SearchListPage extends StatefulWidget {
+  const SearchListPage({Key? key}) : super(key: key);
 
   @override
-  SearchListState createState() => SearchListState();
+  SearchListPageState createState() => SearchListPageState();
 }
 
-class SearchListState extends State<SearchList> {
+class SearchListPageState extends State<SearchListPage> {
   final _scrollController = ScrollController();
   final _scrollThreshold = 200.0;
   late SearchBookBloc searchBookBloc;

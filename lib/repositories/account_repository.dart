@@ -1,11 +1,11 @@
-import 'package:biblionantes/models/summery_account.dart';
+import 'dart:async';
+
 import 'package:biblionantes/models/book.dart';
 import 'package:biblionantes/models/loansbook.dart';
 import 'package:biblionantes/models/reservation.dart';
 import 'package:biblionantes/models/reservationsbook.dart';
+import 'package:biblionantes/models/summery_account.dart';
 import 'package:dio/dio.dart';
-import 'dart:async';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthenticateException implements Exception {
@@ -60,14 +60,15 @@ class LibraryCardRepository {
     yield* _controller.stream;
   }
 
-  Future<AuthentInfo> addLibraryCards(
+  Future<LibraryCard> addLibraryCards(
       String name, String login, String pass) async {
-    AuthentInfo authentInfo = await refreshAccountToken(login, pass);
-    accounts.add(LibraryCard(
-        login: login, password: pass, userId: authentInfo.userId, name: name));
+    // AuthentInfo authentInfo = await refreshAccountToken(login, pass);
+    var libraryCard =
+        LibraryCard(login: login, password: pass, userId: '', name: name);
+    accounts.add(libraryCard);
     await saveLibraryCards();
     _controller.add(accounts);
-    return authentInfo;
+    return libraryCard;
   }
 
   Future<AuthentInfo> refreshAccountToken(String login, String pass) async {
@@ -96,10 +97,26 @@ class LibraryCardRepository {
   }
 
   Future<SummeryAccount> loadSummaryAccount(LibraryCard libraryCard) async {
-    if (!tokens.containsKey(libraryCard.login) ||
+    /*if (!tokens.containsKey(libraryCard.login) ||
         tokens[libraryCard.login]!.isNotEmpty) {
       await refreshAccountToken(libraryCard.login, libraryCard.password);
-    }
+    }*/
+    return SummeryAccount(
+        id: libraryCard.login,
+        firstName: libraryCard.login,
+        lastName: libraryCard.login,
+        loanCount: 0,
+        maxLoans: 0,
+        resvCount: 0,
+        overdueLoans: 0,
+        sex: '',
+        telephone: '',
+        emailAddress: '',
+        street: '',
+        city: '',
+        postalCode: '',
+        hasTrapLevel: false);
+    /*
     final response = await client.get('accountSummary',
         queryParameters: {'locale': 'fr'},
         options: Options(
@@ -110,6 +127,8 @@ class LibraryCardRepository {
           'error occurred when authenticate: ${response.statusCode}'));
     }
     return SummeryAccount.fromJson(response.data);
+
+     */
   }
 
   Future<void> removeLibraryCard(LibraryCard libraryCard) async {

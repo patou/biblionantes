@@ -1,275 +1,248 @@
-// **************************************************************************
-// AutoRouteGenerator
-// **************************************************************************
-
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 // **************************************************************************
-// AutoRouteGenerator
+// AutoRouterGenerator
 // **************************************************************************
-//
+
 // ignore_for_file: type=lint
+// coverage:ignore-file
 
-import 'package:auto_route/auto_route.dart' as _i2;
-import 'package:flutter/material.dart' as _i9;
+part of 'router.dart';
 
-import 'app.dart' as _i1;
-import 'pages/about_page.dart' as _i8;
-import 'pages/accountpage.dart' as _i7;
-import 'pages/detail_page.dart' as _i4;
-import 'pages/loanspage.dart' as _i5;
-import 'pages/reservationpage.dart' as _i6;
-import 'pages/search_page.dart' as _i3;
-
-class AppRouter extends _i2.RootStackRouter {
-  AppRouter([_i9.GlobalKey<_i9.NavigatorState>? navigatorKey])
-      : super(navigatorKey);
+abstract class _$AppRouter extends RootStackRouter {
+  // ignore: unused_element
+  _$AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i2.PageFactory> pagesMap = {
-    AppWidget.name: (routeData) {
-      final args =
-          routeData.argsAs<AppWidgetArgs>(orElse: () => const AppWidgetArgs());
-      return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i1.AppWidget(key: args.key));
+  final Map<String, PageFactory> pagesMap = {
+    AboutRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const AboutPage(),
+      );
     },
-    SearchRouter.name: (routeData) {
-      return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i2.EmptyRouterPage());
+    AccountRoute.name: (routeData) {
+      final args = routeData.argsAs<AccountRouteArgs>(
+          orElse: () => const AccountRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: AccountPage(key: args.key),
+      );
     },
-    LoansRouter.name: (routeData) {
-      return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i2.EmptyRouterPage());
+    AccountTab.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const AccountTabPage(),
+      );
     },
-    ReservationRouter.name: (routeData) {
-      return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i2.EmptyRouterPage());
-    },
-    AccountRouter.name: (routeData) {
-      return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i2.EmptyRouterPage());
-    },
-    SearchRoute.name: (routeData) {
-      return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i3.SearchPage());
+    AppRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const AppPage(),
+      );
     },
     DetailRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final queryParams = routeData.queryParams;
       final args = routeData.argsAs<DetailRouteArgs>(
           orElse: () => DetailRouteArgs(
-              id: pathParams.getString('id'),
-              action: queryParams.optString('action'),
-              account: queryParams.optString('account'),
-              documentNumber: queryParams.optString('documentNumber'),
-              seqNo: queryParams.optString('seqNo'),
-              branchCode: queryParams.optString('branchCode'),
-              omnidexId: queryParams.optString('omnidexId')));
-      return _i2.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: _i4.DetailPage(
-              id: args.id,
-              action: args.action,
-              account: args.account,
-              documentNumber: args.documentNumber,
-              seqNo: args.seqNo,
-              branchCode: args.branchCode,
-              omnidexId: args.omnidexId));
+                id: pathParams.getString('id'),
+                action: queryParams.optString('action'),
+                account: queryParams.optString('account'),
+                documentNumber: queryParams.optString('documentNumber'),
+                seqNo: queryParams.optString('seqNo'),
+                branchCode: queryParams.optString('branchCode'),
+                omnidexId: queryParams.optString('omnidexId'),
+              ));
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DetailPage(
+          id: args.id,
+          action: args.action,
+          account: args.account,
+          documentNumber: args.documentNumber,
+          seqNo: args.seqNo,
+          branchCode: args.branchCode,
+          omnidexId: args.omnidexId,
+          key: args.key,
+        ),
+      );
     },
     LoansRoute.name: (routeData) {
-      return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i5.LoansPage());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LoansPage(),
+      );
+    },
+    LoansTab.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const LoansTabPage(),
+      );
     },
     ReservationRoute.name: (routeData) {
-      return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i6.ReservationPage());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ReservationPage(),
+      );
     },
-    AccountRoute.name: (routeData) {
-      return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i7.AccountPage());
+    ReservationTab.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ReservationTabPage(),
+      );
     },
-    AboutRoute.name: (routeData) {
-      return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i8.AboutPage());
-    }
+    SearchListRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SearchListPage(),
+      );
+    },
+    SearchRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SearchPage(),
+      );
+    },
+    SearchTab.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SearchTabPage(),
+      );
+    },
+    WebRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const WebPage(),
+      );
+    },
   };
-
-  @override
-  List<_i2.RouteConfig> get routes => [
-        _i2.RouteConfig(AppWidget.name, path: '/', children: [
-          _i2.RouteConfig(SearchRouter.name,
-              path: 'search',
-              parent: AppWidget.name,
-              children: [
-                _i2.RouteConfig(SearchRoute.name,
-                    path: '', parent: SearchRouter.name),
-                _i2.RouteConfig(DetailRoute.name,
-                    path: ':id', parent: SearchRouter.name),
-                _i2.RouteConfig('*#redirect',
-                    path: '*',
-                    parent: SearchRouter.name,
-                    redirectTo: '',
-                    fullMatch: true)
-              ]),
-          _i2.RouteConfig(LoansRouter.name,
-              path: 'loans',
-              parent: AppWidget.name,
-              children: [
-                _i2.RouteConfig(LoansRoute.name,
-                    path: '', parent: LoansRouter.name),
-                _i2.RouteConfig(DetailRoute.name,
-                    path: ':id', parent: LoansRouter.name),
-                _i2.RouteConfig('*#redirect',
-                    path: '*',
-                    parent: LoansRouter.name,
-                    redirectTo: '',
-                    fullMatch: true)
-              ]),
-          _i2.RouteConfig(ReservationRouter.name,
-              path: 'reservation',
-              parent: AppWidget.name,
-              children: [
-                _i2.RouteConfig(ReservationRoute.name,
-                    path: '', parent: ReservationRouter.name),
-                _i2.RouteConfig(DetailRoute.name,
-                    path: ':id', parent: ReservationRouter.name),
-                _i2.RouteConfig('*#redirect',
-                    path: '*',
-                    parent: ReservationRouter.name,
-                    redirectTo: '',
-                    fullMatch: true)
-              ]),
-          _i2.RouteConfig(AccountRouter.name,
-              path: 'account',
-              parent: AppWidget.name,
-              children: [
-                _i2.RouteConfig(AccountRoute.name,
-                    path: '', parent: AccountRouter.name),
-                _i2.RouteConfig(AboutRoute.name,
-                    path: 'about', parent: AccountRouter.name),
-                _i2.RouteConfig('*#redirect',
-                    path: '*',
-                    parent: AccountRouter.name,
-                    redirectTo: '',
-                    fullMatch: true)
-              ])
-        ])
-      ];
 }
 
 /// generated route for
-/// [_i1.AppWidget]
-class AppWidget extends _i2.PageRouteInfo<AppWidgetArgs> {
-  AppWidget({_i9.Key? key, List<_i2.PageRouteInfo>? children})
-      : super(AppWidget.name,
-            path: '/',
-            args: AppWidgetArgs(key: key),
-            initialChildren: children);
+/// [AboutPage]
+class AboutRoute extends PageRouteInfo<void> {
+  const AboutRoute({List<PageRouteInfo>? children})
+      : super(
+          AboutRoute.name,
+          initialChildren: children,
+        );
 
-  static const String name = 'AppWidget';
+  static const String name = 'AboutRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
-class AppWidgetArgs {
-  const AppWidgetArgs({this.key});
+/// generated route for
+/// [AccountPage]
+class AccountRoute extends PageRouteInfo<AccountRouteArgs> {
+  AccountRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          AccountRoute.name,
+          args: AccountRouteArgs(key: key),
+          initialChildren: children,
+        );
 
-  final _i9.Key? key;
+  static const String name = 'AccountRoute';
+
+  static const PageInfo<AccountRouteArgs> page =
+      PageInfo<AccountRouteArgs>(name);
+}
+
+class AccountRouteArgs {
+  const AccountRouteArgs({this.key});
+
+  final Key? key;
 
   @override
   String toString() {
-    return 'AppWidgetArgs{key: $key}';
+    return 'AccountRouteArgs{key: $key}';
   }
 }
 
 /// generated route for
-/// [_i2.EmptyRouterPage]
-class SearchRouter extends _i2.PageRouteInfo<void> {
-  const SearchRouter({List<_i2.PageRouteInfo>? children})
-      : super(SearchRouter.name, path: 'search', initialChildren: children);
+/// [AccountTabPage]
+class AccountTab extends PageRouteInfo<void> {
+  const AccountTab({List<PageRouteInfo>? children})
+      : super(
+          AccountTab.name,
+          initialChildren: children,
+        );
 
-  static const String name = 'SearchRouter';
+  static const String name = 'AccountTab';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i2.EmptyRouterPage]
-class LoansRouter extends _i2.PageRouteInfo<void> {
-  const LoansRouter({List<_i2.PageRouteInfo>? children})
-      : super(LoansRouter.name, path: 'loans', initialChildren: children);
+/// [AppPage]
+class AppRoute extends PageRouteInfo<void> {
+  const AppRoute({List<PageRouteInfo>? children})
+      : super(
+          AppRoute.name,
+          initialChildren: children,
+        );
 
-  static const String name = 'LoansRouter';
+  static const String name = 'AppRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i2.EmptyRouterPage]
-class ReservationRouter extends _i2.PageRouteInfo<void> {
-  const ReservationRouter({List<_i2.PageRouteInfo>? children})
-      : super(ReservationRouter.name,
-            path: 'reservation', initialChildren: children);
-
-  static const String name = 'ReservationRouter';
-}
-
-/// generated route for
-/// [_i2.EmptyRouterPage]
-class AccountRouter extends _i2.PageRouteInfo<void> {
-  const AccountRouter({List<_i2.PageRouteInfo>? children})
-      : super(AccountRouter.name, path: 'account', initialChildren: children);
-
-  static const String name = 'AccountRouter';
-}
-
-/// generated route for
-/// [_i3.SearchPage]
-class SearchRoute extends _i2.PageRouteInfo<void> {
-  const SearchRoute() : super(SearchRoute.name, path: '');
-
-  static const String name = 'SearchRoute';
-}
-
-/// generated route for
-/// [_i4.DetailPage]
-class DetailRoute extends _i2.PageRouteInfo<DetailRouteArgs> {
-  DetailRoute(
-      {required String id,
-      String? action,
-      String? account,
-      String? documentNumber,
-      String? seqNo,
-      String? branchCode,
-      String? omnidexId})
-      : super(DetailRoute.name,
-            path: ':id',
-            args: DetailRouteArgs(
-                id: id,
-                action: action,
-                account: account,
-                documentNumber: documentNumber,
-                seqNo: seqNo,
-                branchCode: branchCode,
-                omnidexId: omnidexId),
-            rawPathParams: {
-              'id': id
-            },
-            rawQueryParams: {
-              'action': action,
-              'account': account,
-              'documentNumber': documentNumber,
-              'seqNo': seqNo,
-              'branchCode': branchCode,
-              'omnidexId': omnidexId
-            });
+/// [DetailPage]
+class DetailRoute extends PageRouteInfo<DetailRouteArgs> {
+  DetailRoute({
+    required String id,
+    String? action,
+    String? account,
+    String? documentNumber,
+    String? seqNo,
+    String? branchCode,
+    String? omnidexId,
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          DetailRoute.name,
+          args: DetailRouteArgs(
+            id: id,
+            action: action,
+            account: account,
+            documentNumber: documentNumber,
+            seqNo: seqNo,
+            branchCode: branchCode,
+            omnidexId: omnidexId,
+            key: key,
+          ),
+          rawPathParams: {'id': id},
+          rawQueryParams: {
+            'action': action,
+            'account': account,
+            'documentNumber': documentNumber,
+            'seqNo': seqNo,
+            'branchCode': branchCode,
+            'omnidexId': omnidexId,
+          },
+          initialChildren: children,
+        );
 
   static const String name = 'DetailRoute';
+
+  static const PageInfo<DetailRouteArgs> page = PageInfo<DetailRouteArgs>(name);
 }
 
 class DetailRouteArgs {
-  const DetailRouteArgs(
-      {required this.id,
-      this.action,
-      this.account,
-      this.documentNumber,
-      this.seqNo,
-      this.branchCode,
-      this.omnidexId});
+  const DetailRouteArgs({
+    required this.id,
+    this.action,
+    this.account,
+    this.documentNumber,
+    this.seqNo,
+    this.branchCode,
+    this.omnidexId,
+    this.key,
+  });
 
   final String id;
 
@@ -285,40 +258,122 @@ class DetailRouteArgs {
 
   final String? omnidexId;
 
+  final Key? key;
+
   @override
   String toString() {
-    return 'DetailRouteArgs{id: $id, action: $action, account: $account, documentNumber: $documentNumber, seqNo: $seqNo, branchCode: $branchCode, omnidexId: $omnidexId}';
+    return 'DetailRouteArgs{id: $id, action: $action, account: $account, documentNumber: $documentNumber, seqNo: $seqNo, branchCode: $branchCode, omnidexId: $omnidexId, key: $key}';
   }
 }
 
 /// generated route for
-/// [_i5.LoansPage]
-class LoansRoute extends _i2.PageRouteInfo<void> {
-  const LoansRoute() : super(LoansRoute.name, path: '');
+/// [LoansPage]
+class LoansRoute extends PageRouteInfo<void> {
+  const LoansRoute({List<PageRouteInfo>? children})
+      : super(
+          LoansRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'LoansRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i6.ReservationPage]
-class ReservationRoute extends _i2.PageRouteInfo<void> {
-  const ReservationRoute() : super(ReservationRoute.name, path: '');
+/// [LoansTabPage]
+class LoansTab extends PageRouteInfo<void> {
+  const LoansTab({List<PageRouteInfo>? children})
+      : super(
+          LoansTab.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LoansTab';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ReservationPage]
+class ReservationRoute extends PageRouteInfo<void> {
+  const ReservationRoute({List<PageRouteInfo>? children})
+      : super(
+          ReservationRoute.name,
+          initialChildren: children,
+        );
 
   static const String name = 'ReservationRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i7.AccountPage]
-class AccountRoute extends _i2.PageRouteInfo<void> {
-  const AccountRoute() : super(AccountRoute.name, path: '');
+/// [ReservationTabPage]
+class ReservationTab extends PageRouteInfo<void> {
+  const ReservationTab({List<PageRouteInfo>? children})
+      : super(
+          ReservationTab.name,
+          initialChildren: children,
+        );
 
-  static const String name = 'AccountRoute';
+  static const String name = 'ReservationTab';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i8.AboutPage]
-class AboutRoute extends _i2.PageRouteInfo<void> {
-  const AboutRoute() : super(AboutRoute.name, path: 'about');
+/// [SearchListPage]
+class SearchListRoute extends PageRouteInfo<void> {
+  const SearchListRoute({List<PageRouteInfo>? children})
+      : super(
+          SearchListRoute.name,
+          initialChildren: children,
+        );
 
-  static const String name = 'AboutRoute';
+  static const String name = 'SearchListRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SearchPage]
+class SearchRoute extends PageRouteInfo<void> {
+  const SearchRoute({List<PageRouteInfo>? children})
+      : super(
+          SearchRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SearchRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SearchTabPage]
+class SearchTab extends PageRouteInfo<void> {
+  const SearchTab({List<PageRouteInfo>? children})
+      : super(
+          SearchTab.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SearchTab';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [WebPage]
+class WebRoute extends PageRouteInfo<void> {
+  const WebRoute({List<PageRouteInfo>? children})
+      : super(
+          WebRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'WebRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

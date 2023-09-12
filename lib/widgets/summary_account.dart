@@ -1,10 +1,9 @@
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:biblionantes/models/summery_account.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
-import 'package:expandable/expandable.dart';
-import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class SummaryAccountCard extends StatelessWidget {
   final LibraryCard account;
@@ -47,24 +46,59 @@ class SummaryAccountCard extends StatelessWidget {
               ]);
             }
             SummeryAccount summary = snapshot.requireData;
-            return ExpandablePanel(
+            return simplePanel(summary, account);
+            /*return ExpandablePanel(
               header: Text(account.name,
                   textAlign: TextAlign.center, textScaleFactor: 1.5),
               collapsed: collapsedPanel(summary, account),
               expanded: expandedPanel(summary, account),
-            );
+            );*/
           }),
     );
   }
 
-  collapsedPanel(SummeryAccount summary, LibraryCard account) {
-    var expirationDays = summary.expiryDate!.difference(DateTime.now()).inDays;
+  simplePanel(SummeryAccount summary, LibraryCard account) {
     return Column(
       children: [
         ListTile(
           leading: const Icon(Icons.supervised_user_circle),
+          title: Text(account.name,
+              textAlign: TextAlign.left, textScaleFactor: 1.5),
+          subtitle: Text("Numéro : ${account.login}"),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: BarcodeWidget(
+            barcode: Barcode.itf(zeroPrepend: true),
+            data: account.login,
+            width: 200,
+            height: 80,
+          ),
+        ),
+      ],
+    );
+  }
+
+  collapsedPanel(SummeryAccount summary, LibraryCard account) {
+    var expirationDays = summary.expiryDate != null
+        ? summary.expiryDate!.difference(DateTime.now()).inDays
+        : 0;
+    return Column(
+      children: [
+        Text(account.name, textAlign: TextAlign.center, textScaleFactor: 1.5),
+        ListTile(
+          leading: const Icon(Icons.supervised_user_circle),
           title: Text("${summary.firstName} ${summary.lastName}"),
           subtitle: Text("Numéro : ${account.login}"),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: BarcodeWidget(
+            barcode: Barcode.itf(zeroPrepend: true),
+            data: account.login,
+            width: 200,
+            height: 80,
+          ),
         ),
         if (summary.hasTrapLevel)
           const ListTile(
@@ -105,7 +139,9 @@ class SummaryAccountCard extends StatelessWidget {
   }
 
   expandedPanel(SummeryAccount summary, LibraryCard account) {
-    var expirationDays = summary.expiryDate!.difference(DateTime.now()).inDays;
+    var expirationDays = summary.expiryDate != null
+        ? summary.expiryDate!.difference(DateTime.now()).inDays
+        : 0;
     return Column(children: [
       ListTile(
         leading: const Icon(Icons.supervised_user_circle),

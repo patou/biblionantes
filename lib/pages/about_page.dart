@@ -1,6 +1,8 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+@RoutePage()
 class AboutPage extends StatelessWidget {
   const AboutPage({Key? key}) : super(key: key);
 

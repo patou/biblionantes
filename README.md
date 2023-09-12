@@ -28,5 +28,5 @@ Utiliser Android Studio, et lancer l'application en mode Android ou IOS.
 Lorsque l'on modifier une route (ajout de parametre, nouvelles routes, etc...), il faut relancer la commande suivante.
 
 ```sh
-flutter packages pub run build_runner build
+dart run build_runner build
 ```

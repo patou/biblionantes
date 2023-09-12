@@ -1,16 +1,18 @@
 // ignore_for_file: unnecessary_const
 
+import 'package:auto_route/auto_route.dart';
 import 'package:biblionantes/bloc/reservation/reservation_bloc.dart';
 import 'package:biblionantes/models/reservationsbook.dart';
-import 'package:biblionantes/router.gr.dart';
 import 'package:biblionantes/widgets/book_card.dart';
 import 'package:biblionantes/widgets/no_result_widget.dart';
-import 'package:grouped_list/grouped_list.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:auto_route/auto_route.dart';
+import 'package:grouped_list/grouped_list.dart';
+import 'package:intl/intl.dart';
 
+import '../router.dart';
+
+@RoutePage()
 class ReservationPage extends StatelessWidget {
   const ReservationPage({Key? key}) : super(key: key);
 

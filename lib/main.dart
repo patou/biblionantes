@@ -1,16 +1,15 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-import 'package:flutter/material.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:biblionantes/bloc/library_card/library_card_bloc.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:biblionantes/repositories/search.dart';
+import 'package:biblionantes/router.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-import 'router.gr.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -79,8 +78,7 @@ class BiblioNantesApp extends StatelessWidget {
                 // closer together (more dense) than on mobile platforms.
                 visualDensity: VisualDensity.adaptivePlatformDensity,
               ),
-              routerDelegate: _appRouter.delegate(),
-              routeInformationParser: _appRouter.defaultRouteParser(),
+              routerConfig: _appRouter.config(),
             )));
   }
 }
