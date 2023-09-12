@@ -1,5 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:biblionantes/pages/WebPage.dart';
 import 'package:biblionantes/pages/about_page.dart';
 import 'package:biblionantes/pages/accountpage.dart';
 import 'package:biblionantes/pages/detail_page.dart';
@@ -7,6 +6,7 @@ import 'package:biblionantes/pages/loanspage.dart';
 import 'package:biblionantes/pages/reservationpage.dart';
 import 'package:biblionantes/pages/search_list.dart';
 import 'package:biblionantes/pages/search_page.dart';
+import 'package:biblionantes/pages/web_page.dart';
 import 'package:flutter/material.dart';
 
 import 'app.dart';
@@ -38,7 +38,7 @@ class AccountTabPage extends AutoRouter {
 )
 class AppRouter extends _$AppRouter {
   @override
-  RouteType get defaultRouteType => RouteType.material();
+  RouteType get defaultRouteType => const RouteType.material();
   @override
   List<AutoRoute> get routes => [
         AutoRoute(

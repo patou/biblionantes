@@ -17,9 +17,9 @@ class SearchPage extends StatelessWidget {
             title: const Text('Recherche de livre'),
             centerTitle: true,
           ),
-          body: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(children: const [
+          body: const Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(children: [
                 SearchWidget(),
                 SizedBox(height: 20),
                 SearchListPage()

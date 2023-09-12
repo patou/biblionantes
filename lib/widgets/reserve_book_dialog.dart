@@ -1,5 +1,5 @@
-import 'package:biblionantes/models/summery_account.dart';
 import 'package:biblionantes/models/reservation.dart';
+import 'package:biblionantes/models/summery_account.dart';
 import 'package:biblionantes/repositories/account_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,8 +49,8 @@ class ReserveBookDialogState extends State<ReserveBookDialog> {
     var accounts = libraryCardRepository.accounts;
     if (accounts.isEmpty) {
       return AlertDialog(
-        title: Row(
-          children: const [
+        title: const Row(
+          children: [
             Text("Pas de carte"),
           ],
         ),
@@ -68,9 +68,9 @@ class ReserveBookDialogState extends State<ReserveBookDialog> {
     }
     final formKey = GlobalKey<FormState>();
     return AlertDialog(
-      title: Row(
-        children: const [
-          Text("Reserver ce document"),
+      title: const Row(
+        children: [
+          Text("Réserver ce document"),
         ],
       ),
       content: Form(

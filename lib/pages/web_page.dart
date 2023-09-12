@@ -1,5 +1,5 @@
 // Web page flutter with inappwebview
-// Path: lib/pages/WebPage.dart
+// Path: lib/pages/web_page.dart
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -12,10 +12,10 @@ class WebPage extends StatefulWidget {
   const WebPage({Key? key}) : super(key: key);
 
   @override
-  _WebPageState createState() => _WebPageState();
+  WebPageState createState() => WebPageState();
 }
 
-class _WebPageState extends State<WebPage> {
+class WebPageState extends State<WebPage> {
   final GlobalKey webViewKey = GlobalKey();
 
   InAppWebViewController? webViewController;
@@ -37,7 +37,7 @@ class _WebPageState extends State<WebPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () async {
             if (await webViewController!.canGoBack()) {
               webViewController!.goBack();
